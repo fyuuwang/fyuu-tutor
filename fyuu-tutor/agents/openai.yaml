@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fyuu Tutor"
+  short_description: "Run adaptive, evidence-based tutoring projects"
+  default_prompt: "Use $fyuu-tutor to continue this learning project from its recorded evidence."

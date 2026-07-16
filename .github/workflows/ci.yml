@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate Skill and project tools
+        run: python3 fyuu-tutor/scripts/test_fyuu_tutor.py
+      - name: Check local links
+        run: python3 fyuu-tutor/scripts/check_links.py --root .
+      - name: Audit public boundary
+        run: python3 fyuu-tutor/scripts/audit_privacy.py --system .
+      - name: Check release version
+        shell: bash
+        run: |
+          test "$(cat VERSION)" = "0.1.0"
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            test "v$(cat VERSION)" = "$GITHUB_REF_NAME"
+          fi
