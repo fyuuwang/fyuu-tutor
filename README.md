@@ -2,39 +2,107 @@
 
 [中文说明](README.zh-CN.md) · Current release: **v0.1.0 Preview**
 
-Turn trusted material into a course that an AI tutor can actually continue.
+Give Codex a textbook, a question bank, or a learning goal. Fyuu Tutor plans the course, creates the next lesson, and continues from where you left off.
 
-Fyuu Tutor is a document-backed, adaptive tutoring skill for Codex. Give it a topic, textbook, question bank, or learning goal, and it can build and operate one of three learning paths:
+Fyuu Tutor is designed for learning that lasts weeks or months, not for answering a single question.
 
-- **Capability** — understand, apply, build, decide, and transfer.
-- **Certification** — map an exam outline to lessons, questions, and readiness.
-- **Language** — learn through context, active production, correction, and review.
+It keeps lessons, practice, progress, weak areas, and the next step in a private learning project. A new conversation, or even a different agent, can continue from the same recorded state.
 
-Unlike a one-shot lesson generator, Fyuu Tutor keeps curriculum coverage, learner evidence, weak points, and the next action in a durable private project.
+## What it does
 
-## Three things it does differently
+Start with a textbook, a few PDFs, a question bank, or simply something you want to learn.
 
-### 1. Material to curriculum
+Fyuu Tutor can:
 
-Diagnose PDFs and other inputs, choose the smallest reliable extraction method, verify the result independently, and map every required unit before lessons are generated.
+- check whether source material was extracted correctly;
+- identify the full learning scope before planning lessons;
+- arrange topics around your current level;
+- create browser-ready HTML lessons, practice, and reference notes;
+- record what you studied and where you struggled;
+- choose the next lesson from your actual responses.
 
-### 2. Three learning paths
+A generated lesson is not treated as proof that you learned it. Fyuu Tutor keeps four things separate: the lesson exists, you studied it, you can use it independently, and you can still use it later or in a different situation.
 
-| Path | Use it when success means |
+## Three ways to use it
+
+### Learn a concept or skill
+
+Use it for AI agents, system design, data analysis, programming, or another practical capability.
+
+Give it a topic, a set of articles, or a real project. It finds missing prerequisites, teaches through examples, and checks whether you can explain and apply the idea yourself.
+
+```text
+Use $fyuu-tutor to help me learn AI agents from these materials.
+Check what I already know, then show me the course plan and first lesson.
+```
+
+### Prepare for an exam
+
+Use it for PMP or another certification with a defined exam outline.
+
+Fyuu Tutor maps the outline, study material, questions, and lessons together. It checks for missing coverage, records mistakes, and brings weak areas back in later lessons and review questions.
+
+```text
+Use $fyuu-tutor to create an exam-preparation project from this outline,
+textbook, and question bank. Check the material and coverage before writing questions.
+```
+
+### Learn a language
+
+Give it a textbook, dialogues, vocabulary, or situations you need at work.
+
+It turns the material into contextual lessons and active speaking or writing practice. Recognizing an answer is not counted as being able to produce it.
+
+```text
+Use $fyuu-tutor to create a business-English speaking project from these dialogues.
+Every lesson should include a real situation, active production, and review of earlier mistakes.
+```
+
+## What a learning session looks like
+
+1. You describe the goal and provide any material you already have.
+2. Fyuu Tutor checks the goal, the material, and your current knowledge.
+3. It builds the learning scope and course order.
+4. It creates only the lesson you need next.
+5. You study, answer, explain, or complete a task.
+6. It records the result and chooses the next step.
+
+It does not generate dozens of lessons and leave you with a folder full of files. The course changes as evidence about your learning changes.
+
+## How it differs from a normal AI chat
+
+| Normal AI chat | Fyuu Tutor |
 |---|---|
-| Capability | Explaining, deciding, building, applying, or transferring a skill |
-| Certification | Covering a dated exam outline and performing under exam conditions |
-| Language | Understanding or producing a target language in real situations |
+| Answers the current question | Maintains a learning project over time |
+| Mainly relies on model knowledge | Teaches from your material and trusted sources |
+| Moves on after an explanation | Checks whether you can explain, apply, or produce |
+| Often loses continuity in a new chat | Stores progress, errors, and the next step in project files |
+| May focus on the most interesting topics | Checks the full scope before choosing priorities |
+| Depends on one agent's context | Lets another agent continue from the same records |
 
-The input format does not choose the path. The evidence required for success does.
+## What it creates
 
-### 3. Adaptive tutoring loop
+A learning project normally contains:
 
-Fyuu Tutor separates **Produced**, **Studied**, **Demonstrated**, and **Stable**. It records errors, selects the earliest blocking gap, produces the smallest useful next lesson, and re-tests weak areas after delay or in a changed context.
+- a clear goal and complete course plan;
+- browser-ready HTML lessons;
+- practice, mistakes, and learning records;
+- compact reference notes;
+- current progress, weak areas, and one next action;
+- source and coverage records when learning from formal material.
+
+Your source material and learning data stay in your private project. They are not included in the public Fyuu Tutor repository.
 
 ## Install
 
-Python 3.11 or newer is required for the bundled scripts.
+The easiest option is to give Codex this instruction:
+
+```text
+Install Fyuu Tutor from:
+https://github.com/fyuuwang/fyuu-tutor/tree/main/fyuu-tutor
+```
+
+Or use Codex's bundled Skill Installer:
 
 ```bash
 python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-github.py \
@@ -42,60 +110,46 @@ python3 ~/.codex/skills/.system/skill-installer/scripts/install-skill-from-githu
   --path fyuu-tutor
 ```
 
-The PDF helpers can use MarkItDown, RapidOCR, PyMuPDF, or Poppler when available. They are optional and are never installed automatically.
-
-## Try it
+Then start with:
 
 ```text
-Use $fyuu-tutor to turn these systems-design concepts into a capability learning project and adapt the next lesson from my attempts.
-
-Use $fyuu-tutor to map this exam outline and question bank into a certification curriculum with traceable coverage.
-
-Use $fyuu-tutor to create an English-speaking project from these dialogues and require active production before advancing.
+Use $fyuu-tutor to create a learning project from these materials.
+Check my goal, sources, and current level before proposing the course and first step.
 ```
 
-Create an empty project from the command line when you need a deterministic starting point:
+Fyuu Tutor currently supports Codex first. Its deterministic scripts require Python 3.11 or newer. OCR tools are optional and are never installed automatically.
 
-```bash
-python3 fyuu-tutor/scripts/create_project.py \
-  --root ./private-learning/projects \
-  --project-id systems-design \
-  --display-name "Systems Design" \
-  --pipeline capability
-```
+## Where it came from
 
-Use `--content-language zh-CN` for a Chinese project. Project sources, learner profiles, generated lessons, evidence, and live state remain outside this repository.
+Fyuu Tutor began as an adaptation of Matt Pocock's
+[`teach`](https://github.com/mattpocock/skills/tree/main/skills/productivity/teach) skill.
 
-## How it works
+`teach` introduced several important foundations: teaching around a real mission, producing lessons as HTML, keeping learning records, and selecting the next lesson around the learner's current level.
 
-1. Register and verify trusted material or goals.
-2. Build a source-anchored learning and coverage map.
-3. Route the project through one learning path.
-4. Generate HTML lessons, practice, and compact reference aids.
-5. Record evidence and errors, then select the next action.
+I used that approach in three different long-term learning projects:
 
-The public Skill contains reusable rules, templates, and deterministic checks only. It must never contain real learning materials or learner data.
+- conceptual and practical learning in AI and system design;
+- PMP certification preparation;
+- language learning in Cantonese.
 
-## Origins and additions
+That real use exposed several needs that the original skill did not focus on. Fyuu Tutor adds:
 
-Fyuu Tutor is derived from Matt Pocock's [`teach`](https://github.com/mattpocock/skills/tree/main/skills/productivity/teach) skill. It retains and adapts the persistent teaching workspace, mission-grounded HTML lessons, learning records, zone-of-proximal-development selection, retrieval practice, spacing, interleaving, and feedback-loop ideas under the upstream MIT license.
+- verified extraction of textbooks, PDFs, and question banks;
+- complete mapping from source material or an exam outline to lessons and questions;
+- coverage of foundations as well as difficult topics;
+- a clear distinction between generated material and demonstrated learning;
+- later lessons and reviews selected from actual learner errors;
+- a shared project format that another agent can safely continue;
+- a strict boundary between the public skill and private learning data.
 
-Fyuu Tutor adds:
-
-- capability, certification, and language routing;
-- material diagnosis, OCR verification, normalization, and coverage mapping;
-- four explicit evidence levels and error-to-intervention routing;
-- dated certification authority and exam-outline controls;
-- a versioned private-project schema and multi-agent claim protocol;
-- privacy, link, project, and output validation scripts.
-
-Bloom, Universal Diagnostic Tutor, AI Tutor Skill, Education Agent Skills, Mr. Ranedeer AI Tutor, and Tutor GPT informed product research only. No code or prompt text was copied from those projects. See [THIRD_PARTY_NOTICES.md](fyuu-tutor/THIRD_PARTY_NOTICES.md) for licenses and exact distinctions.
+Other tutoring projects informed product research, but their code and prompts were not copied. See
+[`THIRD_PARTY_NOTICES.md`](fyuu-tutor/THIRD_PARTY_NOTICES.md) for the complete provenance and license notes.
 
 ## Project status
 
-`v0.1.0` is a public preview. Preview releases may contain breaking changes, but every such change must include a migration note. Strict semantic-versioning compatibility begins at `v1.0.0`.
+Fyuu Tutor is currently a `v0.1.0` public preview.
 
-See [CHANGELOG.md](CHANGELOG.md), [CONTRIBUTING.md](CONTRIBUTING.md), and [SECURITY.md](SECURITY.md).
+It has been used in three long-running learning projects, but it still needs testing with more learners, source types, and learning goals. Any breaking preview change will include migration notes.
 
 ## License
 
