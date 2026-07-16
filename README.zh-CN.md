@@ -2,6 +2,10 @@
 
 [English](README.md) · 当前版本：**v0.1.0 Preview**
 
+<p align="center">
+  <img src="./assets/readme/hero-zh-cn.svg" width="100%" alt="Fyuu Tutor 把教材、题库或学习目标变成一个会根据学习表现持续调整的课程">
+</p>
+
 把教材、题库或一个学习目标交给 Codex。它会帮你安排课程、制作每一课，并从上次停下的地方继续教。
 
 Fyuu Tutor 适合需要持续几周或几个月的学习，而不是只问一次问题。

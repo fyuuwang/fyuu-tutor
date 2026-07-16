@@ -2,6 +2,10 @@
 
 [中文说明](README.zh-CN.md) · Current release: **v0.1.0 Preview**
 
+<p align="center">
+  <img src="./assets/readme/hero.svg" width="100%" alt="Fyuu Tutor turns materials, question banks, or learning goals into an adaptive course that continues from the learner's response">
+</p>
+
 Give Codex a textbook, a question bank, or a learning goal. Fyuu Tutor plans the course, creates the next lesson, and continues from where you left off.
 
 Fyuu Tutor is designed for learning that lasts weeks or months, not for answering a single question.
