@@ -2,6 +2,29 @@
 
 All notable changes are recorded here. Preview releases may contain breaking changes, which must include migration notes.
 
+## [0.3.0] — Rich Learning Experiences — 2026-07-22
+
+### Added
+
+- A shipped UI Gallery, installed and integrity-checked with every UI kit.
+- Canonical `UI-CONTRACT.md` installation for every UI-kit project.
+- Strict component placement, production-task identity, JSON-question, and consented remote-TTS validation.
+
+### Changed
+
+- All three private projects now consume the same UI v2 kit: PMP, AI learning, and Cantonese learning.
+- Quiz data is strict JSON only; legacy executable question objects are no longer accepted.
+- Audio controls are named for assistive technology and use the full local speech → consented HTTPS TTS → visible fallback chain.
+
+### Fixed
+
+- Link checks ignore archived history, which is retained as evidence rather than a runnable site.
+- Project creation no longer copies a second validator implementation.
+
+### Migration
+
+- Run `sync_ui_kit.py --project <project> --upgrade`, then validate every output page before release.
+
 ## [0.2.0] — Reusable UI Kit — 2026-07-22
 
 ### Added

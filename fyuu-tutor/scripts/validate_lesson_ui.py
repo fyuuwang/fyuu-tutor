@@ -13,8 +13,6 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 CLASS_RE = re.compile(r"(?<![-\w])\.([A-Za-z_][\w-]*)")
-V1_QUESTION_RE = re.compile(r"window\.LESSON_QUESTIONS\s*=\s*\[")
-JSON_QUESTION_RE = re.compile(r'type="application/json"')
 
 
 def load_spec(script_dir: Path) -> dict:
@@ -74,18 +72,22 @@ class LessonParser(HTMLParser):
         self.external_links: list[str] = []
         self.external_link_rels: list[str] = []
         self.production_task_ids: list[str] = []
+        self.components: list[tuple[str, set[str]]] = []
+        self.stages: list[str] = []
+        self._element_stack: list[tuple[str, set[str]]] = []
         self._script_id: str = ""
 
     def handle_starttag(self, tag, attrs_list):
         attrs = {k: v or "" for k, v in attrs_list}
+        own_classes = set(attrs.get("class", "").split())
         if tag == "body":
             self.body_attrs = attrs
         if tag == "style":
             self.styles += 1
         if "style" in attrs:
             self.inline_styles.append(tag)
-        if attrs.get("class"):
-            self.classes.update(attrs["class"].split())
+        if own_classes:
+            self.classes.update(own_classes)
         if attrs.get("id"):
             self.ids.append(attrs["id"])
         if attrs.get("href", "").startswith("#") and len(attrs["href"]) > 1:
@@ -100,6 +102,11 @@ class LessonParser(HTMLParser):
                 self.production_task_ids.append(iid)
             else:
                 self.production_task_ids.append("")
+        if attrs.get("data-component"):
+            parent_classes = set().union(*(classes for _, classes in self._element_stack)) if self._element_stack else set()
+            self.components.append((attrs["data-component"], parent_classes | own_classes))
+        if attrs.get("data-stage"):
+            self.stages.append(attrs["data-stage"])
         if tag == "link" and attrs.get("rel") == "stylesheet":
             self.stylesheets.append(attrs.get("href", ""))
         if tag == "script":
@@ -122,6 +129,8 @@ class LessonParser(HTMLParser):
             value = attrs.get(attr, "")
             if re.match(r"^(?:https?:)?//", value):
                 self.remote_resources.append(value)
+        if tag not in {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}:
+            self._element_stack.append((tag, own_classes))
 
     def handle_endtag(self, tag):
         if tag == "script" and self._script_parts is not None:
@@ -134,6 +143,10 @@ class LessonParser(HTMLParser):
             self._script_parts = None
             self._script_type = ""
             self._script_id = ""
+        for index in range(len(self._element_stack) - 1, -1, -1):
+            if self._element_stack[index][0] == tag:
+                del self._element_stack[index:]
+                break
 
     def handle_data(self, data):
         if self._script_parts is not None:
@@ -176,6 +189,10 @@ def validate_questions_v2(json_text: str, qtypes: dict) -> list[str]:
             continue
         spec_def = qtypes[qtype]
         required = spec_def.get("required_fields", [])
+        allowed = set(required) | set(spec_def.get("optional_fields", [])) | {"type"}
+        unknown_fields = sorted(set(q) - allowed)
+        if unknown_fields:
+            errors.append(f"题 {i+1} 含有未知字段：{', '.join(unknown_fields)}")
         for field in required:
             if field not in q:
                 errors.append(f"题 {i+1} 缺少字段：{field}")
@@ -202,8 +219,14 @@ def validate_questions_v2(json_text: str, qtypes: dict) -> list[str]:
         # Check for HTML injection in text fields
         for field in ("stem", "rationale", "answer_text", "audio_text"):
             val = q.get(field, "")
-            if isinstance(val, str) and ("<" in val or ">" in val):
+            if field in q and not isinstance(val, str):
+                errors.append(f"题 {i+1} {field} 必须为纯文本")
+            elif isinstance(val, str) and ("<" in val or ">" in val):
                 errors.append(f"题 {i+1} {field} 不允许 HTML")
+        for option in q.get("options", []):
+            if not isinstance(option, str) or "<" in option or ">" in option:
+                errors.append(f"题 {i+1} options 不允许 HTML 且必须为纯文本")
+                break
     return errors
 
 
@@ -224,6 +247,10 @@ def validate_audio_config(json_text: str) -> list[str]:
         if needle.lower() in json_text.lower():
             errors.append(f"audio-config 不允许包含 {needle}")
             break
+    if cfg.get("tts_endpoint") and cfg.get("allow_remote_tts") is not True:
+        errors.append("audio-config tts_endpoint requires allow_remote_tts: true")
+    if cfg.get("allow_remote_tts") is True and not cfg.get("tts_endpoint"):
+        errors.append("audio-config allow_remote_tts requires tts_endpoint")
     return errors
 
 
@@ -257,6 +284,24 @@ def validate_file(page: Path, spec: dict) -> list[str]:
         errors.append(f"Unknown data-theme: {theme or 'missing'}")
     if pipeline and pipeline not in valid_pipelines:
         errors.append(f"Unknown data-pipeline: {pipeline}")
+
+    if page_format == "lesson":
+        expected_stages = spec.get("formats", {}).get("lesson", {}).get("stages", [])
+        stage_order = list(dict.fromkeys(parser.stages))
+        if stage_order != expected_stages:
+            errors.append("lesson data-stage order must be: " + ", ".join(expected_stages))
+
+    for component, parent_classes in parser.components:
+        definition = spec_components(spec).get(component)
+        if not definition:
+            errors.append(f"Unknown data-component: {component}")
+            continue
+        allowed_pipelines = set(definition.get("pipelines", []))
+        if pipeline and pipeline not in allowed_pipelines:
+            errors.append(f"{component} is not allowed for pipeline {pipeline}")
+        allowed_sections = set(definition.get("sections", []))
+        if "root" not in allowed_sections and not (allowed_sections & parent_classes):
+            errors.append(f"{component} is outside its allowed section")
 
     if parser.styles:
         errors.append("<style> tags forbidden")
@@ -316,32 +361,24 @@ def validate_file(page: Path, spec: dict) -> list[str]:
         if q_json:
             q_errors = validate_questions_v2(q_json, qtypes)
             errors.extend(q_errors)
-        elif any("LESSON_QUESTIONS" in s for s in parser.inline_scripts):
-            pass  # v1 fallback during migration
         else:
-            errors.append("Quiz page missing question data (JSON or LESSON_QUESTIONS)")
+            errors.append("Quiz page missing JSON question data")
     else:
         if q_json:
             errors.append("Non-quiz page should not declare questions")
-        if any("LESSON_QUESTIONS" in s for s in parser.inline_scripts):
-            errors.append("Non-quiz page should not declare questions")
 
-    # Production tasks need stable data-item-id
-    if has_production:
-        for idx, tid in enumerate(parser.production_task_ids):
-            if not tid:
-                errors.append(f"production-task {idx+1} missing data-item-id")
-        prod_dupes = sorted({x for x in parser.production_task_ids if x and parser.production_task_ids.count(x) > 1})
-        if prod_dupes:
-            errors.append("Duplicate production-task data-item-id: " + ", ".join(prod_dupes))
+    # Production tasks need stable data-item-id wherever they appear.
+    for idx, tid in enumerate(parser.production_task_ids):
+        if not tid:
+            errors.append(f"production-task {idx+1} missing data-item-id")
+    prod_dupes = sorted({x for x in parser.production_task_ids if x and parser.production_task_ids.count(x) > 1})
+    if prod_dupes:
+        errors.append("Duplicate production-task data-item-id: " + ", ".join(prod_dupes))
 
-    # Inline script check: only JSON question blocks or v1 LESSON_QUESTIONS
+    # Inline script check: question and audio data must be strict JSON.
     for script in parser.inline_scripts:
-        stripped = script.strip()
-        if not V1_QUESTION_RE.match(stripped) and stripped:
-            # Allow empty scripts
-            if stripped:
-                errors.append("Inline script must only declare questions")
+        if script.strip():
+            errors.append("Inline script forbidden; use a JSON data block")
 
     duplicates = sorted({item for item in parser.ids if parser.ids.count(item) > 1})
     if duplicates:
@@ -425,6 +462,15 @@ def validate_kit(script_dir: Path, spec: dict) -> list[str]:
         if not (kit_dir / "templates" / cat_name).is_file():
             errors.append(f"Missing component catalog: {cat_name}")
 
+    gallery = spec.get("gallery", "")
+    if gallery:
+        gallery_name = Path(gallery).name
+        if not (kit_dir / "templates" / gallery_name).is_file():
+            errors.append(f"Missing gallery: {gallery_name}")
+
+    if not (script_dir / "references" / "ui-contract.md").is_file():
+        errors.append("Missing UI contract")
+
     # Validate that spec formats/themes match
     fmts = spec_formats(spec)
     if not fmts:
@@ -482,6 +528,11 @@ def run_self_test(script_dir: Path, spec: dict) -> list[str]:
             errors = validate_file(page, spec)
             if should_fail != bool(errors):
                 failures.append(f"{name}: {'unexpected pass' if should_fail else errors}")
+        if not validate_audio_config('{"tts_endpoint":"https://tts.example/"}'):
+            failures.append("remote TTS without explicit consent unexpectedly passed")
+        invalid_question = '[{"id":"q1","type":"single_choice","stem":"x","options":["<b>x</b>","y"],"answer":0,"rationale":"x"}]'
+        if not validate_questions_v2(invalid_question, spec.get("question_types", {})):
+            failures.append("HTML in option unexpectedly passed")
     return failures
 
 

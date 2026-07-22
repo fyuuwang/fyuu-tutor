@@ -798,6 +798,10 @@ code {
   color: var(--ink-soft);
 }
 
+.audio-hint:not([hidden]) {
+  display: inline;
+}
+
 /* === Production section (active output area, alternative to quiz) === */
 .production-section {
   padding: 8px 0 32px;

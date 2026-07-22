@@ -24,7 +24,9 @@ KIT_FILES = [
     ("templates/practice.html", "outputs/templates/practice.html"),
     ("templates/reference.html", "outputs/templates/reference.html"),
     ("templates/components.html", "outputs/templates/components.html"),
+    ("templates/gallery.html", "outputs/ui/gallery.html"),
     ("ui-spec.json", "outputs/ui/ui-spec.json"),
+    ("../../references/ui-contract.md", "UI-CONTRACT.md"),
 ]
 
 MANIFEST_NAME = "outputs/ui/kit-manifest.json"
