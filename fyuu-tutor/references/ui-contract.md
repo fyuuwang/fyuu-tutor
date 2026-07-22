@@ -91,6 +91,32 @@ Rules:
 - Stem, options, and rationale are plain text. No HTML.
 - The JS renders questions using DOM API and `textContent`.
 
+
+## Production tasks and audio
+
+A lesson practice stage may use scored questions, active production, or both. Use `data-component="production-task"` inside a `production-section` or `case-section`. Every production task needs a stable `data-item-id`:
+
+```html
+<details class="production-task" data-component="production-task" data-item-id="LESSON-XXXX-TASK-01">
+  <summary>Say it first, then check</summary>
+  <div class="production-task-body">
+    <p class="production-prompt">How do you say this?</p>
+    <textarea></textarea>
+  </div>
+</details>
+```
+
+Audio buttons use the shared adapter. Place an optional config block once per page:
+
+```html
+<button class="audio-trigger" type="button" data-text="你好" data-lang="zh-HK">🔊</button>
+<script id="audio-config" type="application/json">
+{"lang":"zh-HK","fallback_url":"https://words.hk/word/","allow_remote_tts":false}
+</script>
+```
+
+The adapter tries `speechSynthesis`, then remote TTS (only if `allow_remote_tts` is true and HTTPS), then opens the fallback URL. Config must be pure JSON, HTTPS only, no keys or tokens. `single_choice` questions may carry an optional `audio_text` field for listening exercises.
+
 ## What you must not do
 
 - No `<style>` tags or `style=""` attributes.
@@ -99,6 +125,8 @@ Rules:
 - No new CSS classes. Use only approved components.
 - No copying shared assets into per-lesson files.
 - No modifying `outputs/assets/` or `outputs/templates/` directly.
+- No remote TTS without explicit `allow_remote_tts: true` and HTTPS.
+- No production task without a stable `data-item-id`.
 
 ## Adding a new component
 

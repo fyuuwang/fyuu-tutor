@@ -135,13 +135,21 @@
         </article>
         <article class="reference-item">
           <h3>production-task · Active output</h3>
-<pre>&lt;details class="production-task" data-component="production-task"&gt;
+<pre>&lt;details class="production-task" data-component="production-task" data-item-id="LESSON-XXXX-TASK-01"&gt;
   &lt;summary&gt;[task prompt]&lt;/summary&gt;
   &lt;div class="production-task-body"&gt;
     &lt;p class="production-prompt"&gt;[instruction]&lt;/p&gt;
     &lt;textarea&gt;&lt;/textarea&gt;
   &lt;/div&gt;
 &lt;/details&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>audio-trigger · Pronunciation button</h3>
+<pre>&lt;button class="audio-trigger" type="button" data-text="你好" data-lang="zh-HK"&gt;🔊&lt;/button&gt;</pre>
+          <p>Optional HTTPS config (no keys):</p>
+<pre>&lt;script id="audio-config" type="application/json"&gt;
+{"lang":"zh-HK","fallback_url":"https://words.hk/word/","allow_remote_tts":false}
+&lt;/script&gt;</pre>
         </article>
       </div>
     </section>

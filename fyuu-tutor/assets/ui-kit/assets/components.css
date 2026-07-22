@@ -763,6 +763,50 @@ code {
   outline-offset: 2px;
 }
 
+/* === Audio trigger === */
+.audio-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  min-height: 36px;
+  border: 1px solid var(--indigo);
+  border-radius: 20px;
+  background: var(--indigo-soft);
+  color: var(--indigo-dark);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: background 120ms ease;
+}
+
+.audio-trigger:hover {
+  background: var(--indigo-soft);
+  filter: brightness(0.96);
+}
+
+.audio-trigger:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.audio-hint {
+  display: none;
+  margin-left: 8px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+/* === Production section (active output area, alternative to quiz) === */
+.production-section {
+  padding: 8px 0 32px;
+}
+
+.production-section .section-intro {
+  margin-bottom: 20px;
+}
+
 .production-prompt {
   margin: 0 0 12px;
   color: var(--ink-soft);
