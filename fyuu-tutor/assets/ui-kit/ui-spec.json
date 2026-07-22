@@ -31,15 +31,18 @@
         "case": "Case",
         "practice": "Practice"
       },
-      "required_classes": [
+     "required_classes": [
         "lesson-shell",
         "lesson-header",
         "lesson-steps",
         "map-section",
         "case-section",
-        "audit-section",
-        "quiz-section",
-        "quiz-toolbar"
+        "audit-section"
+      ],
+      "practice_alternatives": [
+        ["quiz-section", "quiz-toolbar"],
+        ["production-section"],
+        ["quiz-section", "quiz-toolbar", "production-section"]
       ],
       "stage_sections": {
         "map": [
@@ -50,7 +53,8 @@
           "audit-section"
         ],
         "practice": [
-          "quiz-section"
+          "quiz-section",
+          "production-section"
         ]
       }
     },
@@ -116,6 +120,9 @@
         "options",
         "answer",
         "rationale"
+      ],
+      "optional_fields": [
+        "audio_text"
       ],
       "rules": {
         "min_options": 2,
@@ -294,19 +301,46 @@
         "language"
       ]
     },
-    "production-task": {
+   "production-task": {
       "sections": [
-        "case-section"
+        "case-section",
+        "production-section"
       ],
       "pipelines": [
+        "capability",
+        "language"
+      ],
+      "requires": "data-item-id"
+    },
+    "audio-trigger": {
+      "sections": [
+        "case-section",
+        "production-section",
+        "quiz-section",
+        "reference-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "production-section": {
+      "sections": [
+        "root"
+      ],
+      "pipelines": [
+        "capability",
         "language"
       ]
     },
     "flashcard": {
       "sections": [
-        "case-section"
+        "case-section",
+        "production-section"
       ],
       "pipelines": [
+        "capability",
         "language"
       ]
     },

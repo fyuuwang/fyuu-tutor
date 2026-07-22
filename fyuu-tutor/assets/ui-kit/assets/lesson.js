@@ -28,10 +28,11 @@
   var stageLinks = Array.from(document.querySelectorAll(".lesson-steps a"));
   var quizSection = document.querySelector(".quiz-section");
   var lang = document.documentElement.getAttribute("lang") || "en";
-  var i18n = {
-    "zh-CN": { correct: "答对了。", wrong: "再看一眼。", answered: "已答", of: "/", correctLabel: "正确", questionLabel: "题目", flip: "点击翻转", resetLabel: "重新作答" },
-    en: { correct: "Correct.", wrong: "Take another look.", answered: "Answered", of: "/", correctLabel: "correct", questionLabel: "Question", flip: "Click to flip", resetLabel: "Reset" },
-  };
+ var i18n = {
+   "zh-CN": { correct: "答对了。", wrong: "再看一眼。", answered: "已答", of: "/", correctLabel: "正确", questionLabel: "题目", flip: "点击翻转", resetLabel: "重新作答" },
+   "zh-HK": { correct: "答啱咗。", wrong: "再睇一次。", answered: "已答", of: "/", correctLabel: "啱", questionLabel: "題目", flip: "撳一下翻轉", resetLabel: "重做" },
+   en: { correct: "Correct.", wrong: "Take another look.", answered: "Answered", of: "/", correctLabel: "correct", questionLabel: "Question", flip: "Click to flip", resetLabel: "Reset" },
+ };
   var t = i18n[lang] || i18n.en;
   var questionLabel = (quizSection && quizSection.getAttribute("data-question-label")) || t.questionLabel;
 
@@ -71,7 +72,11 @@
     var isCorrect = optionIndex === question.answer;
     var feedback = questionElement.querySelector(".question-feedback");
     feedback.className = "question-feedback is-visible " + (isCorrect ? "is-correct" : "is-wrong");
-    feedback.innerHTML = (isCorrect ? "<strong>" + t.correct + "</strong> " : "<strong>" + t.wrong + "</strong> ") + question.why;
+    feedback.textContent = "";
+    var fbLabel = document.createElement("strong");
+    fbLabel.textContent = isCorrect ? t.correct : t.wrong;
+    feedback.appendChild(fbLabel);
+    feedback.appendChild(document.createTextNode(" " + (question.why || "")));
     updateScore();
   }
 
@@ -87,11 +92,23 @@
 
     var front = document.createElement("div");
     front.className = "flashcard-face flashcard-face--front";
-    front.innerHTML = "<strong>" + question.stem + "</strong><p>" + t.flip + "</p>";
+    var frontLabel = document.createElement("strong");
+    frontLabel.textContent = question.stem;
+    front.appendChild(frontLabel);
+    var flipHint = document.createElement("p");
+    flipHint.textContent = t.flip;
+    front.appendChild(flipHint);
 
     var back = document.createElement("div");
     back.className = "flashcard-face flashcard-face--back";
-    back.innerHTML = "<strong>" + (question.answer_text || "") + "</strong>" + (question.rationale ? "<p>" + question.rationale + "</p>" : "");
+    var backLabel = document.createElement("strong");
+    backLabel.textContent = question.answer_text || "";
+    back.appendChild(backLabel);
+    if (question.rationale) {
+      var backP = document.createElement("p");
+      backP.textContent = question.rationale;
+      back.appendChild(backP);
+    }
 
     inner.appendChild(front);
     inner.appendChild(back);
@@ -109,15 +126,43 @@
       article.className = "question";
       article.id = "question-" + (questionIndex + 1);
 
-      var options = question.opts.map(function (option, optionIndex) {
-        return '<li><button class="question-option" type="button" data-question="' + questionIndex + '" data-option="' + optionIndex + '"><span class="option-key" aria-hidden="true">' + "ABCDEF"[optionIndex] + "</span><span>" + option + "</span></button></li>";
-      }).join("");
+      var meta = document.createElement("div");
+      meta.className = "question-meta";
+      meta.textContent = questionLabel + " " + (questionIndex + 1);
+      article.appendChild(meta);
 
-      article.innerHTML =
-        '<div class="question-meta">' + questionLabel + " " + (questionIndex + 1) + "</div>" +
-        '<p class="question-stem">' + question.stem + "</p>" +
-        '<ol class="question-options">' + options + "</ol>" +
-        '<div class="question-feedback" role="status" aria-live="polite"></div>';
+      var stem = document.createElement("p");
+      stem.className = "question-stem";
+      stem.textContent = question.stem;
+      article.appendChild(stem);
+
+      var optionList = document.createElement("ol");
+      optionList.className = "question-options";
+      question.opts.forEach(function (option, optionIndex) {
+        var li = document.createElement("li");
+        var btn = document.createElement("button");
+        btn.className = "question-option";
+        btn.type = "button";
+        btn.dataset.question = String(questionIndex);
+        btn.dataset.option = String(optionIndex);
+        var key = document.createElement("span");
+        key.className = "option-key";
+        key.setAttribute("aria-hidden", "true");
+        key.textContent = "ABCDEF"[optionIndex] || "?";
+        var label = document.createElement("span");
+        label.textContent = option;
+        btn.appendChild(key);
+        btn.appendChild(label);
+        li.appendChild(btn);
+        optionList.appendChild(li);
+      });
+      article.appendChild(optionList);
+
+      var fb = document.createElement("div");
+      fb.className = "question-feedback";
+      fb.setAttribute("role", "status");
+      fb.setAttribute("aria-live", "polite");
+      article.appendChild(fb);
       quiz.appendChild(article);
     });
 
@@ -194,10 +239,53 @@
     showStage(start);
   }
 
+
+  // --- Audio adapter: speechSynthesis -> remote TTS (if permitted) -> dictionary link ---
+  function loadAudioConfig() {
+    var tag = document.getElementById("audio-config");
+    if (!tag || tag.type !== "application/json") return {};
+    try { return JSON.parse(tag.textContent); } catch (e) { return {}; }
+  }
+
+  function initAudio() {
+    var buttons = document.querySelectorAll(".audio-trigger");
+    if (!buttons.length) return;
+    var config = loadAudioConfig();
+    var allowRemote = config.allow_remote_tts === true && typeof config.tts_endpoint === "string" && /^https:\/\//.test(config.tts_endpoint);
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var text = btn.getAttribute("data-text") || "";
+        var lang = config.lang || btn.getAttribute("data-lang") || "en";
+        if (typeof window.speechSynthesis !== "undefined" && window.speechSynthesis) {
+          try {
+            window.speechSynthesis.cancel();
+            var u = new SpeechSynthesisUtterance(text);
+            u.lang = lang;
+            u.onerror = function () { fallbackAudio(text, config, btn); };
+            window.speechSynthesis.speak(u);
+            return;
+          } catch (e) { /* fall through */ }
+        }
+        fallbackAudio(text, config, btn);
+      });
+    });
+
+    function fallbackAudio(text, config, btn) {
+      if (config.fallback_url && /^https:\/\//.test(config.fallback_url)) {
+        window.open(config.fallback_url + encodeURIComponent(text), "_blank", "noopener");
+        return;
+      }
+      var hint = btn.querySelector(".audio-hint");
+      if (hint) { hint.textContent = text; hint.style.display = "block"; }
+    }
+  }
+
   window.addEventListener("scroll", updateProgress, { passive: true });
   window.addEventListener("resize", updateProgress);
   if (reset) reset.addEventListener("click", resetQuiz);
   renderQuiz();
   initStages();
+  initAudio();
   updateProgress();
 })();

@@ -70,6 +70,11 @@ class LessonParser(HTMLParser):
         self.buttons_without_type: list[str] = []
         self._script_parts: list[str] | None = None
         self._script_type: str = ""
+        self.json_script_ids: list[str] = []
+        self.external_links: list[str] = []
+        self.external_link_rels: list[str] = []
+        self.production_task_ids: list[str] = []
+        self._script_id: str = ""
 
     def handle_starttag(self, tag, attrs_list):
         attrs = {k: v or "" for k, v in attrs_list}
@@ -85,6 +90,16 @@ class LessonParser(HTMLParser):
             self.ids.append(attrs["id"])
         if attrs.get("href", "").startswith("#") and len(attrs["href"]) > 1:
             self.fragments.append(attrs["href"][1:])
+        href_val = attrs.get("href", "")
+        if re.match(r"^https?:", href_val):
+            self.external_links.append(href_val)
+            self.external_link_rels.append(attrs.get("rel", ""))
+        if attrs.get("class") and "production-task" in attrs["class"].split():
+            iid = attrs.get("data-item-id", "")
+            if iid:
+                self.production_task_ids.append(iid)
+            else:
+                self.production_task_ids.append("")
         if tag == "link" and attrs.get("rel") == "stylesheet":
             self.stylesheets.append(attrs.get("href", ""))
         if tag == "script":
@@ -95,6 +110,7 @@ class LessonParser(HTMLParser):
             elif stype == "application/json":
                 self._script_parts = []
                 self._script_type = "json"
+                self._script_id = attrs.get("id", "")
             else:
                 self._script_parts = []
                 self._script_type = "js"
@@ -112,10 +128,12 @@ class LessonParser(HTMLParser):
             content = "".join(self._script_parts)
             if self._script_type == "json":
                 self.json_scripts.append(content)
+                self.json_script_ids.append(self._script_id)
             else:
                 self.inline_scripts.append(content)
             self._script_parts = None
             self._script_type = ""
+            self._script_id = ""
 
     def handle_data(self, data):
         if self._script_parts is not None:
@@ -182,10 +200,30 @@ def validate_questions_v2(json_text: str, qtypes: dict) -> list[str]:
             if not q.get("answer_text"):
                 errors.append(f"题 {i+1} flashcard 缺少 answer_text")
         # Check for HTML injection in text fields
-        for field in ("stem", "rationale", "answer_text"):
+        for field in ("stem", "rationale", "answer_text", "audio_text"):
             val = q.get(field, "")
             if isinstance(val, str) and ("<" in val or ">" in val):
                 errors.append(f"题 {i+1} {field} 不允许 HTML")
+    return errors
+
+
+def validate_audio_config(json_text: str) -> list[str]:
+    """Validate audio-config JSON: HTTPS only, no secrets, explicit remote permission."""
+    errors: list[str] = []
+    try:
+        cfg = json.loads(json_text)
+    except json.JSONDecodeError as exc:
+        return [f"audio-config JSON 解析失败：{exc}"]
+    if not isinstance(cfg, dict):
+        return ["audio-config 必须是 JSON 对象"]
+    for key in ("tts_endpoint", "fallback_url"):
+        val = cfg.get(key, "")
+        if val and not re.match(r"^https://", val):
+            errors.append(f"audio-config {key} 必须 HTTPS")
+    for needle in ("api_key", "apikey", "secret", "token", "password"):
+        if needle.lower() in json_text.lower():
+            errors.append(f"audio-config 不允许包含 {needle}")
+            break
     return errors
 
 
@@ -251,24 +289,51 @@ def validate_file(page: Path, spec: dict) -> list[str]:
         if unknown:
             errors.append("Unknown component classes: " + ", ".join(unknown))
 
-    # Question validation: v2 JSON preferred, v1 JS accepted during migration
+   # Question validation: v2 JSON preferred, v1 JS accepted during migration
     has_quiz = "quiz-section" in parser.classes
+    has_production = "production-section" in parser.classes
+
+    # Separate JSON blocks by id: lesson-questions vs audio-config
+    q_json = ""
+    audio_json = ""
+    for sid, content in zip(parser.json_script_ids, parser.json_scripts):
+        if sid == "lesson-questions":
+            q_json = content
+        elif sid == "audio-config":
+            audio_json = content
+        else:
+            # Unrecognised JSON block: treat as questions if no id
+            if not sid and not q_json:
+                q_json = content
+
+    if audio_json:
+        errors.extend(validate_audio_config(audio_json))
+
     if has_quiz:
         for required_id in ("quiz", "scoreText", "resetQuiz"):
             if required_id not in parser.ids:
                 errors.append(f"Quiz page missing #{required_id}")
-        if parser.json_scripts:
-            q_errors = validate_questions_v2(parser.json_scripts[0], qtypes)
+        if q_json:
+            q_errors = validate_questions_v2(q_json, qtypes)
             errors.extend(q_errors)
         elif any("LESSON_QUESTIONS" in s for s in parser.inline_scripts):
             pass  # v1 fallback during migration
         else:
             errors.append("Quiz page missing question data (JSON or LESSON_QUESTIONS)")
     else:
-        if parser.json_scripts:
+        if q_json:
             errors.append("Non-quiz page should not declare questions")
         if any("LESSON_QUESTIONS" in s for s in parser.inline_scripts):
             errors.append("Non-quiz page should not declare questions")
+
+    # Production tasks need stable data-item-id
+    if has_production:
+        for idx, tid in enumerate(parser.production_task_ids):
+            if not tid:
+                errors.append(f"production-task {idx+1} missing data-item-id")
+        prod_dupes = sorted({x for x in parser.production_task_ids if x and parser.production_task_ids.count(x) > 1})
+        if prod_dupes:
+            errors.append("Duplicate production-task data-item-id: " + ", ".join(prod_dupes))
 
     # Inline script check: only JSON question blocks or v1 LESSON_QUESTIONS
     for script in parser.inline_scripts:
@@ -301,6 +366,20 @@ def validate_file(page: Path, spec: dict) -> list[str]:
     missing_classes = sorted(required - parser.classes)
     if missing_classes:
         errors.append(f"{page_format} missing required classes: " + ", ".join(missing_classes))
+
+    # External links must use rel=noopener
+    for href, rel in zip(parser.external_links, parser.external_link_rels):
+        if "noopener" not in rel:
+            errors.append(f"External link missing rel=noopener: {href}")
+
+    # Practice alternatives: lesson format may use quiz OR production
+    fmt_def = spec.get("formats", {}).get(page_format or "", {})
+    alternatives = fmt_def.get("practice_alternatives")
+    if alternatives:
+        satisfied = any(all(cls in parser.classes for cls in group) for group in alternatives)
+        if not satisfied:
+            groups = " / ".join(" + ".join(g) for g in alternatives)
+            errors.append(f"{page_format} practice stage needs one of: {groups}")
 
     return errors
 
