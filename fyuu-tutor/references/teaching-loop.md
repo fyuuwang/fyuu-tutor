@@ -17,6 +17,18 @@ Find the earliest concept, symbol, method, prerequisite, or production step that
 
 Use short teach-and-check cycles. When the learner should supply the next step, ask and stop.
 
+## Choose the visual theme
+
+When producing a lesson or reference page for the first time, confirm the page theme with the learner. Themes express knowledge domain, not aesthetic preference:
+
+- `overview`: cross-domain integration, maps
+- `people`: team, communication, stakeholders
+- `process`: delivery, methods, controls
+- `business`: value, governance, business environment
+- `review`: review, mistakes, mock exams
+
+A `reference` page may use section-level themes to let color carry information hierarchy. Suggest a theme mapping when the learner is unsure; record the choice so other agents stay consistent.
+
 ## Route errors to interventions
 
 Record the task, learner response, expected model, evidence, and likely error type. Match the repair:

@@ -1,0 +1,5 @@
+/* Fyuu Tutor UI v2 — single entry point. Pages link only this file. */
+/* Internal split: tokens -> foundation -> components. Do not edit here. */
+@import url("tokens.css");
+@import url("foundation.css");
+@import url("components.css");

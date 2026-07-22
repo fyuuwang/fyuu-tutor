@@ -21,12 +21,16 @@ jobs:
         run: python3 fyuu-tutor/scripts/test_fyuu_tutor.py
       - name: Check local links
         run: python3 fyuu-tutor/scripts/check_links.py --root .
+      - name: UI kit self-test
+        run: python3 fyuu-tutor/scripts/validate_lesson_ui.py --self-test
+      - name: UI kit consistency
+        run: python3 fyuu-tutor/scripts/validate_lesson_ui.py --kit
       - name: Audit public boundary
         run: python3 fyuu-tutor/scripts/audit_privacy.py --system .
       - name: Check release version
         shell: bash
         run: |
-          test "$(cat VERSION)" = "0.1.0"
+          test "$(cat VERSION)" = "0.2.0"
           if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
             test "v$(cat VERSION)" = "$GITHUB_REF_NAME"
           fi

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Fyuu Tutor UI v2 component catalog for lesson assembly.">
+  <title>Components · Fyuu Tutor UI v2</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body data-ui-version="2" data-pipeline="capability" data-format="reference" data-theme="overview">
+  <a class="skip-link" href="#reference-content">Skip to content</a>
+  <main class="lesson-shell" id="reference-content">
+    <header class="lesson-header">
+      <p class="eyebrow">Fyuu Tutor UI v2 · Production asset</p>
+      <h1>Component catalog</h1>
+      <p class="lesson-deck">Every approved component with copy-ready HTML and slot rules. Page skeletons are in lesson.html / practice.html / reference.html. Assembly rules are in the project UI-CONTRACT.md. Component classes may only come from this catalog.</p>
+    </header>
+    <section class="reference-section" aria-labelledby="g-map">
+      <h2 id="g-map">A · Map components</h2>
+      <p class="section-intro">Goes in map-section, as the first-viewport map.</p>
+      <div class="reference-grid">
+        <article class="reference-item">
+          <h3>learning-map · Topic map</h3>
+          <p>2-6 nodes around a central hub. Each map-node href must point to a same-page scene id. Modifiers --why / --govern / --build / --owner / --environment are examples; use data-component="learning-map" on the container.</p>
+<pre>&lt;div class="learning-map" data-component="learning-map" aria-label="[topic]"&gt;
+  &lt;div class="map-hub"&gt;&lt;strong&gt;[center]&lt;/strong&gt;&lt;span&gt;[position]&lt;/span&gt;&lt;/div&gt;
+  &lt;a class="map-node map-node--why" href="#scene-1"&gt;&lt;strong&gt;[Q1]&lt;/strong&gt;&lt;span&gt;[hint]&lt;/span&gt;&lt;/a&gt;
+  &lt;a class="map-node map-node--govern" href="#scene-2"&gt;&lt;strong&gt;[Q2]&lt;/strong&gt;&lt;span&gt;[hint]&lt;/span&gt;&lt;/a&gt;
+&lt;/div&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>relation-net · Concept network</h3>
+          <p>Capability and certification only. Shows how concepts connect. Hub node uses --hub modifier.</p>
+<pre>&lt;div class="relation-net" data-component="relation-net"&gt;
+  &lt;div class="relation-node relation-node--hub"&gt;&lt;strong&gt;[core]&lt;/strong&gt;&lt;span&gt;[desc]&lt;/span&gt;&lt;/div&gt;
+  &lt;div class="relation-node"&gt;&lt;strong&gt;[concept]&lt;/strong&gt;&lt;span&gt;[desc]&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+        </article>
+      </div>
+    </section>
+    <section class="reference-section" aria-labelledby="g-case">
+      <h2 id="g-case">B · Case narrative components</h2>
+      <p class="section-intro">Goes in case-section, following one thread.</p>
+      <div class="reference-grid">
+        <article class="reference-item">
+          <h3>scene · Case scene</h3>
+          <p>Each scene matches a map-node anchor. scene-body can contain h3, paragraphs, structured components and takeaway.</p>
+<pre>&lt;article class="scene" id="scene-1"&gt;
+  &lt;div class="scene-number"&gt;01&lt;/div&gt;
+  &lt;div class="scene-body"&gt;
+    &lt;h3&gt;[title]&lt;/h3&gt;&lt;p&gt;[narrative]&lt;/p&gt;
+    &lt;p class="takeaway"&gt;[conclusion]&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>takeaway · Conclusion</h3>
+<pre>&lt;p class="takeaway"&gt;[one-line conclusion]&lt;/p&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>quick-check · Inline check</h3>
+          <p>Default collapsed. Not counted in formal question bank.</p>
+<pre>&lt;details class="quick-check"&gt;
+  &lt;summary&gt;Check: [question]&lt;/summary&gt;
+  &lt;p&gt;[answer and reason]&lt;/p&gt;
+&lt;/details&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>worked-example · Step-by-step</h3>
+          <p>Capability and certification. Numbered problem-solving steps.</p>
+<pre>&lt;div class="worked-example" data-component="worked-example"&gt;
+  &lt;div class="worked-step"&gt;&lt;div class="worked-num"&gt;1&lt;/div&gt;
+    &lt;div class="worked-step-body"&gt;&lt;p&gt;[step]&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+        </article>
+      </div>
+    </section>
+    <section class="reference-section" aria-labelledby="g-struct">
+      <h2 id="g-struct">C · Structured explanation</h2>
+      <p class="section-intro">Goes in scene-body. One primary visual per section.</p>
+      <div class="reference-grid">
+        <article class="reference-item">
+          <h3>boundary-list · Boundary comparison</h3>
+<pre>&lt;dl class="boundary-list"&gt;
+  &lt;div class="boundary-row"&gt;&lt;dt&gt;[A]&lt;/dt&gt;&lt;dd&gt;[boundary]&lt;/dd&gt;&lt;/div&gt;
+&lt;/dl&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>value-chain · Sequential chain</h3>
+<pre>&lt;ol class="value-chain" aria-label="[topic]"&gt;
+  &lt;li&gt;&lt;strong&gt;[step]&lt;/strong&gt;&lt;span&gt;[desc]&lt;/span&gt;&lt;/li&gt;
+&lt;/ol&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>decision-path · Decision tree</h3>
+<pre>&lt;div class="decision-path" aria-label="[topic]"&gt;
+  &lt;div class="decision-node"&gt;[condition]&lt;/div&gt;
+  &lt;div class="decision-arrow" aria-hidden="true"&gt;&amp;rarr;&lt;/div&gt;
+  &lt;div class="decision-node decision-node--answer"&gt;[action]&lt;/div&gt;
+&lt;/div&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>method-matrix · Comparison grid</h3>
+<pre>&lt;div class="method-matrix" aria-label="[topic]"&gt;
+  &lt;div class="method"&gt;&lt;strong&gt;[role]&lt;/strong&gt;&lt;p&gt;[duty]&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>system-list · System decomposition</h3>
+<pre>&lt;div class="system-list"&gt;
+  &lt;div class="system-item"&gt;&lt;strong&gt;[part]&lt;/strong&gt;&lt;span&gt;[desc]&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>term-table · Term comparison</h3>
+<pre>&lt;table class="term-table"&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Term&lt;/th&gt;&lt;th&gt;[dim]&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;strong&gt;[term]&lt;/strong&gt;&lt;/td&gt;&lt;td&gt;[meaning]&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;</pre>
+        </article>
+      </div>
+    </section>
+    <section class="reference-section" aria-labelledby="g-lang">
+      <h2 id="g-lang">D · Language pipeline components</h2>
+      <p class="section-intro">Language pipeline only. Goes in case-section.</p>
+      <div class="reference-grid">
+        <article class="reference-item">
+          <h3>dialogue · Conversation exchange</h3>
+<pre>&lt;div class="dialogue" data-component="dialogue"&gt;
+  &lt;div class="dialogue-turn dialogue-turn--speaker"&gt;
+    &lt;strong&gt;[Speaker]&lt;/strong&gt;&lt;p&gt;[line]&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="dialogue-turn dialogue-turn--learner dialogue-turn--correct"&gt;
+    &lt;strong&gt;You&lt;/strong&gt;&lt;p&gt;[learner line]&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>production-task · Active output</h3>
+<pre>&lt;details class="production-task" data-component="production-task"&gt;
+  &lt;summary&gt;[task prompt]&lt;/summary&gt;
+  &lt;div class="production-task-body"&gt;
+    &lt;p class="production-prompt"&gt;[instruction]&lt;/p&gt;
+    &lt;textarea&gt;&lt;/textarea&gt;
+  &lt;/div&gt;
+&lt;/details&gt;</pre>
+        </article>
+      </div>
+    </section>
+    <section class="reference-section" aria-labelledby="g-audit">
+      <h2 id="g-audit">E · Audit and tables</h2>
+      <p class="section-intro">Coverage and sources go in collapsed audit-cards.</p>
+      <div class="reference-grid">
+        <article class="reference-item">
+          <h3>audit-section · Source audit</h3>
+<pre>&lt;section class="audit-section" aria-labelledby="[id]"&gt;
+  &lt;h2 id="[id]"&gt;Source audit&lt;/h2&gt;
+  &lt;div class="audit-grid"&gt;
+    &lt;details class="audit-card"&gt;&lt;summary&gt;Coverage&lt;/summary&gt;
+      &lt;div class="audit-content"&gt;[table or list]&lt;/div&gt;&lt;/details&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>coverage-table · Coverage mapping</h3>
+          <p>In audit-content. Maps lesson content to outline items or source references.</p>
+<pre>&lt;table class="coverage-table"&gt;
+  &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Content&lt;/th&gt;&lt;th&gt;[ID]&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+  &lt;tbody&gt;&lt;tr&gt;&lt;td&gt;[point]&lt;/td&gt;&lt;td&gt;[ref]&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
+&lt;/table&gt;</pre>
+        </article>
+      </div>
+    </section>
+    <section class="reference-section" aria-labelledby="g-quiz">
+      <h2 id="g-quiz">F · Questions and reference</h2>
+      <p class="section-intro">Formal questions use JSON in a script tag; reference uses reference-grid.</p>
+      <div class="reference-grid">
+        <article class="reference-item">
+          <h3>quiz-section · Question area</h3>
+          <p>Questions are declared as strict JSON. JS renders them. Two types: single_choice and flashcard.</p>
+<pre>&lt;section class="quiz-section" id="practice"&gt;
+  &lt;div class="quiz-toolbar"&gt;
+    &lt;span id="scoreText"&gt;Answered 0 / 0&lt;/span&gt;
+    &lt;button class="reset-button" id="resetQuiz" type="button"&gt;Reset&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div id="quiz"&gt;&lt;/div&gt;
+&lt;/section&gt;
+&lt;script id="lesson-questions" type="application/json"&gt;
+[
+  {"id":"LESSON-0001-Q001","type":"single_choice",
+   "stem":"[stem]","options":["A","B","C","D"],
+   "answer":0,"rationale":"[why]"},
+  {"id":"LESSON-0001-F001","type":"flashcard",
+   "stem":"[prompt]","answer_text":"[answer]"}
+]
+&lt;/script&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>reference-grid · Reference cards</h3>
+<pre>&lt;div class="reference-grid"&gt;
+  &lt;article class="reference-item"&gt;&lt;h3&gt;[point]&lt;/h3&gt;&lt;p&gt;[content]&lt;/p&gt;&lt;/article&gt;
+&lt;/div&gt;</pre>
+        </article>
+      </div>
+    </section>
+    <footer class="lesson-footer">
+      <p>Rules: UI-CONTRACT.md · CSS: outputs/assets/lesson.css · Templates: outputs/templates/*.html · This page contains no private content.</p>
+    </footer>
+  </main>
+  <script src="../assets/lesson.js"></script>
+</body>
+</html>
