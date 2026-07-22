@@ -1,6 +1,6 @@
 # Fyuu Tutor
 
-[English](README.md) · 当前版本：**v0.1.0 Preview**
+[English](README.md) · 当前版本：**v0.3.0 — Rich Learning Experiences**
 
 <p align="center">
   <img src="./assets/readme/hero-zh-cn.svg" width="100%" alt="Fyuu Tutor 把教材、题库或学习目标变成一个会根据学习表现持续调整的课程">
@@ -150,7 +150,7 @@ Fyuu Tutor 最初基于 Matt Pocock 的 [`teach`](https://github.com/mattpocock/
 
 ## 当前状态
 
-Fyuu Tutor 目前是 `v0.1.0` 公开预览版。
+Fyuu Tutor 目前是 `v0.3.0` 公开预览版。
 
 它已经在三个长期学习项目中使用，但还需要更多不同用户、不同教材和不同学习目标的验证。预览阶段如果修改项目格式或使用方式，会在更新记录中附上迁移说明。
 

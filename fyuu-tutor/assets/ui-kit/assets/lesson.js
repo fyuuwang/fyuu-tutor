@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  // --- Question loading: v2 JSON first, v1 JS fallback during migration ---
+  // --- Question loading: strict JSON only ---
   function loadQuestions() {
     var jsonTag = document.getElementById("lesson-questions");
     if (jsonTag && jsonTag.type === "application/json") {
@@ -16,7 +16,7 @@
         console.error("Invalid lesson-questions JSON", e);
       }
     }
-    return Array.isArray(window.LESSON_QUESTIONS) ? window.LESSON_QUESTIONS : [];
+    return [];
   }
 
   var questions = loadQuestions();
@@ -29,9 +29,9 @@
   var quizSection = document.querySelector(".quiz-section");
   var lang = document.documentElement.getAttribute("lang") || "en";
  var i18n = {
-   "zh-CN": { correct: "答对了。", wrong: "再看一眼。", answered: "已答", of: "/", correctLabel: "正确", questionLabel: "题目", flip: "点击翻转", resetLabel: "重新作答" },
-   "zh-HK": { correct: "答啱咗。", wrong: "再睇一次。", answered: "已答", of: "/", correctLabel: "啱", questionLabel: "題目", flip: "撳一下翻轉", resetLabel: "重做" },
-   en: { correct: "Correct.", wrong: "Take another look.", answered: "Answered", of: "/", correctLabel: "correct", questionLabel: "Question", flip: "Click to flip", resetLabel: "Reset" },
+   "zh-CN": { correct: "答对了。", wrong: "再看一眼。", answered: "已答", of: "/", correctLabel: "正确", questionLabel: "题目", flip: "点击翻转", resetLabel: "重新作答", listen: "播放" },
+   "zh-HK": { correct: "答啱咗。", wrong: "再睇一次。", answered: "已答", of: "/", correctLabel: "啱", questionLabel: "題目", flip: "撳一下翻轉", resetLabel: "重做", listen: "播放" },
+   en: { correct: "Correct.", wrong: "Take another look.", answered: "Answered", of: "/", correctLabel: "correct", questionLabel: "Question", flip: "Click to flip", resetLabel: "Reset", listen: "Listen" },
  };
   var t = i18n[lang] || i18n.en;
   var questionLabel = (quizSection && quizSection.getAttribute("data-question-label")) || t.questionLabel;
@@ -139,6 +139,8 @@
        audioBtn.className = "audio-trigger";
        audioBtn.type = "button";
        audioBtn.setAttribute("data-text", question.audio_text);
+       audioBtn.setAttribute("aria-label", t.listen + ": " + question.audio_text);
+       audioBtn.textContent = t.listen;
        stem.insertBefore(audioBtn, stem.firstChild);
      }
      article.appendChild(stem);
@@ -269,17 +271,25 @@ function initAudio() {
          var u = new SpeechSynthesisUtterance(text);
          u.lang = lang;
          u.rate = 0.85;
-         u.onerror = function () { fallbackAudio(text, config, btn); };
+         u.onerror = function () { tryRemoteOrFallback(text, config, btn); };
          window.speechSynthesis.speak(u);
          return;
        } catch (e) { /* fall through */ }
      }
+     tryRemoteOrFallback(text, config, btn);
+   });
+
+   document.querySelectorAll(".audio-trigger").forEach(function (btn) {
+     if (!btn.getAttribute("aria-label")) btn.setAttribute("aria-label", t.listen + ": " + (btn.getAttribute("data-text") || ""));
+   });
+
+   function tryRemoteOrFallback(text, config, btn) {
      if (allowRemote) {
        playRemoteTTS(config.tts_endpoint, text, function () { fallbackAudio(text, config, btn); });
        return;
      }
      fallbackAudio(text, config, btn);
-   });
+   }
 
    function fallbackAudio(text, config, btn) {
      if (config.fallback_url && /^https:\/\//.test(config.fallback_url)) {
@@ -287,7 +297,14 @@ function initAudio() {
        return;
      }
      var hint = btn.querySelector(".audio-hint");
-     if (hint) { hint.textContent = text; hint.style.display = "block"; }
+     if (!hint) {
+       hint = document.createElement("span");
+       hint.className = "audio-hint";
+       hint.setAttribute("aria-live", "polite");
+       btn.insertAdjacentElement("afterend", hint);
+     }
+     hint.textContent = text;
+     hint.removeAttribute("hidden");
    }
  }
  

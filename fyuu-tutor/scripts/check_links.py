@@ -46,6 +46,8 @@ def main():
     checked = 0
 
     for source in sorted(root.rglob("*")):
+        if "history" in source.relative_to(root).parts:
+            continue
         if not source.is_file() or source.suffix.lower() not in {".md", ".html"}:
             continue
         text = source.read_text(encoding="utf-8")

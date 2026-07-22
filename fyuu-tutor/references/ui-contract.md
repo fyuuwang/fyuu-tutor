@@ -5,7 +5,7 @@ This contract defines how learning pages look and behave. Every agent producing 
 ## Before you produce a page
 
 1. Read this contract.
-2. Run `sync_ui_kit.py --project <project> --check` to confirm the kit is installed and intact.
+2. Run `sync_ui_kit.py --project <project> --check` to confirm the kit, including this contract, is installed and intact.
 3. Choose a format (lesson, practice, or reference) from the templates.
 4. Choose a theme. If the learner has not recorded a preference, ask once and record it.
 5. Copy the corresponding template from `outputs/templates/`.
@@ -13,7 +13,7 @@ This contract defines how learning pages look and behave. Every agent producing 
 
 ## After you produce a page
 
-1. Run `validate_lesson_ui.py --file <page>`.
+1. Run the Skill's `validate_lesson_ui.py --file <page>` command.
 2. Fix every error before committing.
 3. Do not modify shared CSS, JS, or component internals.
 

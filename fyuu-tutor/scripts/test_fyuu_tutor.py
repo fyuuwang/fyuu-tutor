@@ -59,6 +59,25 @@ class FyuuTutorChecks(unittest.TestCase):
     def test_pipeline_ids_share_one_dimension(self):
         self.assertEqual(PIPELINES, {"capability", "certification", "language"})
 
+    def test_ui_kit_is_complete(self):
+        result = subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "validate_lesson_ui.py"), "--kit"],
+            capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_link_check_ignores_archived_history(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            archived = root / "history" / "old.html"
+            archived.parent.mkdir()
+            archived.write_text('<link rel="stylesheet" href="missing.css">', encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(ROOT / "scripts" / "check_links.py"), "--root", str(root)],
+                capture_output=True, text=True,
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_create_validate_localize_and_claim_all_pipelines(self):
         scripts = ROOT / "scripts"
         with tempfile.TemporaryDirectory() as temp:
@@ -69,6 +88,7 @@ class FyuuTutorChecks(unittest.TestCase):
                     sys.executable, str(scripts / "create_project.py"),
                     "--root", str(projects), "--project-id", project.name,
                     "--display-name", pipeline.title(), "--pipeline", pipeline,
+                    "--ui-kit",
                 ]
                 if pipeline == "language":
                     command += ["--content-language", "zh-CN"]
@@ -94,6 +114,10 @@ pretest_questions = 0
 ''', encoding="utf-8")
                 subprocess.run(
                     [sys.executable, str(scripts / "validate_project.py"), "--project", str(project)],
+                    check=True, capture_output=True, text=True,
+                )
+                subprocess.run(
+                    [sys.executable, str(scripts / "sync_ui_kit.py"), "--project", str(project), "--check"],
                     check=True, capture_output=True, text=True,
                 )
                 subprocess.run(

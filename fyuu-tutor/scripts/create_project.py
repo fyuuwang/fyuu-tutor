@@ -42,7 +42,7 @@ def main():
     parser.add_argument("--pipeline", required=True, choices=PIPELINES)
     parser.add_argument("--content-language", default="en")
     parser.add_argument("--profile", default="../../profile/USER_PROFILE.md")
-    parser.add_argument("--ui-kit", action="store_true", help="install UI v2 kit (CSS, JS, templates, spec, validator)")
+    parser.add_argument("--ui-kit", action="store_true", help="install UI v2 kit (CSS, JS, templates, spec, gallery)")
     args = parser.parse_args()
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", args.project_id):
         raise SystemExit("--project-id must use lowercase letters, digits, and hyphens")
@@ -74,7 +74,6 @@ def main():
     if args.ui_kit:
         import sync_ui_kit
         sync_ui_kit.install(root)
-        shutil.copy2(Path(__file__).resolve().parent / "validate_lesson_ui.py", root / "tools" / "validate_lesson_ui.py")
     print(root)
 
 
