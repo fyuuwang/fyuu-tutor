@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="__LESSON_SUMMARY__">
+  <title>__LESSON_NUMBER__ · __LESSON_TITLE__</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body data-ui-version="2" data-pipeline="capability" data-format="lesson" data-theme="overview">
+  <a class="skip-link" href="#lesson-content">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
+  <main class="lesson-shell" id="lesson-content">
+    <nav class="lesson-steps" aria-label="Lesson stages">
+      <a href="#map" aria-current="step"><span class="step-number">01</span><span>__STAGE_MAP_LABEL__</span></a>
+      <a href="#case"><span class="step-number">02</span><span>__STAGE_CASE_LABEL__</span></a>
+      <a href="#practice"><span class="step-number">03</span><span>__STAGE_PRACTICE_LABEL__</span></a>
+    </nav>
+    <header class="lesson-header">
+      <p class="eyebrow">__PROJECT_NAME__ · __LESSON_NUMBER__</p>
+      <h1>__LESSON_TITLE__</h1>
+      <p class="lesson-deck">[One paragraph: the problem, the case thread, and the learning outcome.]</p>
+      <dl class="lesson-meta">
+        <div><dt>Estimated time</dt><dd>30-45 min</dd></div>
+        <div><dt>Position</dt><dd>__LESSON_POSITION__</dd></div>
+        <div><dt>Outcome</dt><dd>__LEARNING_OUTCOME__</dd></div>
+      </dl>
+    </header>
+    <section class="map-section" id="map" data-stage="map" aria-labelledby="map-title">
+      <p class="eyebrow">__STAGE_MAP_LABEL__</p>
+      <h2 id="map-title">__MAP_TITLE__</h2>
+      <p class="section-intro">[Where this concept sits in the larger system.]</p>
+      <div class="learning-map" aria-label="[Map topic]">
+        <div class="map-hub"><strong>[Central concept]</strong><span>[One-line position]</span></div>
+        <a class="map-node map-node--why" href="#scene-1"><strong>[Question 1]</strong><span>[Hint]</span></a>
+        <a class="map-node map-node--govern" href="#scene-2"><strong>[Question 2]</strong><span>[Hint]</span></a>
+        <a class="map-node map-node--build" href="#scene-3"><strong>[Question 3]</strong><span>[Hint]</span></a>
+        <a class="map-node map-node--owner" href="#scene-4"><strong>[Question 4]</strong><span>[Hint]</span></a>
+        <a class="map-node map-node--environment" href="#scene-5"><strong>[Question 5]</strong><span>[Hint]</span></a>
+      </div>
+    </section>
+    <section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
+      <p class="eyebrow">__STAGE_CASE_LABEL__</p>
+      <h2 id="case-title">__CASE_TITLE__</h2>
+      <p class="section-intro">[Case background]</p>
+      <article class="scene" id="scene-1">
+        <div class="scene-number">01</div>
+        <div class="scene-body"><h3>[Scene title]</h3><p>[Scene content]</p><p class="takeaway">[Conclusion]</p></div>
+      </article>
+      <article class="scene" id="scene-2"><div class="scene-number">02</div><div class="scene-body"><h3>[Scene title]</h3><p>[Scene content]</p></div></article>
+      <article class="scene" id="scene-3"><div class="scene-number">03</div><div class="scene-body"><h3>[Scene title]</h3><p>[Scene content]</p></div></article>
+      <article class="scene" id="scene-4"><div class="scene-number">04</div><div class="scene-body"><h3>[Scene title]</h3><p>[Scene content]</p></div></article>
+      <article class="scene" id="scene-5"><div class="scene-number">05</div><div class="scene-body"><h3>[Scene title]</h3><p>[Scene content]</p></div></article>
+    </section>
+    <section class="audit-section" data-stage="case" aria-labelledby="audit-title">
+      <p class="eyebrow">Sources</p><h2 id="audit-title">Source audit</h2>
+      <div class="audit-grid">
+        <details class="audit-card"><summary>Coverage</summary><div class="audit-content"><p>[Coverage table or mapping]</p></div></details>
+        <details class="audit-card"><summary>Local sources</summary><div class="audit-content"><p>[Sources]</p></div></details>
+      </div>
+    </section>
+    <section class="quiz-section" id="practice" data-stage="practice" aria-labelledby="practice-title">
+      <p class="eyebrow">__STAGE_PRACTICE_LABEL__</p><h2 id="practice-title">__QUIZ_TITLE__</h2>
+      <p class="section-intro">__QUIZ_INSTRUCTIONS__</p>
+      <div class="quiz-toolbar"><span id="scoreText">Answered 0 / 0 · correct 0</span><button class="reset-button" id="resetQuiz" type="button">Reset</button></div>
+      <div id="quiz"></div>
+    </section>
+    <footer class="lesson-footer"><p>__NEXT_STEP__</p></footer>
+  </main>
+  <script id="lesson-questions" type="application/json">
+  []
+  </script>
+  <script src="../assets/lesson.js"></script>
+</body>
+</html>

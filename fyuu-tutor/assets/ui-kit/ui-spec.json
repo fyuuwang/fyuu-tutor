@@ -1,0 +1,351 @@
+{
+  "ui_version": "2",
+  "description": "Fyuu Tutor UI v2 machine rules. validate_lesson_ui.py reads this for --kit, --file, and --project checks.",
+  "body_attributes": {
+    "required": [
+      "data-ui-version",
+      "data-format",
+      "data-theme"
+    ],
+    "optional": [
+      "data-pipeline",
+      "data-stage",
+      "data-component"
+    ]
+  },
+  "pipelines": {
+    "capability": "Concept and skill learning",
+    "certification": "Exam preparation with outline mapping",
+    "language": "Language learning with dialogue and production"
+  },
+  "formats": {
+    "lesson": {
+      "desc": "Teaching and mixed courses; three-stage nav, map, case, audit, quiz",
+      "stages": [
+        "map",
+        "case",
+        "practice"
+      ],
+      "stage_labels": {
+        "map": "Map",
+        "case": "Case",
+        "practice": "Practice"
+      },
+      "required_classes": [
+        "lesson-shell",
+        "lesson-header",
+        "lesson-steps",
+        "map-section",
+        "case-section",
+        "audit-section",
+        "quiz-section",
+        "quiz-toolbar"
+      ],
+      "stage_sections": {
+        "map": [
+          "map-section"
+        ],
+        "case": [
+          "case-section",
+          "audit-section"
+        ],
+        "practice": [
+          "quiz-section"
+        ]
+      }
+    },
+    "practice": {
+      "desc": "Drills, flashcards, mock exams; morandi background, white cards",
+      "stages": [],
+      "required_classes": [
+        "lesson-shell",
+        "lesson-header",
+        "quiz-section",
+        "quiz-toolbar"
+      ]
+    },
+    "reference": {
+      "desc": "Formula maps, knowledge maps, cheatsheets; compact, scannable",
+      "stages": [],
+      "required_classes": [
+        "lesson-shell",
+        "lesson-header",
+        "reference-section",
+        "lesson-footer"
+      ]
+    }
+  },
+  "themes": {
+    "overview": "Cross-domain integration, maps",
+    "people": "Team, communication, stakeholders",
+    "process": "Delivery, methods, controls",
+    "business": "Value, governance, business environment",
+    "review": "Review, mistakes, mock exams",
+    "recommendations": {
+      "capability": {
+        "default": "overview",
+        "alternatives": [
+          "process",
+          "business"
+        ]
+      },
+      "certification": {
+        "default": "overview",
+        "alternatives": [
+          "people",
+          "process",
+          "business",
+          "review"
+        ]
+      },
+      "language": {
+        "default": "people",
+        "alternatives": [
+          "overview",
+          "business"
+        ]
+      }
+    }
+  },
+  "question_types": {
+    "single_choice": {
+      "required_fields": [
+        "id",
+        "type",
+        "stem",
+        "options",
+        "answer",
+        "rationale"
+      ],
+      "rules": {
+        "min_options": 2,
+        "max_options": 6
+      }
+    },
+    "flashcard": {
+      "required_fields": [
+        "id",
+        "type",
+        "stem",
+        "answer_text"
+      ],
+      "optional_fields": [
+        "rationale"
+      ],
+      "rules": {}
+    }
+  },
+  "components": {
+    "learning-map": {
+      "aka": "exam-map",
+      "sections": [
+        "map-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "scene": {
+      "sections": [
+        "case-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "takeaway": {
+      "sections": [
+        "case-section",
+        "reference-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "quick-check": {
+      "sections": [
+        "case-section",
+        "reference-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "boundary-list": {
+      "sections": [
+        "case-section",
+        "reference-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "value-chain": {
+      "sections": [
+        "case-section",
+        "reference-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "decision-path": {
+      "sections": [
+        "case-section",
+        "reference-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "method-matrix": {
+      "sections": [
+        "case-section",
+        "reference-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "system-list": {
+      "sections": [
+        "case-section",
+        "reference-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "term-table": {
+      "sections": [
+        "case-section",
+        "reference-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "coverage-table": {
+      "aka": "eco-table",
+      "sections": [
+        "audit-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "audit-section": {
+      "sections": [
+        "root"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "worked-example": {
+      "sections": [
+        "case-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification"
+      ]
+    },
+    "relation-net": {
+      "sections": [
+        "map-section",
+        "case-section",
+        "reference-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification"
+      ]
+    },
+    "dialogue": {
+      "sections": [
+        "case-section"
+      ],
+      "pipelines": [
+        "language"
+      ]
+    },
+    "production-task": {
+      "sections": [
+        "case-section"
+      ],
+      "pipelines": [
+        "language"
+      ]
+    },
+    "flashcard": {
+      "sections": [
+        "case-section"
+      ],
+      "pipelines": [
+        "language"
+      ]
+    },
+    "quiz-section": {
+      "sections": [
+        "root"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "reference-grid": {
+      "sections": [
+        "reference-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    }
+  },
+  "assets": {
+    "css_entry": "../assets/lesson.css",
+    "js_entry": "../assets/lesson.js",
+    "css_dir": "outputs/assets/",
+    "css_splits": [
+      "tokens.css",
+      "foundation.css",
+      "components.css"
+    ]
+  },
+  "templates": {
+    "lesson": "outputs/templates/lesson.html",
+    "practice": "outputs/templates/practice.html",
+    "reference": "outputs/templates/reference.html"
+  },
+  "component_catalog": "outputs/templates/components.html",
+  "gallery": "outputs/ui/gallery.html"
+}

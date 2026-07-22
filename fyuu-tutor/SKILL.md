@@ -24,7 +24,8 @@ If the success evidence is ambiguous, ask one question that would change the rou
 3. Read [core.md](references/core.md) and [project-schema.md](references/project-schema.md).
 4. Read the selected pipeline above. When materials must be acquired or converted, also read [material-pipeline.md](references/material-pipeline.md).
 5. Read [teaching-loop.md](references/teaching-loop.md) before planning a lesson, evaluating an attempt, or choosing the next step.
-6. Read the declared private profile, then `MISSION.md`, `NOTES.md`, `CURRICULUM.md` when present, and `STATUS.md`.
+6. Before producing any lesson HTML, read [ui-contract.md](references/ui-contract.md) and confirm the UI kit is installed.
+7. Read the declared private profile, then `MISSION.md`, `NOTES.md`, `CURRICULUM.md` when present, and `STATUS.md`.
 
 ## Operate
 
@@ -50,5 +51,6 @@ Pipeline defaults yield to the private learner profile and project rules for tea
 - Output checks: `scripts/check_links.py`, `build_index.py`, `audit_privacy.py`.
 - Material processing: `scripts/pdf/`.
 - Optional pipeline implementations: `scripts/pipelines/`.
+- UI kit: `scripts/sync_ui_kit.py` (install/check/upgrade) and `scripts/validate_lesson_ui.py` (--file/--project/--kit/--self-test).
 
 Do not install dependencies, publish content, expose private sources, or resolve another agent's claim without explicit user authority.

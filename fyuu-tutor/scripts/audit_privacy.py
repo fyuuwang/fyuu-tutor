@@ -7,6 +7,7 @@ import re
 
 BLOCKED_SUFFIXES = {".pdf", ".png", ".jpg", ".jpeg", ".zip", ".docx", ".xlsx", ".pptx", ".html"}
 BLOCKED_PARTS = {"sources", "outputs", "lessons", "records", "history", "archive"}
+WHITELIST_PREFIXES = ("assets/ui-kit",)
 ABSOLUTE_PATHS = (
     re.compile("/" + "Users/" + r"[^/\s]+/"),
     re.compile(r"[A-Za-z]:\\" + "Users" + r"\\"),
@@ -32,6 +33,8 @@ def main():
             continue
         if BLOCKED_PARTS.intersection(relative.parts):
             errors.append(f"private project directory: {relative}")
+            continue
+        if str(relative).startswith(WHITELIST_PREFIXES):
             continue
         if path.suffix.lower() in BLOCKED_SUFFIXES:
             errors.append(f"blocked file type: {relative}")
