@@ -9,9 +9,9 @@
         var parsed = JSON.parse(jsonTag.textContent);
         return parsed.map(function (q) {
           return q.type === "flashcard"
-            ? { _flash: true, id: q.id, stem: q.stem, answer_text: q.answer_text, rationale: q.rationale || "" }
-            : { id: q.id, stem: q.stem, opts: q.options, answer: q.answer, why: q.rationale };
-        });
+           ? { _flash: true, id: q.id, stem: q.stem, answer_text: q.answer_text, rationale: q.rationale || "" }
+           : { id: q.id, stem: q.stem, opts: q.options, answer: q.answer, why: q.rationale, audio_text: q.audio_text || "" };
+         });
       } catch (e) {
         console.error("Invalid lesson-questions JSON", e);
       }
@@ -131,10 +131,17 @@
       meta.textContent = questionLabel + " " + (questionIndex + 1);
       article.appendChild(meta);
 
-      var stem = document.createElement("p");
-      stem.className = "question-stem";
-      stem.textContent = question.stem;
-      article.appendChild(stem);
+     var stem = document.createElement("p");
+     stem.className = "question-stem";
+     stem.textContent = question.stem;
+     if (question.audio_text) {
+       var audioBtn = document.createElement("button");
+       audioBtn.className = "audio-trigger";
+       audioBtn.type = "button";
+       audioBtn.setAttribute("data-text", question.audio_text);
+       stem.insertBefore(audioBtn, stem.firstChild);
+     }
+     article.appendChild(stem);
 
       var optionList = document.createElement("ol");
       optionList.className = "question-options";
@@ -240,46 +247,67 @@
   }
 
 
-  // --- Audio adapter: speechSynthesis -> remote TTS (if permitted) -> dictionary link ---
-  function loadAudioConfig() {
-    var tag = document.getElementById("audio-config");
-    if (!tag || tag.type !== "application/json") return {};
-    try { return JSON.parse(tag.textContent); } catch (e) { return {}; }
-  }
+ // --- Audio adapter: speechSynthesis -> remote TTS (if permitted) -> dictionary link ---
+ function loadAudioConfig() {
+   var tag = document.getElementById("audio-config");
+   if (!tag || tag.type !== "application/json") return {};
+   try { return JSON.parse(tag.textContent); } catch (e) { return {}; }
+ }
 
-  function initAudio() {
-    var buttons = document.querySelectorAll(".audio-trigger");
-    if (!buttons.length) return;
-    var config = loadAudioConfig();
-    var allowRemote = config.allow_remote_tts === true && typeof config.tts_endpoint === "string" && /^https:\/\//.test(config.tts_endpoint);
+function initAudio() {
+  var config = loadAudioConfig();
+   var allowRemote = config.allow_remote_tts === true && typeof config.tts_endpoint === "string" && /^https:\/\//.test(config.tts_endpoint);
 
-    buttons.forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var text = btn.getAttribute("data-text") || "";
-        var lang = config.lang || btn.getAttribute("data-lang") || "en";
-        if (typeof window.speechSynthesis !== "undefined" && window.speechSynthesis) {
-          try {
-            window.speechSynthesis.cancel();
-            var u = new SpeechSynthesisUtterance(text);
-            u.lang = lang;
-            u.onerror = function () { fallbackAudio(text, config, btn); };
-            window.speechSynthesis.speak(u);
-            return;
-          } catch (e) { /* fall through */ }
-        }
-        fallbackAudio(text, config, btn);
-      });
-    });
+   document.addEventListener("click", function (e) {
+     var btn = e.target.closest ? e.target.closest(".audio-trigger") : null;
+     if (!btn) return;
+     var text = btn.getAttribute("data-text") || "";
+     var lang = config.lang || btn.getAttribute("data-lang") || "en";
+     if (typeof window.speechSynthesis !== "undefined" && window.speechSynthesis && hasVoiceForLang(lang)) {
+       try {
+         window.speechSynthesis.cancel();
+         var u = new SpeechSynthesisUtterance(text);
+         u.lang = lang;
+         u.rate = 0.85;
+         u.onerror = function () { fallbackAudio(text, config, btn); };
+         window.speechSynthesis.speak(u);
+         return;
+       } catch (e) { /* fall through */ }
+     }
+     if (allowRemote) {
+       playRemoteTTS(config.tts_endpoint, text, function () { fallbackAudio(text, config, btn); });
+       return;
+     }
+     fallbackAudio(text, config, btn);
+   });
 
-    function fallbackAudio(text, config, btn) {
-      if (config.fallback_url && /^https:\/\//.test(config.fallback_url)) {
-        window.open(config.fallback_url + encodeURIComponent(text), "_blank", "noopener");
-        return;
-      }
-      var hint = btn.querySelector(".audio-hint");
-      if (hint) { hint.textContent = text; hint.style.display = "block"; }
-    }
-  }
+   function fallbackAudio(text, config, btn) {
+     if (config.fallback_url && /^https:\/\//.test(config.fallback_url)) {
+       window.open(config.fallback_url + encodeURIComponent(text), "_blank", "noopener");
+       return;
+     }
+     var hint = btn.querySelector(".audio-hint");
+     if (hint) { hint.textContent = text; hint.style.display = "block"; }
+   }
+ }
+ 
+ function hasVoiceForLang(lang) {
+   if (typeof window.speechSynthesis === "undefined" || !window.speechSynthesis) return false;
+   var voices = window.speechSynthesis.getVoices();
+   if (!voices.length) return true;
+   return voices.some(function (v) {
+     return v.lang && v.lang.toLowerCase().indexOf(lang.toLowerCase()) === 0;
+   });
+ }
+ 
+ var remoteAudioEl = null;
+ function playRemoteTTS(endpoint, text, onFail) {
+   if (remoteAudioEl) { remoteAudioEl.pause(); remoteAudioEl.removeAttribute("src"); remoteAudioEl.load(); }
+   remoteAudioEl = new Audio();
+   remoteAudioEl.src = endpoint + encodeURIComponent(text);
+   remoteAudioEl.onerror = onFail;
+   remoteAudioEl.play().catch(onFail);
+ }
 
   window.addEventListener("scroll", updateProgress, { passive: true });
   window.addEventListener("resize", updateProgress);
