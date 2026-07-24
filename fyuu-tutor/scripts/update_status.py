@@ -6,12 +6,17 @@ import datetime
 from pathlib import Path
 import re
 
+import sys as _sys
+_sys.dont_write_bytecode = True
+_sys.path.insert(0, str(Path(__file__).resolve().parent))
+from project_config import status_value
+
 
 def value(text, field):
-    match = re.search(rf"^\|\s*{re.escape(field)}\s*\|\s*(.*?)\s*\|\s*$", text, re.MULTILINE)
-    if not match:
+    result = status_value(text, field)
+    if result is None:
         raise SystemExit(f"STATUS.md missing field: {field}")
-    return match.group(1)
+    return result
 
 
 def replace(text, field, new_value):

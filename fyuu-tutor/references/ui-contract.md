@@ -23,9 +23,11 @@ This contract defines how learning pages look and behave. Every agent producing 
 |---|---|---|
 | `lesson` | Teaching a concept through a case | Map -> Case -> Audit -> Practice |
 | `practice` | Drills, flashcards, mock exams | Header -> Quiz |
-| `reference` | Formula maps, cheatsheets, knowledge maps | Header -> Reference grid |
+| `reference` | Formula maps, cheatsheets, knowledge maps | Optional section index -> Header -> Chapter sections (chapter-header + reference-grid + takeaway) -> Footer |
 
 A mixed lesson uses the `lesson` format. Only the quiz area switches to practice visuals automatically.
+
+Short reference pages omit `section-index`. Pages with three or more chapters may group them into two or three balanced tabs. Each tab link uses a simple local target such as `#process`; that target must appear once as an element `id` and must match the `data-stage` of every chapter in the tab. Every tab needs at least one chapter, and no tab may contain more than three times another tab's reference items.
 
 ## Themes
 
@@ -45,7 +47,7 @@ Default recommendations by pipeline:
 - `certification`: `overview` (alternatives: `people`, `process`, `business`, `review`)
 - `language`: `people` (alternatives: `overview`, `business`)
 
-A `reference` page may use section-level `data-theme` to let color carry information hierarchy.
+A `reference` page may use section-level `data-theme` to let color carry information hierarchy. In multi-section reference pages, each section's `data-theme` should reflect the content domain (e.g. `people` for team/communication, `process` for delivery/controls, `business` for value/governance), not default to `overview`.
 
 ## Body attributes
 
@@ -117,6 +119,40 @@ Audio buttons use the shared adapter. Place an optional config block once per pa
 
 The adapter tries `speechSynthesis`, then remote TTS (only if `allow_remote_tts` is true and HTTPS), then opens the fallback URL. Config must be pure JSON, HTTPS only, no keys or tokens. `single_choice` questions may carry an optional `audio_text` field for listening exercises.
 
+
+## Composition guidance
+
+Different agents and models will produce pages for the same project. To keep information density and page rhythm consistent across agents, follow the `composition_patterns` in `ui-spec.json`. These are recommendations, not hard validation limits, but they define what "a normal lesson of this type looks like."
+
+### Quality self-check (before committing)
+
+Run through this list after the validator passes. Every item should be true.
+
+**Structure**
+
+- The map has the recommended number of nodes for this pipeline (see `composition_patterns`).
+- Every map node links to a real scene with matching `id`.
+- Each scene ends with a `takeaway` or `quick-check`, not just narrative.
+- The audit section has a coverage-table (certification) or source list (capability/language).
+- The practice stage has the recommended item count and type for this pipeline.
+- If the page is reference format, chapter headers use `chapter-header`, not `scene`.
+- Each chapter section ends with a takeaway.
+- Section-level `data-theme` matches content domain (`people`/`process`/`business`), not all `overview`.
+
+**Content**
+
+- One case thread runs through all scenes. If the case changes mid-lesson, the narrative is broken.
+- Every exam-related claim or judgment rule is traceable to a source in the audit section.
+- Question rationales explain *why* the answer is correct, not just restate it.
+- Production tasks require active output before revealing the model answer. Comprehension-only is not production.
+- No placeholder text remains (`__LESSON_TITLE__`, `[Scene title]`, etc.).
+
+**Consistency between agents**
+
+- A second agent reading only this contract, `ui-spec.json`, and the template should be able to reproduce the same structure.
+- If your page is meaningfully thinner or denser than its pipeline's composition pattern, adjust before committing.
+- Theme choice reflects knowledge domain, not aesthetic preference. Do not swap themes just for color variety.
+
 ## What you must not do
 
 - No `<style>` tags or `style=""` attributes.
@@ -127,6 +163,8 @@ The adapter tries `speechSynthesis`, then remote TTS (only if `allow_remote_tts`
 - No modifying `outputs/assets/` or `outputs/templates/` directly.
 - No remote TTS without explicit `allow_remote_tts: true` and HTTPS.
 - No production task without a stable `data-item-id`.
+- No `scene` component in reference pages. Use `chapter-header` for section grouping.
+- No section with 5+ reference-items and zero structured components when the content involves comparisons, definitions, or processes.
 
 ## Adding a new component
 
@@ -140,9 +178,11 @@ A new component requires simultaneous updates to all five:
 
 No single-lesson custom components. Ever.
 
-## Safari note
+## Preview
 
-Safari does not reliably render `file://` pages with `@import` CSS. Use a local HTTP server for preview:
+`lesson.css` is a generated single-file bundle (no `@import`), so pages should render correctly when opened directly via `file://` in any browser. After changing `tokens.css`, `foundation.css`, or `components.css`, rebuild it with `python3 scripts/sync_ui_kit.py --build-css` and run the kit validator.
+
+If you need a local HTTP server (e.g. for testing audio or fetch):
 
 ```bash
 cd outputs && python3 -m http.server 8000

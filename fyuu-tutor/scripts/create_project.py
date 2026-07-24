@@ -7,7 +7,8 @@ from pathlib import Path
 import re
 import shutil
 
-PIPELINES = ("capability", "certification", "language")
+from project_config import PIPELINES
+import sync_ui_kit
 
 
 def toml_text(project_id, display_name, pipeline, content_language, profile):
@@ -39,10 +40,9 @@ def main():
     parser.add_argument("--root", required=True)
     parser.add_argument("--project-id", required=True)
     parser.add_argument("--display-name", required=True)
-    parser.add_argument("--pipeline", required=True, choices=PIPELINES)
+    parser.add_argument("--pipeline", required=True, choices=sorted(PIPELINES))
     parser.add_argument("--content-language", default="en")
     parser.add_argument("--profile", default="../../profile/USER_PROFILE.md")
-    parser.add_argument("--ui-kit", action="store_true", help="install UI v2 kit (CSS, JS, templates, spec, gallery)")
     args = parser.parse_args()
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", args.project_id):
         raise SystemExit("--project-id must use lowercase letters, digits, and hyphens")
@@ -71,9 +71,8 @@ def main():
     if not profile.exists():
         profile.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(templates / "USER_PROFILE.md", profile)
-    if args.ui_kit:
-        import sync_ui_kit
-        sync_ui_kit.install(root)
+    if sync_ui_kit.install(root):
+        raise SystemExit("failed to install required UI kit")
     print(root)
 
 

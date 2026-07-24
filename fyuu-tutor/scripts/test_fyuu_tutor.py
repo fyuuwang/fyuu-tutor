@@ -2,6 +2,7 @@
 """Small regression checks for Fyuu Tutor's shared guards and identity."""
 
 from pathlib import Path
+import re
 import subprocess
 import sys
 import tempfile
@@ -80,6 +81,10 @@ class FyuuTutorChecks(unittest.TestCase):
 
     def test_create_validate_localize_and_claim_all_pipelines(self):
         scripts = ROOT / "scripts"
+        kit_root = ROOT / "assets" / "ui-kit"
+        source_snapshot = {path: path.read_bytes() for path in kit_root.rglob("*") if path.is_file()}
+        themes = ("overview", "people", "process", "business", "review")
+        smoke_index = 0
         with tempfile.TemporaryDirectory() as temp:
             projects = Path(temp) / "workspace" / "projects"
             for pipeline in sorted(PIPELINES):
@@ -88,7 +93,6 @@ class FyuuTutorChecks(unittest.TestCase):
                     sys.executable, str(scripts / "create_project.py"),
                     "--root", str(projects), "--project-id", project.name,
                     "--display-name", pipeline.title(), "--pipeline", pipeline,
-                    "--ui-kit",
                 ]
                 if pipeline == "language":
                     command += ["--content-language", "zh-CN"]
@@ -120,6 +124,23 @@ pretest_questions = 0
                     [sys.executable, str(scripts / "sync_ui_kit.py"), "--project", str(project), "--check"],
                     check=True, capture_output=True, text=True,
                 )
+                for page_format in ("lesson", "practice", "reference"):
+                    template = (project / "outputs" / "templates" / f"{page_format}.html").read_text(encoding="utf-8")
+                    html = re.sub(r"__[A-Z][A-Z0-9_]+__", "Test", template)
+                    html = re.sub(r"\[[A-Za-z][^\]\n]* [^\]\n]*\]", "Test", html)
+                    html = re.sub(r'data-pipeline="[^"]+"', f'data-pipeline="{pipeline}"', html, count=1)
+                    html = re.sub(r'data-theme="[^"]+"', f'data-theme="{themes[smoke_index % len(themes)]}"', html, count=1)
+                    folder = "reference" if page_format == "reference" else "lessons"
+                    (project / "outputs" / folder / f"smoke-{page_format}.html").write_text(html, encoding="utf-8")
+                    smoke_index += 1
+                subprocess.run(
+                    [sys.executable, str(scripts / "validate_lesson_ui.py"), "--project", str(project)],
+                    check=True, capture_output=True, text=True,
+                )
+                subprocess.run(
+                    [sys.executable, str(scripts / "sync_ui_kit.py"), "--project", str(project), "--upgrade"],
+                    check=True, capture_output=True, text=True,
+                )
                 subprocess.run(
                     [sys.executable, str(scripts / "build_index.py"), "--project", str(project)],
                     check=True, capture_output=True, text=True,
@@ -129,6 +150,22 @@ pretest_questions = 0
                 self.assertIn(expected, html)
 
             project = projects / "capability-smoke"
+            css_path = project / "outputs" / "assets" / "lesson.css"
+            css = css_path.read_bytes()
+            css_path.write_bytes(css + b"\n/* tampered */\n")
+            result = subprocess.run(
+                [sys.executable, str(scripts / "sync_ui_kit.py"), "--project", str(project), "--check"],
+                capture_output=True, text=True,
+            )
+            self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+            css_path.write_bytes(css)
+            css_path.unlink()
+            result = subprocess.run(
+                [sys.executable, str(scripts / "sync_ui_kit.py"), "--project", str(project), "--check"],
+                capture_output=True, text=True,
+            )
+            self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+            css_path.write_bytes(css)
             subprocess.run(
                 [sys.executable, str(scripts / "update_status.py"), "--project", str(project),
                  "--action", "claim", "--owner", "test", "--task", "smoke"],
@@ -141,6 +178,7 @@ pretest_questions = 0
             )
             status = (project / "STATUS.md").read_text(encoding="utf-8")
             self.assertEqual("idle", __import__("validate_project").status_value(status, "State"))
+            self.assertEqual(source_snapshot, {path: path.read_bytes() for path in kit_root.rglob("*") if path.is_file()})
 
 
 if __name__ == "__main__":

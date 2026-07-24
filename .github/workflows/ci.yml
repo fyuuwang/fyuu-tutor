@@ -30,7 +30,7 @@ jobs:
       - name: Check release version
         shell: bash
         run: |
-          test "$(cat VERSION)" = "0.3.0"
+          test "$(cat VERSION)" = "0.4.0"
           if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
             test "v$(cat VERSION)" = "$GITHUB_REF_NAME"
           fi

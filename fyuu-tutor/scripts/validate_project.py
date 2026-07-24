@@ -9,7 +9,7 @@ import sys
 
 sys.dont_write_bytecode = True
 
-from project_config import REQUIRED_PATHS, load_project, resolve_child, resolve_path, validate_config
+from project_config import REQUIRED_PATHS, load_project, resolve_child, resolve_path, status_value, validate_config
 
 STATUS_FIELDS = ("State", "Owner", "Claimed at", "Production progress", "Learning progress", "Next action", "Blockers")
 STATUS_STATES = {"idle", "in_progress", "blocked"}
@@ -28,11 +28,6 @@ CERTIFICATION_FIELDS = {
     "exam_minutes": int,
     "pretest_questions": int,
 }
-
-
-def status_value(text, field):
-    match = re.search(rf"^\|\s*{re.escape(field)}\s*\|\s*(.*?)\s*\|\s*$", text, re.MULTILINE)
-    return match.group(1) if match else None
 
 
 def main():

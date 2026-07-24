@@ -74,10 +74,21 @@ class LessonParser(HTMLParser):
         self.production_task_ids: list[str] = []
         self.components: list[tuple[str, set[str]]] = []
         self.stages: list[str] = []
+        self.section_stages: list[str] = []
+        self.section_stage_ids: list[tuple[str, str]] = []
+        self._current_section_stage: str = ""
+        self.section_index_links: list[str] = []
+        self.stage_item_counts: dict[str, int] = {}
+        self.duplicate_attributes: list[str] = []
         self._element_stack: list[tuple[str, set[str]]] = []
         self._script_id: str = ""
 
     def handle_starttag(self, tag, attrs_list):
+        seen_attrs = set()
+        for name, _ in attrs_list:
+            if name in seen_attrs:
+                self.duplicate_attributes.append(f"{tag}[{name}]")
+            seen_attrs.add(name)
         attrs = {k: v or "" for k, v in attrs_list}
         own_classes = set(attrs.get("class", "").split())
         if tag == "body":
@@ -107,6 +118,16 @@ class LessonParser(HTMLParser):
             self.components.append((attrs["data-component"], parent_classes | own_classes))
         if attrs.get("data-stage"):
             self.stages.append(attrs["data-stage"])
+        if own_classes and "section-index-link" in own_classes:
+            self.section_index_links.append(attrs.get("href", ""))
+        if tag == "section" and attrs.get("data-stage"):
+            self._current_section_stage = attrs["data-stage"]
+            self.section_stages.append(self._current_section_stage)
+            self.section_stage_ids.append((self._current_section_stage, attrs.get("id", "")))
+            if self._current_section_stage not in self.stage_item_counts:
+                self.stage_item_counts[self._current_section_stage] = 0
+        if own_classes and "reference-item" in own_classes and self._current_section_stage:
+            self.stage_item_counts[self._current_section_stage] = self.stage_item_counts.get(self._current_section_stage, 0) + 1
         if tag == "link" and attrs.get("rel") == "stylesheet":
             self.stylesheets.append(attrs.get("href", ""))
         if tag == "script":
@@ -133,6 +154,8 @@ class LessonParser(HTMLParser):
             self._element_stack.append((tag, own_classes))
 
     def handle_endtag(self, tag):
+        if tag == "section":
+            self._current_section_stage = ""
         if tag == "script" and self._script_parts is not None:
             content = "".join(self._script_parts)
             if self._script_type == "json":
@@ -154,19 +177,7 @@ class LessonParser(HTMLParser):
 
 
 def allowed_classes(css_path: Path) -> set[str]:
-    classes: set[str] = set()
-    seen: set[Path] = set()
-    queue = [css_path.resolve()]
-    while queue:
-        current = queue.pop(0)
-        if current in seen or not current.is_file():
-            continue
-        seen.add(current)
-        text = current.read_text(encoding="utf-8")
-        classes.update(CLASS_RE.findall(text))
-        for match in re.finditer(r'@import\s+url\(["\']?([^"\')]+)["\']?\)', text):
-            queue.append((current.parent / match.group(1)).resolve())
-    return classes
+    return set(CLASS_RE.findall(css_path.read_text(encoding="utf-8")))
 
 
 def validate_questions_v2(json_text: str, qtypes: dict) -> list[str]:
@@ -282,14 +293,62 @@ def validate_file(page: Path, spec: dict) -> list[str]:
         errors.append(f"Unknown data-format: {page_format or 'missing'}")
     if theme not in valid_themes:
         errors.append(f"Unknown data-theme: {theme or 'missing'}")
-    if pipeline and pipeline not in valid_pipelines:
-        errors.append(f"Unknown data-pipeline: {pipeline}")
+    if pipeline not in valid_pipelines:
+        errors.append(f"Unknown data-pipeline: {pipeline or 'missing'}")
+    if parser.duplicate_attributes:
+        errors.append("Duplicate HTML attributes: " + ", ".join(parser.duplicate_attributes))
 
     if page_format == "lesson":
         expected_stages = spec.get("formats", {}).get("lesson", {}).get("stages", [])
         stage_order = list(dict.fromkeys(parser.stages))
         if stage_order != expected_stages:
             errors.append("lesson data-stage order must be: " + ", ".join(expected_stages))
+
+    # scene must not appear in reference pages; use chapter-header instead
+    if page_format == "reference" and "scene" in parser.classes:
+        errors.append("scene component is forbidden in reference format; use chapter-header for section grouping")
+
+    if page_format == "reference":
+        links = parser.section_index_links
+        if links and not 2 <= len(links) <= 3:
+            errors.append(f"section-index must have 2-3 tabs, found {len(links)}")
+        if not links and parser.section_stages:
+            errors.append("reference data-stage requires a section-index")
+        if links:
+            invalid = [href for href in links if not re.fullmatch(r"#[A-Za-z0-9][A-Za-z0-9_-]*", href)]
+            if invalid:
+                errors.append("Invalid section-index targets: " + ", ".join(invalid))
+            targets = [href[1:] for href in links if href.startswith("#") and len(href) > 1]
+            nav_targets = set(targets)
+            section_stages = set(parser.section_stages)
+            if len(nav_targets) != len(targets):
+                errors.append("Duplicate section-index targets")
+            missing_groups = nav_targets - section_stages
+            if missing_groups:
+                errors.append("section-index target has no data-stage group: " + ", ".join(sorted(missing_groups)))
+            orphaned_groups = section_stages - nav_targets
+            if orphaned_groups:
+                errors.append("data-stage group has no section-index target: " + ", ".join(sorted(orphaned_groups)))
+            missing_ids = nav_targets - set(parser.ids)
+            if missing_ids:
+                errors.append("section-index target has no matching id: " + ", ".join(sorted(missing_ids)))
+            detached_targets = sorted(target for target in nav_targets if (target, target) not in parser.section_stage_ids)
+            if detached_targets:
+                errors.append("section-index target id and data-stage must share one section: " + ", ".join(detached_targets))
+            empty_groups = sorted(target for target in nav_targets if parser.stage_item_counts.get(target, 0) == 0)
+            if empty_groups:
+                errors.append("section-index target maps to an empty chapter (no reference items): " + ", ".join(empty_groups))
+
+    # content imbalance: max tab should not exceed 3x min tab
+    if page_format == "reference" and parser.section_index_links and parser.stage_item_counts:
+        counts = [v for v in parser.stage_item_counts.values() if v > 0]
+        if len(counts) >= 2:
+            mx = max(counts)
+            mn = min(counts)
+            if mx > mn * 3:
+                mx_stage = [k for k, v in parser.stage_item_counts.items() if v == mx][0]
+                mn_stage = [k for k, v in parser.stage_item_counts.items() if v == mn][0]
+                errors.append(f"content imbalance: tab '{mx_stage}' has {mx} items, tab '{mn_stage}' has {mn} items (max exceeds 3x min)")
 
     for component, parent_classes in parser.components:
         definition = spec_components(spec).get(component)
@@ -314,6 +373,15 @@ def validate_file(page: Path, spec: dict) -> list[str]:
     if leftover:
         errors.append("Unreplaced placeholders: " + ", ".join(sorted(set(leftover))))
 
+    # Writing-guide brackets like [Scene title] are human hints, not tokens;
+    # shipping them unfilled means a template skeleton was published as content.
+    # Match a bracket that starts with a letter and contains a space (template
+    # guides) while skipping attribute selectors [hidden]/[data-theme="x"] and
+    # JS array access [index].
+    guide_leftover = re.findall(r"\[[A-Za-z][^\]\n]* [^\]\n]*\]", text)
+    if guide_leftover:
+        errors.append("Unreplaced writing-guide placeholders: " + ", ".join(sorted(set(guide_leftover))))
+
     # Stylesheet check: must be exactly one, pointing to shared CSS
     expected_css = spec.get("assets", {}).get("css_entry", "../assets/lesson.css")
     expected_js = spec.get("assets", {}).get("js_entry", "../assets/lesson.js")
@@ -334,9 +402,8 @@ def validate_file(page: Path, spec: dict) -> list[str]:
         if unknown:
             errors.append("Unknown component classes: " + ", ".join(unknown))
 
-   # Question validation: v2 JSON preferred, v1 JS accepted during migration
+    # Question validation: strict JSON only.
     has_quiz = "quiz-section" in parser.classes
-    has_production = "production-section" in parser.classes
 
     # Separate JSON blocks by id: lesson-questions vs audio-config
     q_json = ""
@@ -445,10 +512,13 @@ def validate_kit(script_dir: Path, spec: dict) -> list[str]:
     elif not (kit_dir / "assets" / "lesson.js").is_file():
         errors.append("Missing JS entry: lesson.js")
     else:
-        entry_text = entry.read_text(encoding="utf-8")
-        for split in assets.get("css_splits", []):
-            if split not in entry_text:
-                errors.append(f"lesson.css missing @import {split}")
+        # Verify lesson.css is the concatenation of the three CSS sources
+        kit_assets = kit_dir / "assets"
+        from sync_ui_kit import build_lesson_css
+        expected = build_lesson_css(kit_assets)
+        actual = entry.read_text(encoding="utf-8")
+        if expected != actual:
+            errors.append("lesson.css is out of sync with tokens + foundation + components; run sync_ui_kit.py --build-css")
 
     for name, rel in spec.get("templates", {}).items():
         # Templates are relative to project root; in kit they're in templates/
@@ -516,12 +586,79 @@ def run_self_test(script_dir: Path, spec: dict) -> list[str]:
             "inline-style": (valid.replace("<h1>", '<h1 style="color:red">'), True),
             "unknown-theme": (valid.replace('data-theme="overview"', 'data-theme="neon"'), True),
             "unknown-format": (valid.replace('data-format="reference"', 'data-format="deck"'), True),
+            "missing-pipeline": (valid.replace(' data-pipeline="capability"', ""), True),
             "v1-version": (valid.replace('data-ui-version="2"', 'data-ui-version="1"'), True),
             "remote": (valid.replace("</head>", '<link rel="preload" href="https://x.test/a"></head>'), True),
             "duplicate-id": (valid.replace("<h2>", '<h2 id="main">'), True),
             "unknown-class": (valid.replace('class="reference-section"', 'class="reference-section rogue-card"'), True),
+            "bracket-leftover": (valid.replace("<h2>Content</h2>", "<h2>[Central concept]</h2>"), True),
             "missing-asset": (valid.replace("../assets/lesson.css", "../assets/missing.css"), True),
         }
+
+        # Section-index test cases
+        valid_index = (
+            '<!doctype html><html lang="en"><head>'
+            '<link rel="stylesheet" href="../assets/lesson.css"></head>'
+            '<body data-ui-version="2" data-pipeline="capability" data-format="reference" data-theme="overview">'
+            '<main class="lesson-shell" id="main">'
+            '<nav class="section-index"><a href="#a" class="section-index-link">A</a>'
+            '<a href="#b" class="section-index-link">B</a></nav>'
+            '<header class="lesson-header"><h1>Test</h1></header>'
+            '<section class="reference-section" id="a" data-stage="a" data-theme="overview"><h2>A</h2>'
+            '<article class="reference-item"><h3>x</h3><p>y</p></article>'
+            '<article class="reference-item"><h3>x</h3><p>y</p></article>'
+            '</section>'
+            '<section class="reference-section" id="b" data-stage="b" data-theme="overview"><h2>B</h2>'
+            '<article class="reference-item"><h3>x</h3><p>y</p></article>'
+            '<article class="reference-item"><h3>x</h3><p>y</p></article>'
+            '</section>'
+            '<footer class="lesson-footer"><p>Done</p></footer></main>'
+            '<script src="../assets/lesson.js"></script></body></html>'
+        )
+        section_cases = {
+            "valid-index": (valid_index, False),
+            "too-many-tabs": (
+                valid_index.replace(
+                    '<a href="#b" class="section-index-link">B</a></nav>',
+                    '<a href="#b" class="section-index-link">B</a>'
+                    '<a href="#c" class="section-index-link">C</a>'
+                    '<a href="#d" class="section-index-link">D</a></nav>'
+                ), True),
+            "orphan-stage": (
+                valid_index.replace('data-stage="b"', 'data-stage="z"'), True),
+            "content-imbalance": (
+                valid_index.replace(
+                    '<section class="reference-section" id="b" data-stage="b" data-theme="overview"><h2>B</h2>'
+                    '<article class="reference-item"><h3>x</h3><p>y</p></article>'
+                    '<article class="reference-item"><h3>x</h3><p>y</p></article>',
+                    '<section class="reference-section" id="b" data-stage="b" data-theme="overview"><h2>B</h2>'
+                    + '<article class="reference-item"><h3>x</h3><p>y</p></article>' * 10
+                ), True),
+            "missing-target-id": (valid_index.replace(' id="b"', ""), True),
+            "detached-target-id": (
+                valid_index.replace(
+                    '<section class="reference-section" id="b" data-stage="b" data-theme="overview"><h2>B</h2>',
+                    '<section class="reference-section" id="x" data-stage="b" data-theme="overview"><h2 id="b">B</h2>',
+                ), True),
+            "duplicate-attribute": (valid_index.replace('id="a"', 'id="a" id="duplicate"', 1), True),
+            "duplicate-target": (valid_index.replace('href="#b"', 'href="#a"'), True),
+            "single-tab": (valid_index.replace('<a href="#b" class="section-index-link">B</a>', ""), True),
+            "stage-without-index": (
+                valid_index.replace(
+                    '<nav class="section-index"><a href="#a" class="section-index-link">A</a>'
+                    '<a href="#b" class="section-index-link">B</a></nav>',
+                    "",
+                ), True),
+            "invalid-target": (valid_index.replace('href="#b"', 'href="#b:bad"'), True),
+            "empty-group": (
+                valid_index.replace(
+                    '<section class="reference-section" id="b" data-stage="b" data-theme="overview"><h2>B</h2>'
+                    '<article class="reference-item"><h3>x</h3><p>y</p></article>'
+                    '<article class="reference-item"><h3>x</h3><p>y</p></article>',
+                    '<section class="reference-section" id="b" data-stage="b" data-theme="overview"><h2>B</h2>',
+                ), True),
+        }
+        cases.update(section_cases)
         for name, (html, should_fail) in cases.items():
             page = ref_dir / f"{name}.html"
             page.write_text(html, encoding="utf-8")
@@ -533,6 +670,9 @@ def run_self_test(script_dir: Path, spec: dict) -> list[str]:
         invalid_question = '[{"id":"q1","type":"single_choice","stem":"x","options":["<b>x</b>","y"],"answer":0,"rationale":"x"}]'
         if not validate_questions_v2(invalid_question, spec.get("question_types", {})):
             failures.append("HTML in option unexpectedly passed")
+    if not failures:
+        n_valid = sum(1 for _, should_fail in cases.values() if not should_fail)
+        print(f"OK self-test: {n_valid} valid + {len(cases) - n_valid} rejection cases passed")
     return failures
 
 
@@ -563,7 +703,6 @@ def main() -> int:
             print("FAIL self-test")
             print("\n".join(f"- {item}" for item in failures))
             return 1
-        print("OK self-test: 1 valid + 8 rejection cases passed")
         return 0
 
     if args.file:

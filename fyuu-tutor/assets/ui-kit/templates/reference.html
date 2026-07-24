@@ -9,18 +9,84 @@
 </head>
 <body data-ui-version="2" data-pipeline="capability" data-format="reference" data-theme="overview">
   <a class="skip-link" href="#reference-content">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
   <main class="lesson-shell" id="reference-content">
+    <!-- Optional section-index: use 2-3 tabs only for pages with 3+ chapters.
+         Each simple #target must exist once as an id and match every section data-stage in that tab.
+         Keep tab content within a 3x item ratio. Delete this nav and data-stage attrs for short pages. -->
+    <nav class="section-index" aria-label="Section navigation">
+      <a href="#domain-a" class="section-index-link">01 · [Domain A]</a>
+      <a href="#domain-b" class="section-index-link">02 · [Domain B]</a>
+      <a href="#domain-c" class="section-index-link">03 · [Domain C]</a>
+    </nav>
     <header class="lesson-header">
-      <p class="eyebrow">__PROJECT_NAME__ · [number]</p>
+      <p class="eyebrow">__PROJECT_NAME__ · __REFERENCE_NUMBER__</p>
       <h1>__REFERENCE_TITLE__</h1>
       <p class="lesson-deck">__REFERENCE_DECK__</p>
     </header>
-    <section class="reference-section" aria-labelledby="reference-title">
-      <h2 id="reference-title">__REFERENCE_SECTION_TITLE__</h2>
+    <!-- Tab 1: all sections with data-stage="domain-a" show when this tab is active. -->
+    <section class="reference-section" id="domain-a" data-stage="domain-a" data-theme="people" aria-labelledby="ch1-title">
+      <div class="chapter-header" data-component="chapter-header" id="ch1">
+        <span class="chapter-number">01</span>
+        <div class="chapter-header-body">
+          <h2 id="ch1-title">[Chapter title]</h2>
+          <p>[One-line description]</p>
+        </div>
+      </div>
+      <div class="reference-grid">
+        <article class="reference-item">
+          <h3>[Item title]<small>[Tag · category · link]</small></h3>
+          <p>[Content]</p>
+          <details><summary>[N knowledge points]</summary><ul><li>[Point]</li></ul></details>
+        </article>
+        <article class="reference-item">
+          <h3>[Item title]<small>[Tag · category · link]</small></h3>
+          <p>[Content]</p>
+          <details><summary>[N knowledge points]</summary><ul><li>[Point]</li></ul></details>
+        </article>
+      </div>
+      <p class="takeaway">[Key takeaway for this chapter]</p>
+    </section>
+    <!-- Tab 2: data-stage must match a nav target above. Shows term-table for visual variety. -->
+    <section class="reference-section" id="domain-b" data-stage="domain-b" data-theme="process" aria-labelledby="ch2-title">
+      <div class="chapter-header" data-component="chapter-header" id="ch2">
+        <span class="chapter-number">02</span>
+        <div class="chapter-header-body">
+          <h2 id="ch2-title">[Chapter title]</h2>
+          <p>[One-line description]</p>
+        </div>
+      </div>
+      <div class="reference-grid">
+        <article class="reference-item">
+          <h3>[Comparison item]</h3>
+          <table class="term-table">
+            <thead><tr><th>Term</th><th>[Dimension]</th></tr></thead>
+            <tbody>
+              <tr><td><strong>[Term A]</strong></td><td>[Meaning]</td></tr>
+              <tr><td><strong>[Term B]</strong></td><td>[Meaning]</td></tr>
+            </tbody>
+          </table>
+        </article>
+        <article class="reference-item">
+          <h3>[Point 1]</h3><p>[Content]</p>
+        </article>
+      </div>
+      <p class="takeaway">[Key takeaway for this chapter]</p>
+    </section>
+    <!-- Tab 3: data-stage must match a nav target above. -->
+    <section class="reference-section" id="domain-c" data-stage="domain-c" data-theme="business" aria-labelledby="ch3-title">
+      <div class="chapter-header" data-component="chapter-header" id="ch3">
+        <span class="chapter-number">03</span>
+        <div class="chapter-header-body">
+          <h2 id="ch3-title">[Chapter title]</h2>
+          <p>[One-line description]</p>
+        </div>
+      </div>
       <div class="reference-grid">
         <article class="reference-item"><h3>[Point 1]</h3><p>[Content]</p></article>
         <article class="reference-item"><h3>[Point 2]</h3><p>[Content]</p></article>
       </div>
+      <p class="takeaway">[Key takeaway for this chapter]</p>
     </section>
     <footer class="lesson-footer"><p>__NEXT_STEP__</p></footer>
   </main>

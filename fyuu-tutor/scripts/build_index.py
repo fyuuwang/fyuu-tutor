@@ -10,7 +10,7 @@ from urllib.parse import quote
 
 sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from project_config import load_project, resolve_path
+from project_config import load_project, resolve_path, status_value
 
 
 UI = {
@@ -31,11 +31,6 @@ UI = {
 
 def ui(language):
     return UI["zh-CN"] if str(language).lower().startswith("zh") else UI["en"]
-
-
-def status_value(text, field, missing="Not recorded"):
-    match = re.search(rf"^\|\s*{re.escape(field)}\s*\|\s*(.*?)\s*\|\s*$", text, re.MULTILINE)
-    return match.group(1) if match else missing
 
 
 def title(path):
