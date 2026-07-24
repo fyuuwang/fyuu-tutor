@@ -2,6 +2,7 @@
 """Shared TOML loading and project path resolution."""
 
 from pathlib import Path
+import re
 import tomllib
 
 SCHEMA_VERSION = 3
@@ -63,3 +64,9 @@ def validate_config(root, config, pipeline):
         if not (root / name).is_file():
             errors.append(f"missing {name}")
     return errors
+
+
+def status_value(text, field, missing=None):
+    """Extract a value from a STATUS.md markdown table row."""
+    match = re.search(rf"^\|\s*{re.escape(field)}\s*\|\s*(.*?)\s*\|\s*$", text, re.MULTILINE)
+    return match.group(1) if match else missing

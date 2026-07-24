@@ -25,7 +25,7 @@
   var score = document.getElementById("scoreText");
   var reset = document.getElementById("resetQuiz");
   var progress = document.querySelector(".reading-progress span");
-  var stageLinks = Array.from(document.querySelectorAll(".lesson-steps a"));
+  var stageLinks = Array.from(document.querySelectorAll(".lesson-steps a, .section-index-link"));
   var quizSection = document.querySelector(".quiz-section");
   var lang = document.documentElement.getAttribute("lang") || "en";
  var i18n = {
@@ -189,7 +189,7 @@
 
   function resetQuiz() { answered.clear(); renderQuiz(); }
 
-  var PERSISTENT = ["lesson-footer", "lesson-steps"];
+  var PERSISTENT = ["lesson-footer", "lesson-steps", "section-index"];
 
   function stageGroups() {
     var shell = document.querySelector(".lesson-shell");
@@ -226,11 +226,15 @@
   function initStages() {
     if (stageLinks.length === 0) return;
     stageLinks.forEach(function (link, index) {
-      link.addEventListener("click", function (event) {
+      function activate(event) {
         event.preventDefault();
         showStage(index);
         var hash = (link.getAttribute("href") || "").replace("#", "");
         if (hash && history.replaceState) history.replaceState(null, "", "#" + hash);
+      }
+      link.addEventListener("click", activate);
+      link.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") activate(event);
       });
     });
     var start = 0;

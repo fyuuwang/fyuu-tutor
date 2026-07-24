@@ -209,6 +209,31 @@
         </article>
       </div>
     </section>
+    <section class="reference-section" aria-labelledby="g-refstruct">
+      <h2 id="g-refstruct">G · Reference structure</h2>
+      <p class="section-intro">Used inside reference-section for multi-section reference pages.</p>
+      <div class="reference-grid">
+        <article class="reference-item">
+          <h3>chapter-header · Section grouping</h3>
+          <p>Replaces scene inside reference pages. Number + title + one-line description. Use once per reference-section that represents a chapter or domain group.</p>
+<pre>&lt;div class="chapter-header" data-component="chapter-header" id="ch1"&gt;
+  &lt;span class="chapter-number"&gt;01&lt;/span&gt;
+  &lt;div class="chapter-header-body"&gt;
+    &lt;h2&gt;[Chapter title]&lt;/h2&gt;
+    &lt;p&gt;[One-line description]&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>section-index · Chapter navigation</h3>
+          <p>Two or three sticky tabs for reference pages with at least three chapters. Place inside lesson-shell before the header. Each target must exist as an id and match the data-stage of every chapter in that tab; JavaScript switches tabs with aria-current.</p>
+<pre>&lt;nav class="section-index" aria-label="Section navigation"&gt;
+  &lt;a href="#domain-a" class="section-index-link"&gt;01 &middot; [Domain A]&lt;/a&gt;
+  &lt;a href="#domain-b" class="section-index-link"&gt;02 &middot; [Domain B]&lt;/a&gt;
+&lt;/nav&gt;</pre>
+        </article>
+      </div>
+    </section>
     <footer class="lesson-footer">
       <p>Rules: UI-CONTRACT.md · CSS: outputs/assets/lesson.css · Templates: outputs/templates/*.html · This page contains no private content.</p>
     </footer>

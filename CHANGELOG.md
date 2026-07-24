@@ -2,6 +2,39 @@
 
 All notable changes are recorded here. Preview releases may contain breaking changes, which must include migration notes.
 
+## [0.4.0] — One Frontend Pipeline — 2026-07-23
+
+### Added
+
+- Mandatory UI-kit installation for every new capability, certification, and language project.
+- A 3 pipelines × 3 formats smoke matrix covering lesson, practice, and reference pages.
+- Strict duplicate-attribute and closed section-index target/group validation.
+- An explicit `sync_ui_kit.py --build-css` command for the checked-in single-file CSS bundle.
+
+### Changed
+
+- UI-kit install, check, and upgrade now share one payload and manifest path, including generated `lesson.css`.
+- Reference tabs use the existing stage switcher and `aria-current`; the redundant intersection observer was removed.
+- Reference composition guidance now separates shared rules from pipeline-specific advice.
+
+### Fixed
+
+- `sync_ui_kit.py --check` now detects a missing, modified, or stale project `lesson.css`.
+- Installing or upgrading a project no longer modifies the installed Skill source.
+- Section-index validation now rejects missing targets, duplicate targets, empty groups, orphan groups, invalid anchors, and one- or four-tab indexes.
+- The PMP learning-map generator no longer emits duplicate `id` attributes.
+- The UI validator now rejects pages that ship unfilled writing-guide placeholders (e.g. `[Scene title]`, `[Content]`), preventing a template skeleton from being published as finished content.
+
+### Removed
+
+- The obsolete Cantonese-only lesson validator; the shared UI validator now covers all three pipelines.
+
+### Migration
+
+- `create_project.py` no longer accepts `--ui-kit`; new projects always install the UI kit.
+- Existing projects should run `sync_ui_kit.py --project <project> --upgrade`, then validate all output pages.
+- Contributors changing split CSS files must run `sync_ui_kit.py --build-css` before the kit validator.
+
 ## [0.3.0] — Rich Learning Experiences — 2026-07-22
 
 ### Added

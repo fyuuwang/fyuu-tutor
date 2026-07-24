@@ -4,11 +4,11 @@
   "body_attributes": {
     "required": [
       "data-ui-version",
+      "data-pipeline",
       "data-format",
       "data-theme"
     ],
     "optional": [
-      "data-pipeline",
       "data-stage",
       "data-component"
     ]
@@ -31,7 +31,7 @@
         "case": "Case",
         "practice": "Practice"
       },
-     "required_classes": [
+      "required_classes": [
         "lesson-shell",
         "lesson-header",
         "lesson-steps",
@@ -40,9 +40,18 @@
         "audit-section"
       ],
       "practice_alternatives": [
-        ["quiz-section", "quiz-toolbar"],
-        ["production-section"],
-        ["quiz-section", "quiz-toolbar", "production-section"]
+        [
+          "quiz-section",
+          "quiz-toolbar"
+        ],
+        [
+          "production-section"
+        ],
+        [
+          "quiz-section",
+          "quiz-toolbar",
+          "production-section"
+        ]
       ],
       "stage_sections": {
         "map": [
@@ -301,7 +310,7 @@
         "language"
       ]
     },
-   "production-task": {
+    "production-task": {
       "sections": [
         "case-section",
         "production-section"
@@ -363,6 +372,58 @@
         "certification",
         "language"
       ]
+    },
+    "chapter-header": {
+      "sections": [
+        "reference-section"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "section-index": {
+      "sections": [
+        "root"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    }
+  },
+  "composition_patterns": {
+    "_doc": "Recommended component counts and arrangement per pipeline+format. These are guidance for agents, not hard validation limits. Target: two different agents producing the same course type should arrive at similar information density and page rhythm.",
+    "capability_lesson": {
+      "map": "2-4 node learning-map; each node links to a scene",
+      "case": "3-5 scenes; each scene ends with a takeaway; at least 1 worked-example; 0-1 boundary-list for concept edges",
+      "audit": "Source audit with coverage-table (if formal sources) or summary (if concept-only)",
+      "practice": "3-6 single_choice OR 2-4 production-task; not both unless the concept requires application plus recall"
+    },
+    "certification_lesson": {
+      "map": "2-6 node learning-map aligned to exam domain structure",
+      "case": "3-5 scenes threaded through one realistic project; each scene ends with a takeaway; at least 1 boundary-list comparing exam-relevant distinctions; 0-1 decision-path for judgment topics",
+      "audit": "Mandatory coverage-table mapping lesson content to exam outline tasks; local source list",
+      "practice": "4-6 single_choice questions in exam style; each question rationale must reference the source or principle tested"
+    },
+    "language_lesson": {
+      "map": "2-4 node learning-map; nodes are communicative situations, not grammar categories",
+      "case": "3-4 scenes; each scene anchored by a dialogue; at least 1 production-task requiring active output before revealing the model answer; 0-1 boundary-list for register or usage contrasts",
+      "audit": "Source list (textbook chapter, corpus, or teacher-confirmed examples)",
+      "practice": "Mix of single_choice (comprehension), production-task (active output), and flashcard (review). Recognizing an answer is NOT the same as producing it."
+    },
+    "practice": {
+      "certification": "6-10 single_choice questions grouped by topic; each has rationale citing the tested principle",
+      "capability": "4-8 single_choice or flashcard; flashcards for definitions, single_choice for application",
+      "language": "4-8 items mixing single_choice (comprehension) and flashcard (recall); audio_text for listening drills"
+    },
+    "reference": {
+      "shared": "Use chapter-header, not scene. End each chapter with a takeaway and use a domain-matched section theme. When comparisons, definitions, or processes are present, include a structured component instead of only reference-item cards. Omit section-index for short pages; for 3+ chapters, use 2-3 balanced tabs whose href targets match section ids and data-stage groups. No tab may contain more than 3x another tab's reference items.",
+      "certification": "Group items by exam domain; use reference-grid or relation-net and a term-table for key definitions.",
+      "capability": "Show concept relationships with relation-net; use term-table for vocabulary and method-matrix for approach comparisons.",
+      "language": "Use reference-grid for vocabulary, usage, and register labels; use term-table for grammar patterns."
     }
   },
   "assets": {
