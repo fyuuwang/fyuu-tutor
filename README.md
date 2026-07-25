@@ -1,6 +1,6 @@
 # Fyuu Tutor
 
-[中文说明](README.zh-CN.md) · Current release: **v0.4.0 — One Frontend Pipeline**
+[中文说明](README.zh-CN.md) · Current release: **v0.5.0 — Safe Portal and New Question Types**
 
 <p align="center">
   <img src="./assets/readme/hero.svg" width="100%" alt="Fyuu Tutor turns materials, question banks, or learning goals into an adaptive course that continues from the learner's response">
@@ -97,6 +97,52 @@ A learning project normally contains:
 
 Your source material and learning data stay in your private project. They are not included in the public Fyuu Tutor repository.
 
+## Learning portal (optional, off by default)
+
+Fyuu Tutor can build a read-only learning portal from your private projects, but this is **never automatic**. By default nothing is published.
+
+### What the portal is
+
+The portal is a set of static HTML pages generated from your lesson and reference outputs. It copies only course content -- never project metadata, learner records, or source files.
+
+### Build only (preview, no publish)
+
+You can build the portal locally to preview it without publishing anything (replace the workspace path with your own):
+
+```bash
+python3 fyuu-tutor/scripts/build_portal.py \
+  --workspace <path-to-your-workspace> \
+  --out /tmp/portal-preview \
+  --project your-project-id
+```
+
+This creates a local directory you can open in a browser. Nothing leaves your machine.
+
+### Publishing (`--publish` is a dangerous operation)
+
+```bash
+bash fyuu-tutor/scripts/deploy_portal.sh \
+  --workspace <workspace-path> \
+  --repo <fyuu-tutor-repo-path> \
+  --markers <portal-markers-file> \
+  --project <project-id> \
+  --publish
+```
+
+This pushes the portal to a public GitHub Pages branch. Enable Pages in the repository settings first, confirm every selected project individually, and treat publication as a **one-way, public** action.
+
+Before publishing, the build script runs a privacy scan that rejects:
+
+- absolute local paths (Unix user dirs, `/private/`, Windows user dirs);
+- `file://` references;
+- private marker strings from your markers file.
+
+If any private content is detected, the build stops and nothing is published.
+
+### Private markers and boundaries
+
+Your portal markers file lists strings that must never appear in published content -- personal names, email addresses, account numbers, private dates. Do not list project names or teaching vocabulary; those are course content. You are responsible for keeping this list current. When in doubt, do not publish.
+
 ## Install
 
 The easiest option is to give Codex this instruction:
@@ -151,7 +197,7 @@ Other tutoring projects informed product research, but their code and prompts we
 
 ## Project status
 
-Fyuu Tutor is currently a `v0.4.0` public preview.
+Fyuu Tutor is currently a `v0.5.0` public preview.
 
 It has been used in three long-running learning projects, but it still needs testing with more learners, source types, and learning goals. Any breaking preview change will include migration notes.
 

@@ -183,7 +183,7 @@
       <div class="reference-grid">
         <article class="reference-item">
           <h3>quiz-section · Question area</h3>
-          <p>Questions are declared as strict JSON. JS renders them. Two types: single_choice and flashcard.</p>
+          <p>Questions are declared as strict JSON. JS renders them. Four types: single_choice, flashcard, true_false, and matching.</p>
 <pre>&lt;section class="quiz-section" id="practice"&gt;
   &lt;div class="quiz-toolbar"&gt;
     &lt;span id="scoreText"&gt;Answered 0 / 0&lt;/span&gt;
@@ -197,7 +197,14 @@
    "stem":"[stem]","options":["A","B","C","D"],
    "answer":0,"rationale":"[why]"},
   {"id":"LESSON-0001-F001","type":"flashcard",
-   "stem":"[prompt]","answer_text":"[answer]"}
+   "stem":"[prompt]","answer_text":"[answer]"},
+  {"id":"LESSON-0001-T001","type":"true_false",
+   "stem":"[statement]","answer":false,"rationale":"[why]"},
+  {"id":"LESSON-0001-M001","type":"matching",
+   "stem":"[match prompt]",
+   "pairs":[{"left":"a","right":"1"},
+           {"left":"b","right":"2"},{"left":"c","right":"3"}],
+   "rationale":"[why]"}
 ]
 &lt;/script&gt;</pre>
         </article>

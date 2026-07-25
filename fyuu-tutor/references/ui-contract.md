@@ -82,10 +82,12 @@ Questions are declared as strict JSON in a `<script type="application/json">` ta
 </script>
 ```
 
-Two types are supported:
+Four types are supported:
 
 - `single_choice`: 2-6 options, `answer` is a valid index.
 - `flashcard`: has `stem`, `answer_text`, and optional `rationale`.
+- `true_false`: `answer` is a boolean (`true`/`false`), no options array. Two large buttons rendered.
+- `matching`: 3-6 `pairs` of `{left, right}`. Left and right texts must each be unique. Click left then right to pair. Scored as a whole: 1 point only if completed without any wrong attempt; 0 if any wrong attempt occurred during completion. Rationale shown only after completion.
 
 Rules:
 
@@ -117,7 +119,7 @@ Audio buttons use the shared adapter. Place an optional config block once per pa
 </script>
 ```
 
-The adapter tries `speechSynthesis`, then remote TTS (only if `allow_remote_tts` is true and HTTPS), then opens the fallback URL. Config must be pure JSON, HTTPS only, no keys or tokens. `single_choice` questions may carry an optional `audio_text` field for listening exercises.
+The adapter tries `speechSynthesis`, then remote TTS (only if `allow_remote_tts` is true and HTTPS), then opens the fallback URL. Config must be pure JSON, HTTPS only, no keys or tokens. `single_choice`, `true_false`, and `matching` questions may carry an optional `audio_text` field for listening exercises; all three use the same audio adapter.
 
 
 ## Composition guidance

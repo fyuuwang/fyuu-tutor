@@ -1,6 +1,6 @@
 # Fyuu Tutor
 
-[English](README.md) · 当前版本：**v0.4.0 — One Frontend Pipeline**
+[English](README.md) · 当前版本：**v0.5.0 — 安全门户与新题型**
 
 <p align="center">
   <img src="./assets/readme/hero-zh-cn.svg" width="100%" alt="Fyuu Tutor 把教材、题库或学习目标变成一个会根据学习表现持续调整的课程">
@@ -97,6 +97,52 @@ Fyuu Tutor 会把考纲、教材、题目和课程对应起来，检查是否有
 
 这些内容属于你的私人学习项目，不会被放进公开的 Fyuu Tutor 仓库。
 
+## 学习门户（可选，默认关闭）
+
+Fyuu Tutor 可以从你的私人项目构建一个只读学习门户，但这个操作**永远不会自动发生**。默认情况下不会发布任何内容。
+
+### 门户是什么
+
+门户是一组静态 HTML 页面，从你的课程和参考资料输出中生成。它只复制课件内容——不复制项目元数据、学习记录或源文件。
+
+### 仅构建（预览，不发布）
+
+你可以在本地构建门户来预览，不发布任何内容（请把工作区路径换成你自己的）：
+
+```bash
+python3 fyuu-tutor/scripts/build_portal.py \
+  --workspace <你的工作区路径> \
+  --out /tmp/portal-preview \
+  --project your-project-id
+```
+
+这会生成一个本地目录，可以在浏览器中打开。内容不会离开你的电脑。
+
+### 发布（`--publish` 是危险操作）
+
+```bash
+bash fyuu-tutor/scripts/deploy_portal.sh \
+  --workspace <workspace-path> \
+  --repo <fyuu-tutor-repo-path> \
+  --markers <portal-markers-file> \
+  --project <project-id> \
+  --publish
+```
+
+这会把门户推送到公开的 GitHub Pages 分支。请先在仓库设置中启用 Pages，并逐个确认要发布的项目；发布属于**单向、公开**的操作。
+
+发布前，构建脚本会运行隐私扫描，拒绝以下内容：
+
+- 本地绝对路径（Unix 用户目录、`/private/`、Windows 用户目录）；
+- `file://` 链接；
+- 来自你的私人标记文件的标记字符串。
+
+如果检测到任何私人内容，构建会停止，不会发布任何内容。
+
+### 私人标记与边界
+
+你的门户标记文件列出了绝不能出现在发布内容中的字符串--姓名、邮箱、账号、私人日期。不要列项目名或教学词汇；那些是课程内容。你有责任保持这个列表最新。拿不准的时候，不要发布。
+
 ## 安装
 
 最简单的方法，是把下面这句话发给 Codex：
@@ -150,7 +196,7 @@ Fyuu Tutor 最初基于 Matt Pocock 的 [`teach`](https://github.com/mattpocock/
 
 ## 当前状态
 
-Fyuu Tutor 目前是 `v0.4.0` 公开预览版。
+Fyuu Tutor 目前是 `v0.5.0` 公开预览版。
 
 它已经在三个长期学习项目中使用，但还需要更多不同用户、不同教材和不同学习目标的验证。预览阶段如果修改项目格式或使用方式，会在更新记录中附上迁移说明。
 

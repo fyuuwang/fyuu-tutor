@@ -6,12 +6,7 @@
     var jsonTag = document.getElementById("lesson-questions");
     if (jsonTag && jsonTag.type === "application/json") {
       try {
-        var parsed = JSON.parse(jsonTag.textContent);
-        return parsed.map(function (q) {
-          return q.type === "flashcard"
-           ? { _flash: true, id: q.id, stem: q.stem, answer_text: q.answer_text, rationale: q.rationale || "" }
-           : { id: q.id, stem: q.stem, opts: q.options, answer: q.answer, why: q.rationale, audio_text: q.audio_text || "" };
-         });
+        return JSON.parse(jsonTag.textContent);
       } catch (e) {
         console.error("Invalid lesson-questions JSON", e);
       }
@@ -29,10 +24,11 @@
   var quizSection = document.querySelector(".quiz-section");
   var lang = document.documentElement.getAttribute("lang") || "en";
  var i18n = {
-   "zh-CN": { correct: "答对了。", wrong: "再看一眼。", answered: "已答", of: "/", correctLabel: "正确", questionLabel: "题目", flip: "点击翻转", resetLabel: "重新作答", listen: "播放" },
-   "zh-HK": { correct: "答啱咗。", wrong: "再睇一次。", answered: "已答", of: "/", correctLabel: "啱", questionLabel: "題目", flip: "撳一下翻轉", resetLabel: "重做", listen: "播放" },
-   en: { correct: "Correct.", wrong: "Take another look.", answered: "Answered", of: "/", correctLabel: "correct", questionLabel: "Question", flip: "Click to flip", resetLabel: "Reset", listen: "Listen" },
- };
+  "zh-CN": { correct: "答对了。", wrong: "再看一眼。", answered: "已答", of: "/", correctLabel: "正确", questionLabel: "题目", flip: "点击翻转", resetLabel: "重新作答", listen: "播放", trueLabel: "对", falseLabel: "错", matchCompletedWithErrors: "已完成（本题曾配错，计 0 分）。" },
+  "zh-HK": { correct: "答啱咗。", wrong: "再睇一次。", answered: "已答", of: "/", correctLabel: "啱", questionLabel: "題目", flip: "撳一下翻轉", resetLabel: "重做", listen: "播放", trueLabel: "啱", falseLabel: "錯", matchCompletedWithErrors: "已完成（本題曾配錯，計 0 分）。" },
+  en: { correct: "Correct.", wrong: "Take another look.", answered: "Answered", of: "/", correctLabel: "correct", questionLabel: "Question", flip: "Click to flip", resetLabel: "Reset", listen: "Listen", trueLabel: "True", falseLabel: "False", matchCompletedWithErrors: "Completed with errors (scored 0)." },
+};
+ var a11y = (lang === "zh-HK") ? { selected: "已選中", wrong: "配錯咗，請重選", locked: "配對正確，已鎖定" } : (lang === "zh-CN") ? { selected: "已选中", wrong: "配错了，请重选", locked: "配对正确，已锁定" } : { selected: "Selected", wrong: "Incorrect match, try again", locked: "Matched correctly, locked" };
   var t = i18n[lang] || i18n.en;
   var questionLabel = (quizSection && quizSection.getAttribute("data-question-label")) || t.questionLabel;
 
@@ -47,7 +43,10 @@
     if (!score) return;
     var correct = 0;
     answered.forEach(function (choice, index) {
-      if (questions[index] && choice === questions[index].answer) correct += 1;
+      var q = questions[index];
+      if (!q) return;
+      if (q.type === "matching") { if (choice === true) correct += 1; }
+      else if (choice === q.answer) correct += 1;
     });
     score.textContent = t.answered + " " + answered.size + " " + t.of + " " + questions.length + " · " + t.correctLabel + " " + correct;
   }
@@ -76,7 +75,7 @@
     var fbLabel = document.createElement("strong");
     fbLabel.textContent = isCorrect ? t.correct : t.wrong;
     feedback.appendChild(fbLabel);
-    feedback.appendChild(document.createTextNode(" " + (question.why || "")));
+    feedback.appendChild(document.createTextNode(" " + (question.rationale || "")));
     updateScore();
   }
 
@@ -116,12 +115,253 @@
     quiz.appendChild(card);
   }
 
+  function appendQuestionAudio(stemElement, audioText) {
+    if (!audioText || typeof audioText !== "string") return;
+    var audioBtn = document.createElement("button");
+    audioBtn.className = "audio-trigger";
+    audioBtn.type = "button";
+    audioBtn.setAttribute("data-text", audioText);
+    audioBtn.setAttribute("aria-label", t.listen + ": " + audioText);
+    audioBtn.textContent = t.listen;
+    stemElement.insertBefore(audioBtn, stemElement.firstChild);
+  }
+
+  function renderTrueFalse(question, questionIndex) {
+    var article = document.createElement("article");
+    article.className = "question question-truefalse";
+    article.id = "question-" + (questionIndex + 1);
+    var meta = document.createElement("div");
+    meta.className = "question-meta";
+    meta.textContent = questionLabel + " " + (questionIndex + 1);
+    article.appendChild(meta);
+    var stem = document.createElement("p");
+    stem.className = "question-stem";
+    stem.textContent = question.stem;
+    appendQuestionAudio(stem, question.audio_text);
+    article.appendChild(stem);
+    var wrap = document.createElement("div");
+    wrap.className = "tf-options";
+    [true, false].forEach(function (val) {
+      var btn = document.createElement("button");
+      btn.className = "tf-button";
+      btn.type = "button";
+      btn.dataset.question = String(questionIndex);
+      btn.dataset.value = String(val);
+      var icon = document.createElement("span");
+      icon.className = "tf-icon";
+      icon.textContent = val ? "\u2713" : "\u2717";
+      var label = document.createElement("span");
+      label.textContent = val ? t.trueLabel : t.falseLabel;
+      btn.appendChild(icon);
+      btn.appendChild(label);
+      btn.addEventListener("click", function (event) {
+        selectTrueFalse(event.currentTarget, question, questionIndex);
+      });
+      wrap.appendChild(btn);
+    });
+    article.appendChild(wrap);
+    var fb = document.createElement("div");
+    fb.className = "question-feedback";
+    fb.setAttribute("role", "status");
+    fb.setAttribute("aria-live", "polite");
+    article.appendChild(fb);
+    quiz.appendChild(article);
+  }
+
+  function selectTrueFalse(button, question, questionIndex) {
+    if (answered.has(questionIndex)) return;
+    var chosen = button.dataset.value === "true";
+    answered.set(questionIndex, chosen);
+    var buttons = button.parentElement.querySelectorAll(".tf-button");
+    buttons.forEach(function (b) { b.disabled = true; });
+    var isCorrect = chosen === question.answer;
+    if (isCorrect) button.classList.add("is-correct");
+    else {
+      button.classList.add("is-wrong");
+      var correctBtn = button.parentElement.querySelector('[data-value="' + question.answer + '"]');
+      if (correctBtn) correctBtn.classList.add("is-correct");
+    }
+    var fb = document.getElementById("question-" + (questionIndex + 1)).querySelector(".question-feedback");
+    if (fb) {
+      fb.className = "question-feedback is-visible " + (isCorrect ? "is-correct" : "is-wrong");
+      var fbLabel = document.createElement("strong");
+      fbLabel.textContent = isCorrect ? t.correct : t.wrong;
+      fb.appendChild(fbLabel);
+      fb.appendChild(document.createTextNode(" " + (question.rationale || "")));
+    }
+    updateScore();
+  }
+
+  function renderMatching(question, questionIndex) {
+    var article = document.createElement("article");
+    article.className = "question question-matching";
+    article.id = "question-" + (questionIndex + 1);
+    var meta = document.createElement("div");
+    meta.className = "question-meta";
+    meta.textContent = questionLabel + " " + (questionIndex + 1);
+    article.appendChild(meta);
+    var stem = document.createElement("p");
+    stem.className = "question-stem";
+    stem.textContent = question.stem;
+    appendQuestionAudio(stem, question.audio_text);
+    article.appendChild(stem);
+
+    var pairs = question.pairs;
+    var rightOrder = pairs.map(function (_, i) { return i; });
+    for (var i = rightOrder.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = rightOrder[i]; rightOrder[i] = rightOrder[j]; rightOrder[j] = tmp;
+    }
+
+    var grid = document.createElement("div");
+    grid.className = "match-grid";
+    var leftCol = document.createElement("div");
+    leftCol.className = "match-col";
+    var rightCol = document.createElement("div");
+    rightCol.className = "match-col";
+
+    var selectedLeft = null;
+    var locked = {};
+    var wrongPair = null;
+    var hadError = false;
+
+   function clearSelected() {
+     leftCol.querySelectorAll(".match-item--selected").forEach(function (el) { el.classList.remove("match-item--selected"); });
+     rightCol.querySelectorAll(".match-item--selected").forEach(function (el) { el.classList.remove("match-item--selected"); });
+     selectedLeft = null;
+   }
+    function setA11y(el, pressed) {
+      if (el) el.setAttribute("aria-pressed", pressed ? "true" : "false");
+    }
+    function announce(text) {
+      var fb = article.querySelector(".question-feedback");
+      if (fb) {
+        // Make feedback visible so screen readers announce it (default state
+        // is display:none; announce() is called for transient match states)
+        fb.className = "question-feedback is-visible";
+        fb.textContent = text;
+      }
+    }
+
+   function clearWrong() {
+     if (!wrongPair) return;
+     var lb = leftCol.querySelector('[data-lidx="' + wrongPair.left + '"]');
+     var rb = rightCol.querySelector('[data-ridx="' + wrongPair.right + '"]');
+     if (lb) lb.classList.remove("match-item--wrong");
+     if (rb) rb.classList.remove("match-item--wrong");
+      setA11y(lb, false);
+      setA11y(rb, false);
+     wrongPair = null;
+   }
+
+    function checkComplete() {
+      if (Object.keys(locked).length < pairs.length) return;
+      var score = !hadError;
+      answered.set(questionIndex, score);
+      var fb = article.querySelector(".question-feedback");
+      if (fb) {
+        fb.textContent = "";
+        var isCorrect = score;
+        fb.className = "question-feedback is-visible " + (isCorrect ? "is-correct" : "is-wrong");
+        var fbLabel = document.createElement("strong");
+        fbLabel.textContent = isCorrect ? t.correct : t.matchCompletedWithErrors;
+        fb.appendChild(fbLabel);
+        fb.appendChild(document.createTextNode(" " + (question.rationale || "")));
+      }
+      updateScore();
+    }
+
+    function tryMatch(leftIdx, rightIdx) {
+      if (leftIdx === rightIdx) {
+        locked[leftIdx] = rightIdx;
+        var lb = leftCol.querySelector('[data-lidx="' + leftIdx + '"]');
+        var rb = rightCol.querySelector('[data-ridx="' + rightIdx + '"]');
+       if (lb) { lb.classList.remove("match-item--selected"); lb.classList.add("match-item--correct"); lb.disabled = true; }
+       if (rb) { rb.classList.remove("match-item--selected"); rb.classList.add("match-item--correct"); rb.disabled = true; }
+        setA11y(lb, true);
+        setA11y(rb, true);
+        announce(a11y.locked);
+       selectedLeft = null;
+       checkComplete();
+     } else {
+       hadError = true;
+       wrongPair = { left: leftIdx, right: rightIdx };
+       var lb = leftCol.querySelector('[data-lidx="' + leftIdx + '"]');
+       var rb = rightCol.querySelector('[data-ridx="' + rightIdx + '"]');
+       if (lb) { lb.classList.remove("match-item--selected"); lb.classList.add("match-item--wrong"); }
+       if (rb) { rb.classList.remove("match-item--selected"); rb.classList.add("match-item--wrong"); }
+        setA11y(lb, false);
+        setA11y(rb, false);
+        announce(a11y.wrong);
+       selectedLeft = null;
+     }
+    }
+
+    pairs.forEach(function (pair, i) {
+     var btn = document.createElement("button");
+     btn.className = "match-item match-left";
+     btn.type = "button";
+     btn.dataset.lidx = String(i);
+     btn.textContent = pair.left;
+     btn.setAttribute("aria-pressed", "false");
+     btn.addEventListener("click", function () {
+       if (answered.has(questionIndex) || (i in locked)) return;
+       if (wrongPair) clearWrong();
+      clearSelected();
+        // Reset aria-pressed on items that are NOT locked (locked pairs keep
+        // their "true" state so screen readers report them as still matched)
+        leftCol.querySelectorAll(".match-item").forEach(function (el) {
+          if (!el.classList.contains("match-item--correct")) setA11y(el, false);
+        });
+        rightCol.querySelectorAll(".match-item").forEach(function (el) {
+          if (!el.classList.contains("match-item--correct")) setA11y(el, false);
+        });
+      selectedLeft = i;
+      btn.classList.add("match-item--selected");
+       setA11y(btn, true);
+       announce(a11y.selected);
+     });
+      leftCol.appendChild(btn);
+    });
+
+    rightOrder.forEach(function (origIdx) {
+      var btn = document.createElement("button");
+     btn.className = "match-item match-right";
+     btn.type = "button";
+     btn.dataset.ridx = String(origIdx);
+     btn.textContent = pairs[origIdx].right;
+     btn.setAttribute("aria-pressed", "false");
+     btn.addEventListener("click", function () {
+       if (answered.has(questionIndex)) return;
+       if (Object.values(locked).indexOf(origIdx) !== -1) return;
+       if (wrongPair) { clearWrong(); return; }
+       if (selectedLeft === null) return;
+       btn.classList.add("match-item--selected");
+       setA11y(btn, true);
+       tryMatch(selectedLeft, origIdx);
+     });
+      rightCol.appendChild(btn);
+    });
+
+    grid.appendChild(leftCol);
+    grid.appendChild(rightCol);
+    article.appendChild(grid);
+    var fb = document.createElement("div");
+    fb.className = "question-feedback";
+    fb.setAttribute("role", "status");
+    fb.setAttribute("aria-live", "polite");
+    article.appendChild(fb);
+    quiz.appendChild(article);
+  }
+
   function renderQuiz() {
     if (!quiz) return;
     quiz.innerHTML = "";
 
     questions.forEach(function (question, questionIndex) {
-      if (question._flash) { renderFlashcard(question, questionIndex); return; }
+      if (question.type === "flashcard") { renderFlashcard(question, questionIndex); return; }
+      if (question.type === "true_false") { renderTrueFalse(question, questionIndex); return; }
+      if (question.type === "matching") { renderMatching(question, questionIndex); return; }
       var article = document.createElement("article");
       article.className = "question";
       article.id = "question-" + (questionIndex + 1);
@@ -134,20 +374,12 @@
      var stem = document.createElement("p");
      stem.className = "question-stem";
      stem.textContent = question.stem;
-     if (question.audio_text) {
-       var audioBtn = document.createElement("button");
-       audioBtn.className = "audio-trigger";
-       audioBtn.type = "button";
-       audioBtn.setAttribute("data-text", question.audio_text);
-       audioBtn.setAttribute("aria-label", t.listen + ": " + question.audio_text);
-       audioBtn.textContent = t.listen;
-       stem.insertBefore(audioBtn, stem.firstChild);
-     }
+     appendQuestionAudio(stem, question.audio_text);
      article.appendChild(stem);
 
       var optionList = document.createElement("ol");
       optionList.className = "question-options";
-      question.opts.forEach(function (option, optionIndex) {
+      question.options.forEach(function (option, optionIndex) {
         var li = document.createElement("li");
         var btn = document.createElement("button");
         btn.className = "question-option";
@@ -311,7 +543,7 @@ function initAudio() {
      hint.removeAttribute("hidden");
    }
  }
- 
+
  function hasVoiceForLang(lang) {
    if (typeof window.speechSynthesis === "undefined" || !window.speechSynthesis) return false;
    var voices = window.speechSynthesis.getVoices();
@@ -320,7 +552,7 @@ function initAudio() {
      return v.lang && v.lang.toLowerCase().indexOf(lang.toLowerCase()) === 0;
    });
  }
- 
+
  var remoteAudioEl = null;
  function playRemoteTTS(endpoint, text, onFail) {
    if (remoteAudioEl) { remoteAudioEl.pause(); remoteAudioEl.removeAttribute("src"); remoteAudioEl.load(); }

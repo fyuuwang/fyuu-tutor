@@ -5,11 +5,14 @@ import argparse
 import datetime
 from pathlib import Path
 import re
+import tempfile
 
 import sys as _sys
 _sys.dont_write_bytecode = True
 _sys.path.insert(0, str(Path(__file__).resolve().parent))
 from project_config import status_value
+
+STATUS_FIELDS = ("State", "Owner", "Claimed at", "Updated at", "Production progress", "Learning progress", "Next action", "Blockers")
 
 
 def value(text, field):
@@ -21,7 +24,13 @@ def value(text, field):
 
 def replace(text, field, new_value):
     pattern = rf"^(\|\s*{re.escape(field)}\s*\|)\s*.*?\s*(\|\s*)$"
-    return re.sub(pattern, rf"\1 {new_value} \2", text, count=1, flags=re.MULTILINE)
+    return re.sub(
+        pattern,
+        lambda match: f"{match.group(1)} {new_value} {match.group(2)}",
+        text,
+        count=1,
+        flags=re.MULTILINE,
+    )
 
 
 def main():
@@ -33,29 +42,42 @@ def main():
     parser.add_argument("--next-step")
     args = parser.parse_args()
 
-    status_path = Path(args.project).expanduser().resolve() / "STATUS.md"
-    text = status_path.read_text(encoding="utf-8")
-    state = value(text, "State")
-    current_owner = value(text, "Owner")
-    now = datetime.datetime.now().astimezone().isoformat(timespec="seconds")
+    args.owner = args.owner.strip()
+    if not args.owner or args.owner == "—":
+        raise SystemExit("--owner must identify a real agent")
 
+    status_path = Path(args.project).expanduser().resolve() / "STATUS.md"
+    status = status_path.read_text(encoding="utf-8")
+    current = {field: value(status, field) for field in STATUS_FIELDS}
+    now = datetime.datetime.now().astimezone().isoformat(timespec="minutes")
     if args.action == "claim":
-        if state != "idle":
-            raise SystemExit(f"cannot claim: status is {state}, owner is {current_owner}")
-        if not args.task:
-            raise SystemExit("--task is required when claiming")
+        if args.task is None or not args.task.strip():
+            raise SystemExit("--task is required for claim action")
+        if current["State"] != "idle":
+            raise SystemExit("claim requires STATUS.State to be idle")
         updates = {"State": "in_progress", "Owner": args.owner, "Claimed at": now, "Updated at": now, "Next action": args.task}
     else:
-        if state != "in_progress" or current_owner != args.owner:
-            raise SystemExit(f"cannot release: status is {state}, owner is {current_owner}")
+        if current["State"] != "in_progress":
+            raise SystemExit("release requires STATUS.State to be in_progress")
+        if current["Owner"] != args.owner:
+            raise SystemExit("release requires the current STATUS.Owner")
         updates = {"State": "idle", "Owner": "—", "Claimed at": "—", "Updated at": now}
-        if args.next_step:
+        if args.next_step is not None:
             updates["Next action"] = args.next_step
 
+    # Reject dangerous input before writing
     for field, new_value in updates.items():
-        text = replace(text, field, new_value)
-    status_path.write_text(text, encoding="utf-8")
-    print(f"OK {args.action}: {status_path}")
+        if isinstance(new_value, str) and ("\n" in new_value or "\r" in new_value or "|" in new_value):
+            raise SystemExit(f"STATUS.{field} must not contain newlines or pipe characters")
+
+    new_status = status
+    for field, new_value in updates.items():
+        new_status = replace(new_status, field, new_value)
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=status_path.parent, delete=False) as handle:
+        handle.write(new_status)
+        temp_path = Path(handle.name)
+    temp_path.replace(status_path)
+    print(f"OK {args.action}: {args.owner}")
 
 
 if __name__ == "__main__":

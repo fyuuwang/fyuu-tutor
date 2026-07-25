@@ -149,6 +149,35 @@
         "rationale"
       ],
       "rules": {}
+    },
+    "true_false": {
+      "required_fields": [
+        "id",
+        "type",
+        "stem",
+        "answer",
+        "rationale"
+      ],
+      "optional_fields": [
+        "audio_text"
+      ],
+      "rules": {}
+    },
+    "matching": {
+      "required_fields": [
+        "id",
+        "type",
+        "stem",
+        "pairs",
+        "rationale"
+      ],
+      "optional_fields": [
+        "audio_text"
+      ],
+      "rules": {
+        "min_pairs": 3,
+        "max_pairs": 6
+      }
     }
   },
   "components": {
@@ -395,24 +424,83 @@
     }
   },
   "composition_patterns": {
-    "_doc": "Recommended component counts and arrangement per pipeline+format. These are guidance for agents, not hard validation limits. Target: two different agents producing the same course type should arrive at similar information density and page rhythm.",
+    "_doc": "Recommended component counts and arrangement per pipeline+format. Prose fields, including maxima and question types, are guidance; explicit validation fields are hard requirements read by the validator.",
     "capability_lesson": {
-      "map": "2-4 node learning-map; each node links to a scene",
+      "map": "2-5 node learning-map; each node links to a scene",
       "case": "3-5 scenes; each scene ends with a takeaway; at least 1 worked-example; 0-1 boundary-list for concept edges",
       "audit": "Source audit with coverage-table (if formal sources) or summary (if concept-only)",
-      "practice": "3-6 single_choice OR 2-4 production-task; not both unless the concept requires application plus recall"
+      "practice": "3-6 single_choice OR 2-4 production-task; not both unless the concept requires application plus recall",
+      "validation": {
+        "learning_map": {
+          "node_class": "map-node",
+          "min_nodes": 2,
+          "max_nodes": 5,
+          "target_class": "scene"
+        },
+        "scenes": {
+          "scene_class": "scene",
+          "min_scenes": 3,
+          "required_any": [
+            "takeaway",
+            "quick-check"
+          ],
+          "required_any_scope": "map_targets"
+        }
+      }
     },
     "certification_lesson": {
       "map": "2-6 node learning-map aligned to exam domain structure",
       "case": "3-5 scenes threaded through one realistic project; each scene ends with a takeaway; at least 1 boundary-list comparing exam-relevant distinctions; 0-1 decision-path for judgment topics",
       "audit": "Mandatory coverage-table mapping lesson content to exam outline tasks; local source list",
-      "practice": "4-6 single_choice questions in exam style; each question rationale must reference the source or principle tested"
+      "practice": "4-6 single_choice questions in exam style; each question rationale must reference the source or principle tested",
+      "validation": {
+        "learning_map": {
+          "node_class": "map-node",
+          "min_nodes": 2,
+          "max_nodes": 6,
+          "target_class": "scene"
+        },
+        "scenes": {
+          "scene_class": "scene",
+          "min_scenes": 3,
+          "required_any": [
+            "takeaway",
+            "quick-check"
+          ]
+        },
+        "audit": {
+          "section_class": "audit-section",
+          "required_classes": [
+            "coverage-table"
+          ]
+        },
+        "practice": {
+          "min_items": 4
+        }
+      }
     },
     "language_lesson": {
-      "map": "2-4 node learning-map; nodes are communicative situations, not grammar categories",
+      "map": "2-6 node learning-map; nodes are communicative situations, not grammar categories",
       "case": "3-4 scenes; each scene anchored by a dialogue; at least 1 production-task requiring active output before revealing the model answer; 0-1 boundary-list for register or usage contrasts",
       "audit": "Source list (textbook chapter, corpus, or teacher-confirmed examples)",
-      "practice": "Mix of single_choice (comprehension), production-task (active output), and flashcard (review). Recognizing an answer is NOT the same as producing it."
+      "practice": "Mix of single_choice (comprehension), production-task (active output), and flashcard (review). Recognizing an answer is NOT the same as producing it.",
+      "validation": {
+        "learning_map": {
+          "node_class": "map-node",
+          "min_nodes": 2,
+          "max_nodes": 6,
+          "target_class": "scene"
+        },
+        "scenes": {
+          "scene_class": "scene",
+          "min_scenes": 3,
+          "required_any": [
+            "takeaway",
+            "quick-check"
+          ],
+          "required_any_scope": "map_targets"
+        }
+      }
     },
     "practice": {
       "certification": "6-10 single_choice questions grouped by topic; each has rationale citing the tested principle",
