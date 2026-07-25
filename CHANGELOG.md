@@ -2,6 +2,57 @@
 
 All notable changes are recorded here. Preview releases may contain breaking changes, which must include migration notes.
 
+## [0.5.0] — Safe Learning Portal and New Question Types — 2026-07-25
+
+### Added
+
+- Static learning portal (`build_portal.py`) with explicit `--project` selection; never publishes all projects by default.
+- `true_false` and `matching` question types with validator, renderer, and self-test coverage.
+- Shared `appendQuestionAudio` so single_choice, true_false, and matching all support `audio_text`.
+
+### Changed
+
+- Unified question runtime to a single field protocol; no more `_flash`/`opts`/`why` internal aliases.
+- Matching scoring: 1 point only if completed without any wrong attempt; 0 if any wrong attempt occurred.
+- Matching feedback: rationale visible only after completion; `hadError` tracked per question.
+- Portal deployment (`deploy_portal.sh`) uses a temporary git worktree; never switches branches in the current worktree.
+
+### Fixed
+
+- Matching stale `selectedLeft` after correct lock; `Object.values(locked).indexOf()` for right-column disabled check.
+- Boolean values no longer pass as single_choice integer answers.
+- Matching rejects duplicate `right` items and unknown pair fields.
+- Portal symlink detection, absolute-path scanning, and private-marker rejection.
+- Output directory protection: refuses workspace root, project dirs, git root, and current directory.
+- Privacy audit covers tracked + untracked-not-ignored files (git ls-files --cached --others --exclude-standard); rejects symlinks; scans ui-kit content but allows its HTML; adds /home/ and /private/ path rules.
+
+- Source file protection: three scripts (ocr_pdf, convert_pronunciation, convert_pdf) now reject source==output and use tempfile+replace for safe writes.
+- Portal: unique staging/backup names (tempfile.mkdtemp); rename-based atomic swap on same filesystem.
+- Portal: validates UI Kit consistency before copying content.
+- Deploy: all paths (--workspace, --repo, --markers) are now explicit required parameters.
+- STATUS contract: \"Updated at\" added to required fields; owner/task/next-step protected against newlines and pipes.
+- Validator: non-string question type IDs rejected instead of crashing; unknown script IDs rejected.
+- Link rules: HTTPS <a> hrefs allowed with rel=noopener; remote resources only rejected for non-<a> elements.
+- Matching: final feedback clears previous announce text before appending result.
+- Matching: after a wrong pair, the next left-item click now clears the error and selects that item in one action.
+- Audio controls now meet the 44 px minimum touch-target height.
+- Portal builds now reject projects whose `STATUS.md` is not `idle`.
+- Status claims reject blank or placeholder owners.
+- Capability and language lessons now enforce non-empty, bounded learning maps; the Gallery lists every supported question type.
+- CI: added py_compile, node --check, and bash -n stages.
+
+### Security
+
+- Portal defaults to publishing nothing; requires explicit `--project` per invocation.
+- Only whitelisted files (lesson/reference HTML, CSS/JS assets) are copied; private index, Markdown, and other types are excluded.
+- Deployment requires `--publish` flag; build-only mode is the default.
+
+### Migration
+
+- Run `sync_ui_kit.py --project <project> --upgrade` to update installed UI kit.
+- Existing project content is not automatically published; portal requires explicit selection.
+- Old `build_portal.py` calls without `--project` will fail; add explicit project IDs.
+
 ## [0.4.0] — One Frontend Pipeline — 2026-07-23
 
 ### Added

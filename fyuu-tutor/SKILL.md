@@ -52,5 +52,6 @@ Pipeline defaults yield to the private learner profile and project rules for tea
 - Material processing: `scripts/pdf/`.
 - Optional pipeline implementations: `scripts/pipelines/`.
 - UI kit: `scripts/sync_ui_kit.py` (install/check/upgrade) and `scripts/validate_lesson_ui.py` (--file/--project/--kit/--self-test).
+- Learning portal: `scripts/build_portal.py` (explicit `--project` only; never publishes all projects by default). Deployment via `scripts/deploy_portal.sh` requires user authorization and `--publish`.
 
 Do not install dependencies, publish content, expose private sources, or resolve another agent's claim without explicit user authority.

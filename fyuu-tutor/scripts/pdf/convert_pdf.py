@@ -28,6 +28,8 @@ def main():
         raise SystemExit(exc)
     if source == output:
         raise SystemExit("--source and --output must differ")
+    if output.exists():
+        raise SystemExit(f"output exists; move or delete it first: {output}")
     result = subprocess.run(["markitdown", str(source)], capture_output=True, text=True, timeout=60)
     if result.returncode:
         print(result.stderr, file=sys.stderr)

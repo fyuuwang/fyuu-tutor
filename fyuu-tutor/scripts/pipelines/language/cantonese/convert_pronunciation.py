@@ -44,8 +44,17 @@ def main():
             except Exception:
                 pronunciation, confidence = "?", "转换失败"
         rows.append(f"| {word} | {pronunciation} | {confidence} |")
+    if source == output:
+        raise SystemExit("--source and --output must differ")
+    if output.exists():
+        raise SystemExit(f"output exists; choose a different path: {output}")
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text("# 粤拼对照表\n\n| 词汇 | Jyutping | 置信度 |\n|---|---|---|\n" + "\n".join(rows) + "\n", encoding="utf-8")
+    content = "# 粤拼对照表\n\n| 词汇 | Jyutping | 置信度 |\n|---|---|---|\n" + "\n".join(rows) + "\n"
+    import tempfile as _tmp
+    with _tmp.NamedTemporaryFile("w", encoding="utf-8", dir=output.parent, delete=False) as handle:
+        handle.write(content)
+        temporary = Path(handle.name)
+    temporary.replace(output)
     print(f"OK {len(rows)} words -> {output}")
 
 

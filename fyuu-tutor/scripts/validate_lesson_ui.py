@@ -12,6 +12,9 @@ import tempfile
 from html.parser import HTMLParser
 from pathlib import Path
 
+from project_config import load_project
+
+
 CLASS_RE = re.compile(r"(?<![-\w])\.([A-Za-z_][\w-]*)")
 
 
@@ -53,6 +56,7 @@ def spec_required_classes(spec: dict, fmt: str) -> set[str]:
 class LessonParser(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
+        self.html_attrs: dict[str, str] = {}
         self.body_attrs: dict[str, str] = {}
         self.classes: set[str] = set()
         self.ids: list[str] = []
@@ -61,6 +65,7 @@ class LessonParser(HTMLParser):
         self.styles = 0
         self.inline_styles: list[str] = []
         self.remote_resources: list[str] = []
+        self.dangerous_resources: list[str] = []
         self.stylesheets: list[str] = []
         self.external_scripts: list[str] = []
         self.inline_scripts: list[str] = []
@@ -80,7 +85,8 @@ class LessonParser(HTMLParser):
         self.section_index_links: list[str] = []
         self.stage_item_counts: dict[str, int] = {}
         self.duplicate_attributes: list[str] = []
-        self._element_stack: list[tuple[str, set[str]]] = []
+        self.elements: list[dict] = []
+        self._element_stack: list[tuple[str, set[str], int]] = []
         self._script_id: str = ""
 
     def handle_starttag(self, tag, attrs_list):
@@ -91,6 +97,14 @@ class LessonParser(HTMLParser):
             seen_attrs.add(name)
         attrs = {k: v or "" for k, v in attrs_list}
         own_classes = set(attrs.get("class", "").split())
+        element_index = len(self.elements)
+        self.elements.append({
+            "classes": own_classes,
+            "attrs": attrs,
+            "ancestors": tuple(index for _, _, index in self._element_stack),
+        })
+        if tag == "html":
+            self.html_attrs = attrs
         if tag == "body":
             self.body_attrs = attrs
         if tag == "style":
@@ -107,6 +121,10 @@ class LessonParser(HTMLParser):
         if re.match(r"^https?:", href_val):
             self.external_links.append(href_val)
             self.external_link_rels.append(attrs.get("rel", ""))
+        for attr in ("href", "src", "data"):
+            resource = attrs.get(attr, "")
+            if re.match(r"^(?:javascript|data|file):", resource, re.IGNORECASE):
+                self.dangerous_resources.append(f"{attr}: {resource}")
         if attrs.get("class") and "production-task" in attrs["class"].split():
             iid = attrs.get("data-item-id", "")
             if iid:
@@ -114,7 +132,7 @@ class LessonParser(HTMLParser):
             else:
                 self.production_task_ids.append("")
         if attrs.get("data-component"):
-            parent_classes = set().union(*(classes for _, classes in self._element_stack)) if self._element_stack else set()
+            parent_classes = set().union(*(classes for _, classes, _ in self._element_stack)) if self._element_stack else set()
             self.components.append((attrs["data-component"], parent_classes | own_classes))
         if attrs.get("data-stage"):
             self.stages.append(attrs["data-stage"])
@@ -146,12 +164,13 @@ class LessonParser(HTMLParser):
             self.buttons_without_type.append(attrs.get("id") or attrs.get("class") or "button")
         if re.fullmatch(r"h[1-6]", tag):
             self.headings.append((int(tag[1]), attrs.get("id", "")))
-        for attr in ("href", "src"):
-            value = attrs.get(attr, "")
-            if re.match(r"^(?:https?:)?//", value):
-                self.remote_resources.append(value)
+        if tag != "a":
+            for attr in ("href", "src", "data"):
+                value = attrs.get(attr, "")
+                if re.match(r"^(?:https?:)?//", value):
+                    self.remote_resources.append(value)
         if tag not in {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}:
-            self._element_stack.append((tag, own_classes))
+            self._element_stack.append((tag, own_classes, element_index))
 
     def handle_endtag(self, tag):
         if tag == "section":
@@ -195,6 +214,9 @@ def validate_questions_v2(json_text: str, qtypes: dict) -> list[str]:
             errors.append(f"题 {i+1} 不是对象")
             continue
         qtype = q.get("type", "single_choice")
+        if not isinstance(qtype, str):
+            errors.append(f"题 {i+1} type 必须是字符串")
+            continue
         if qtype not in qtypes:
             errors.append(f"题 {i+1} 未知题型：{qtype}")
             continue
@@ -210,6 +232,8 @@ def validate_questions_v2(json_text: str, qtypes: dict) -> list[str]:
         qid = q.get("id")
         if not qid:
             errors.append(f"题 {i+1} 缺少 id")
+        elif not isinstance(qid, str):
+            errors.append(f"题 {i+1} id 必须为非空字符串")
         elif qid in ids:
             errors.append(f"题 {i+1} 重复 id：{qid}")
         else:
@@ -222,11 +246,46 @@ def validate_questions_v2(json_text: str, qtypes: dict) -> list[str]:
             if not isinstance(opts, list) or len(opts) < mn or len(opts) > mx:
                 errors.append(f"题 {i+1} 选项数需在 {mn}-{mx} 之间")
             ans = q.get("answer")
-            if not isinstance(ans, int) or ans < 0 or (isinstance(opts, list) and ans >= len(opts)):
-                errors.append(f"题 {i+1} answer 越界")
+            if isinstance(ans, bool) or not isinstance(ans, int) or ans < 0 or (isinstance(opts, list) and ans >= len(opts)):
+                errors.append(f"题 {i+1} answer 必须为有效整数下标")
         elif qtype == "flashcard":
             if not q.get("answer_text"):
                 errors.append(f"题 {i+1} flashcard 缺少 answer_text")
+        elif qtype == "true_false":
+            ans = q.get("answer")
+            if not isinstance(ans, bool):
+                errors.append(f"题 {i+1} true_false answer 必须为布尔值 (true/false)")
+        elif qtype == "matching":
+            pairs = q.get("pairs", [])
+            rules = spec_def.get("rules", {})
+            mn = rules.get("min_pairs", 3)
+            mx = rules.get("max_pairs", 6)
+            if not isinstance(pairs, list) or len(pairs) < mn or len(pairs) > mx:
+                errors.append(f"题 {i+1} matching pairs 数量需在 {mn}-{mx} 之间")
+            else:
+                lefts = []
+                rights = []
+                for j, pair in enumerate(pairs):
+                    if not isinstance(pair, dict):
+                        errors.append(f"题 {i+1} pair {j+1} 不是对象")
+                        continue
+                    for field in ("left", "right"):
+                        val = pair.get(field, "")
+                        if not isinstance(val, str) or not val:
+                            errors.append(f"题 {i+1} pair {j+1} {field} 必须为非空字符串")
+                        elif "<" in val or ">" in val:
+                            errors.append(f"题 {i+1} pair {j+1} {field} 不允许 HTML")
+                    pair_keys = set(pair.keys()) - {"left", "right"}
+                    if pair_keys:
+                        errors.append(f"题 {i+1} pair {j+1} 含有未知字段：{', '.join(sorted(pair_keys))}")
+                    if isinstance(pair.get("left"), str):
+                        lefts.append(pair["left"])
+                    if isinstance(pair.get("right"), str):
+                        rights.append(pair["right"])
+                if len(lefts) != len(set(lefts)):
+                    errors.append(f"题 {i+1} matching left 项有重复，无法唯一配对")
+                if len(rights) != len(set(rights)):
+                    errors.append(f"题 {i+1} matching right 项有重复，无法唯一配对")
         # Check for HTML injection in text fields
         for field in ("stem", "rationale", "answer_text", "audio_text"):
             val = q.get(field, "")
@@ -252,7 +311,7 @@ def validate_audio_config(json_text: str) -> list[str]:
         return ["audio-config 必须是 JSON 对象"]
     for key in ("tts_endpoint", "fallback_url"):
         val = cfg.get(key, "")
-        if val and not re.match(r"^https://", val):
+        if not isinstance(val, str) or (val and not re.match(r"^https://", val)):
             errors.append(f"audio-config {key} 必须 HTTPS")
     for needle in ("api_key", "apikey", "secret", "token", "password"):
         if needle.lower() in json_text.lower():
@@ -265,12 +324,15 @@ def validate_audio_config(json_text: str) -> list[str]:
     return errors
 
 
-def validate_file(page: Path, spec: dict) -> list[str]:
+def validate_file(page: Path, spec: dict, expected_pipeline: str | None = None,
+                  expected_language: str | None = None) -> list[str]:
     errors: list[str] = []
     if not page.is_file():
         return [f"File not found: {page}"]
 
     text = page.read_text(encoding="utf-8")
+    leftover = re.findall(r"__[A-Z][A-Z0-9_]+__", text)
+    guide_leftover = re.findall(r"\[[A-Za-z][^\]\n]* [^\]\n]*\]", text)
     parser = LessonParser()
     try:
         parser.feed(text)
@@ -295,6 +357,10 @@ def validate_file(page: Path, spec: dict) -> list[str]:
         errors.append(f"Unknown data-theme: {theme or 'missing'}")
     if pipeline not in valid_pipelines:
         errors.append(f"Unknown data-pipeline: {pipeline or 'missing'}")
+    if expected_pipeline is not None and pipeline != expected_pipeline:
+        errors.append(f"data-pipeline must match project pipeline: {expected_pipeline}")
+    if expected_language is not None and parser.html_attrs.get("lang") != expected_language:
+        errors.append(f"html lang must match project content_language: {expected_language}")
     if parser.duplicate_attributes:
         errors.append("Duplicate HTML attributes: " + ", ".join(parser.duplicate_attributes))
 
@@ -368,6 +434,8 @@ def validate_file(page: Path, spec: dict) -> list[str]:
         errors.append("Inline style forbidden: " + ", ".join(parser.inline_styles))
     if parser.remote_resources:
         errors.append("Remote resources forbidden: " + ", ".join(parser.remote_resources))
+    for dangerous in parser.dangerous_resources:
+        errors.append("Dangerous resource " + dangerous)
 
     leftover = re.findall(r"__[A-Z][A-Z0-9_]+__", text)
     if leftover:
@@ -414,8 +482,9 @@ def validate_file(page: Path, spec: dict) -> list[str]:
         elif sid == "audio-config":
             audio_json = content
         else:
-            # Unrecognised JSON block: treat as questions if no id
-            if not sid and not q_json:
+            if sid:
+                errors.append(f"Unknown script id: {sid}")
+            elif not q_json:
                 q_json = content
 
     if audio_json:
@@ -433,6 +502,92 @@ def validate_file(page: Path, spec: dict) -> list[str]:
     else:
         if q_json:
             errors.append("Non-quiz page should not declare questions")
+
+    composition = spec.get("composition_patterns", {}).get(f"{pipeline}_{page_format}", {})
+    rules = composition.get("validation", {})
+    if rules and not (leftover or guide_leftover):
+        map_rule = rules.get("learning_map", {})
+        node_class = map_rule.get("node_class", "")
+        target_class = map_rule.get("target_class", "")
+        map_nodes = [element for element in parser.elements if node_class in element["classes"]]
+        node_count = len(map_nodes)
+        if not map_rule.get("min_nodes", 0) <= node_count <= map_rule.get("max_nodes", node_count):
+            errors.append(
+                f"learning-map needs {map_rule['min_nodes']}-{map_rule['max_nodes']} {node_class} nodes; found {node_count}"
+            )
+        target_ids = {
+            element["attrs"].get("id", "")
+            for element in parser.elements
+            if target_class in element["classes"] and element["attrs"].get("id")
+        }
+        mapped_target_ids = {
+            href[1:]
+            for element in map_nodes
+            if (href := element["attrs"].get("href", "")).startswith("#") and href[1:] in target_ids
+        }
+        bad_targets = sorted({
+            element["attrs"].get("href", "")
+            for element in map_nodes
+            if not element["attrs"].get("href", "").startswith("#")
+            or element["attrs"].get("href", "")[1:] not in target_ids
+        })
+        if bad_targets:
+            errors.append(f"{node_class} targets must be {target_class} ids: " + ", ".join(bad_targets))
+
+        scene_rule = rules.get("scenes", {})
+        scene_class = scene_rule.get("scene_class", "")
+        scenes = [
+            (index, element) for index, element in enumerate(parser.elements)
+            if scene_class in element["classes"]
+        ]
+        scene_count = len(scenes)
+        minimum_scenes = scene_rule.get("min_scenes", 0)
+        if scene_count < minimum_scenes:
+            errors.append(f"lesson needs at least {minimum_scenes} {scene_class} elements; found {scene_count}")
+        required_any = set(scene_rule.get("required_any", []))
+        incomplete_scenes = []
+        checked_scenes = scenes
+        if scene_rule.get("required_any_scope") == "map_targets":
+            checked_scenes = [
+                (index, scene) for index, scene in scenes
+                if scene["attrs"].get("id", "") in mapped_target_ids
+            ]
+        for index, scene in checked_scenes:
+            if not any(
+                required_any & element["classes"] and index in element["ancestors"]
+                for element in parser.elements
+            ):
+                incomplete_scenes.append(scene["attrs"].get("id", "(missing id)"))
+        if incomplete_scenes:
+            errors.append(
+                f"each {scene_class} needs one of {', '.join(sorted(required_any))}: "
+                + ", ".join(incomplete_scenes)
+            )
+
+        audit_rule = rules.get("audit", {})
+        audit_class = audit_rule.get("section_class", "")
+        audit_indices = {
+            index for index, element in enumerate(parser.elements)
+            if audit_class in element["classes"]
+        }
+        for required_class in audit_rule.get("required_classes", []):
+            if not any(
+                required_class in element["classes"]
+                and any(index in audit_indices for index in element["ancestors"])
+                for element in parser.elements
+            ):
+                errors.append(f"{audit_class} missing required class: {required_class}")
+
+        practice_rule = rules.get("practice", {})
+        try:
+            questions = json.loads(q_json) if q_json else []
+        except json.JSONDecodeError:
+            questions = None
+        if isinstance(questions, list):
+            item_count = len(questions)
+            minimum = practice_rule.get("min_items", 0)
+            if item_count < minimum:
+                errors.append(f"practice needs at least {minimum} items; found {item_count}")
 
     # Production tasks need stable data-item-id wherever they appear.
     for idx, tid in enumerate(parser.production_task_ids):
@@ -493,7 +648,7 @@ def iter_project_pages(project: Path) -> list[Path]:
     for relative in ("outputs/lessons", "outputs/reference"):
         folder = project / relative
         if folder.is_dir():
-            pages.extend(sorted(folder.glob("*.html")))
+            pages.extend(sorted(folder.rglob("*.html")))
     return pages
 
 
@@ -535,8 +690,14 @@ def validate_kit(script_dir: Path, spec: dict) -> list[str]:
     gallery = spec.get("gallery", "")
     if gallery:
         gallery_name = Path(gallery).name
-        if not (kit_dir / "templates" / gallery_name).is_file():
+        gallery_path = kit_dir / "templates" / gallery_name
+        if not gallery_path.is_file():
             errors.append(f"Missing gallery: {gallery_name}")
+        else:
+            gallery_text = gallery_path.read_text(encoding="utf-8")
+            for question_type in spec.get("question_types", {}):
+                if question_type not in gallery_text:
+                    errors.append(f"Gallery missing question type: {question_type}")
 
     if not (script_dir / "references" / "ui-contract.md").is_file():
         errors.append("Missing UI contract")
@@ -593,6 +754,9 @@ def run_self_test(script_dir: Path, spec: dict) -> list[str]:
             "unknown-class": (valid.replace('class="reference-section"', 'class="reference-section rogue-card"'), True),
             "bracket-leftover": (valid.replace("<h2>Content</h2>", "<h2>[Central concept]</h2>"), True),
             "missing-asset": (valid.replace("../assets/lesson.css", "../assets/missing.css"), True),
+            "file-src": (valid.replace("</body>", '<img src="file:' + '//' + "/pri" + 'vate/x"></body>'), True),
+            "javascript-src": (valid.replace("</body>", '<iframe src="javascript:alert(1)"></iframe></body>'), True),
+            "data-object": (valid.replace("</body>", '<object data="data:text/plain,x"></object></body>'), True),
         }
 
         # Section-index test cases
@@ -659,6 +823,112 @@ def run_self_test(script_dir: Path, spec: dict) -> list[str]:
                 ), True),
         }
         cases.update(section_cases)
+
+        cert_questions = (
+            '[{"id":"q1","type":"single_choice","stem":"s1","options":["a","b"],"answer":0,"rationale":"r1"},'
+            '{"id":"q2","type":"single_choice","stem":"s2","options":["a","b"],"answer":0,"rationale":"r2"},'
+            '{"id":"q3","type":"single_choice","stem":"s3","options":["a","b"],"answer":0,"rationale":"r3"},'
+            '{"id":"q4","type":"single_choice","stem":"s4","options":["a","b"],"answer":0,"rationale":"r4"}]'
+        )
+        valid_cert_lesson = (
+            '<!doctype html><html lang="en"><head>'
+            '<link rel="stylesheet" href="../assets/lesson.css"></head>'
+            '<body data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="overview">'
+            '<main class="lesson-shell"><nav class="lesson-steps"><a href="#map">Map</a>'
+            '<a href="#case">Case</a><a href="#practice">Practice</a></nav>'
+            '<header class="lesson-header"><h1>Test</h1></header>'
+            '<section class="map-section" id="map" data-stage="map"><h2>Map</h2>'
+            '<div class="learning-map"><a class="map-node" href="#scene-1">One</a>'
+            '<a class="map-node" href="#scene-2">Two</a>'
+            '<a class="map-node" href="#scene-3">Three</a></div></section>'
+            '<section class="case-section" id="case" data-stage="case"><h2>Case</h2>'
+            '<article class="scene" id="scene-1"><h3>One</h3><p class="takeaway">A</p></article>'
+            '<article class="scene" id="scene-2"><h3>Two</h3><details class="quick-check"><summary>B</summary></details></article>'
+            '<article class="scene" id="scene-3"><h3>Three</h3><p class="takeaway">C</p></article>'
+            '</section><section class="audit-section" data-stage="case"><h2>Audit</h2>'
+            '<table class="coverage-table"><tr><th>Target</th></tr><tr><td>A</td></tr></table></section>'
+            '<section class="quiz-section" id="practice" data-stage="practice"><h2>Practice</h2>'
+            '<div class="quiz-toolbar"><span id="scoreText">Score</span>'
+            '<button id="resetQuiz" type="button">Reset</button></div><div id="quiz"></div></section>'
+            '<script id="lesson-questions" type="application/json">' + cert_questions + '</script>'
+            '<script src="../assets/lesson.js"></script></main></body></html>'
+        )
+        cert_cases = {
+            "valid-certification-lesson": (valid_cert_lesson, False),
+            "cert-extra-scenes-allowed": (
+                valid_cert_lesson.replace(
+                    "</section><section class=\"audit-section\"",
+                    '<article class="scene" id="scene-4"><h3>Four</h3><p class="takeaway">D</p></article>'
+                    '<article class="scene" id="scene-5"><h3>Five</h3><p class="takeaway">E</p></article>'
+                    '<article class="scene" id="scene-6"><h3>Six</h3><p class="takeaway">F</p></article>'
+                    '</section><section class="audit-section"',
+                ), False),
+            "cert-extra-practice-items-allowed": (
+                valid_cert_lesson.replace(
+                    "]</script>",
+                    ',{"id":"q5","type":"single_choice","stem":"s5","options":["a","b"],"answer":0,"rationale":"r5"}'
+                    ',{"id":"q6","type":"single_choice","stem":"s6","options":["a","b"],"answer":0,"rationale":"r6"}'
+                    ',{"id":"q7","type":"single_choice","stem":"s7","options":["a","b"],"answer":0,"rationale":"r7"}]</script>',
+                    1,
+                ), False),
+            "cert-supported-question-types-allowed": (
+                valid_cert_lesson.replace(
+                    '{"id":"q4","type":"single_choice","stem":"s4","options":["a","b"],"answer":0,"rationale":"r4"}',
+                    '{"id":"q4","type":"true_false","stem":"s4","answer":true,"rationale":"r4"}',
+                ), False),
+            "cert-too-few-map-nodes": (
+                valid_cert_lesson.replace('<a class="map-node" href="#scene-2">Two</a>', "")
+                .replace('<a class="map-node" href="#scene-3">Three</a>', ""), True),
+            "cert-map-target-not-scene": (
+                valid_cert_lesson.replace('href="#scene-1">One</a>', 'href="#case">One</a>'), True),
+            "cert-too-few-scenes": (
+                valid_cert_lesson.replace('<a class="map-node" href="#scene-3">Three</a>', "")
+                .replace('<article class="scene" id="scene-3"><h3>Three</h3><p class="takeaway">C</p></article>', ""), True),
+            "cert-scene-without-check": (
+                valid_cert_lesson.replace('<p class="takeaway">C</p>', ""), True),
+            "cert-missing-coverage-table": (
+                valid_cert_lesson.replace(' class="coverage-table"', ""), True),
+            "cert-too-few-practice-items": (
+                valid_cert_lesson.replace(
+                    ',{"id":"q4","type":"single_choice","stem":"s4","options":["a","b"],"answer":0,"rationale":"r4"}',
+                    "",
+                ), True),
+        }
+        cases.update(cert_cases)
+        for pipeline in ("capability", "language"):
+            valid_lesson = valid_cert_lesson.replace(
+                'data-pipeline="certification"', f'data-pipeline="{pipeline}"'
+            )
+            cases.update({
+                f"valid-{pipeline}-lesson": (valid_lesson, False),
+                f"{pipeline}-map-target-not-scene": (
+                    valid_lesson.replace('href="#scene-1">One</a>', 'href="#case">One</a>'), True),
+                f"{pipeline}-too-few-map-nodes": (
+                    valid_lesson
+                    .replace('<a class="map-node" href="#scene-1">One</a>', "")
+                    .replace('<a class="map-node" href="#scene-2">Two</a>', "")
+                    .replace('<a class="map-node" href="#scene-3">Three</a>', ""),
+                    True,
+                ),
+                f"{pipeline}-too-few-scenes": (
+                    valid_lesson
+                    .replace('href="#scene-2">Two</a>', 'href="#scene-1">Two</a>')
+                    .replace('href="#scene-3">Three</a>', 'href="#scene-1">Three</a>')
+                    .replace('<article class="scene" id="scene-2"><h3>Two</h3><details class="quick-check"><summary>B</summary></details></article>', "")
+                    .replace('<article class="scene" id="scene-3"><h3>Three</h3><p class="takeaway">C</p></article>', ""),
+                    True,
+                ),
+                f"{pipeline}-mapped-scene-without-check": (
+                    valid_lesson.replace('<p class="takeaway">C</p>', ""), True),
+                f"{pipeline}-unlinked-scene-without-check": (
+                    valid_lesson.replace(
+                        '</section><section class="audit-section"',
+                        '<article class="scene" id="scene-extra"><h3>Extra</h3></article>'
+                        '</section><section class="audit-section"',
+                    ),
+                    False,
+                ),
+            })
         for name, (html, should_fail) in cases.items():
             page = ref_dir / f"{name}.html"
             page.write_text(html, encoding="utf-8")
@@ -670,6 +940,42 @@ def run_self_test(script_dir: Path, spec: dict) -> list[str]:
         invalid_question = '[{"id":"q1","type":"single_choice","stem":"x","options":["<b>x</b>","y"],"answer":0,"rationale":"x"}]'
         if not validate_questions_v2(invalid_question, spec.get("question_types", {})):
             failures.append("HTML in option unexpectedly passed")
+        # true_false validation
+        valid_tf = '[{"id":"tf1","type":"true_false","stem":"sky is blue","answer":true,"rationale":"yes"}]'
+        if validate_questions_v2(valid_tf, spec.get("question_types", {})):
+            failures.append("valid true_false unexpectedly failed")
+        bad_tf = '[{"id":"tf2","type":"true_false","stem":"x","answer":1,"rationale":"x"}]'
+        if not validate_questions_v2(bad_tf, spec.get("question_types", {})):
+            failures.append("true_false with integer answer unexpectedly passed")
+        # matching validation
+        valid_match = '[{"id":"m1","type":"matching","stem":"x","pairs":[{"left":"a","right":"1"},{"left":"b","right":"2"},{"left":"c","right":"3"}],"rationale":"x"}]'
+        if validate_questions_v2(valid_match, spec.get("question_types", {})):
+            failures.append("valid matching unexpectedly failed")
+        bad_match = '[{"id":"m2","type":"matching","stem":"x","pairs":[{"left":"a","right":"1"},{"left":"b","right":"2"}],"rationale":"x"}]'
+        if not validate_questions_v2(bad_match, spec.get("question_types", {})):
+            failures.append("matching with too few pairs unexpectedly passed")
+        dup_match = '[{"id":"m3","type":"matching","stem":"x","pairs":[{"left":"a","right":"1"},{"left":"a","right":"2"},{"left":"c","right":"3"}],"rationale":"x"}]'
+        if not validate_questions_v2(dup_match, spec.get("question_types", {})):
+            failures.append("matching with duplicate left unexpectedly passed")
+        # 4B validator boundary tests
+        bool_sc = '[{"id":"bsc1","type":"single_choice","stem":"x","options":["a","b"],"answer":true,"rationale":"x"}]'
+        if not validate_questions_v2(bool_sc, spec.get("question_types", {})):
+            failures.append("single_choice with boolean answer unexpectedly passed")
+        dup_right = '[{"id":"dr1","type":"matching","stem":"x","pairs":[{"left":"a","right":"1"},{"left":"b","right":"1"},{"left":"c","right":"2"}],"rationale":"x"}]'
+        if not validate_questions_v2(dup_right, spec.get("question_types", {})):
+            failures.append("matching with duplicate right unexpectedly passed")
+        unknown_pair = '[{"id":"up1","type":"matching","stem":"x","pairs":[{"left":"a","right":"1","extra":"x"},{"left":"b","right":"2"},{"left":"c","right":"3"}],"rationale":"x"}]'
+        if not validate_questions_v2(unknown_pair, spec.get("question_types", {})):
+            failures.append("matching pair with unknown field unexpectedly passed")
+        valid_audio = '[{"id":"va1","type":"single_choice","stem":"x","options":["a","b"],"answer":0,"rationale":"x","audio_text":"hello"}]'
+        if validate_questions_v2(valid_audio, spec.get("question_types", {})):
+            failures.append("valid audio_text unexpectedly failed")
+        bad_id_dict = '[{"id":{"bad":1},"type":"single_choice","stem":"x","options":["a","b"],"answer":0,"rationale":"x"}]'
+        if not validate_questions_v2(bad_id_dict, spec.get("question_types", {})):
+            failures.append("dict id unexpectedly passed (should reject non-string id)")
+        bad_id_list = '[{"id":[1,2],"type":"single_choice","stem":"x","options":["a","b"],"answer":0,"rationale":"x"}]'
+        if not validate_questions_v2(bad_id_list, spec.get("question_types", {})):
+            failures.append("list id unexpectedly passed (should reject non-string id)")
     if not failures:
         n_valid = sum(1 for _, should_fail in cases.values() if not should_fail)
         print(f"OK self-test: {n_valid} valid + {len(cases) - n_valid} rejection cases passed")
@@ -707,8 +1013,10 @@ def main() -> int:
 
     if args.file:
         pages = [args.file.resolve()]
+        config = None
     else:
         project = args.project.resolve()
+        _, config, _ = load_project(project)
         pages = iter_project_pages(project)
         if not pages:
             print(f"FAIL: no HTML found in {project}", file=sys.stderr)
@@ -716,7 +1024,8 @@ def main() -> int:
 
     failed = False
     for page in pages:
-        errors = validate_file(page, spec)
+        errors = validate_file(page, spec, config["pipeline"] if config else None,
+                               config["content_language"] if config else None)
         if errors:
             failed = True
             print(f"FAIL {page}")

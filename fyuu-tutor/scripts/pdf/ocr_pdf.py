@@ -47,9 +47,17 @@ def main():
         raise SystemExit(exc)
     if output.exists() and not (args.append or args.overwrite):
         raise SystemExit(f"output exists; choose --append or --overwrite: {output}")
+    if source == output:
+        raise SystemExit("--source and --output must differ")
     output.parent.mkdir(parents=True, exist_ok=True)
-    with output.open("a" if args.append else "w", encoding="utf-8") as handle:
-        handle.write("".join(chunks))
+    content = "".join(chunks)
+    if args.append and output.exists():
+        content = output.read_text(encoding="utf-8") + content
+    import tempfile as _tmp
+    with _tmp.NamedTemporaryFile("w", encoding="utf-8", dir=output.parent, delete=False) as handle:
+        handle.write(content)
+        temporary = Path(handle.name)
+    temporary.replace(output)
     print(f"OK {len(chunks)} pages -> {output}")
 
 

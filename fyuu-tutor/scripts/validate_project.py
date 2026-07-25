@@ -11,7 +11,7 @@ sys.dont_write_bytecode = True
 
 from project_config import REQUIRED_PATHS, load_project, resolve_child, resolve_path, status_value, validate_config
 
-STATUS_FIELDS = ("State", "Owner", "Claimed at", "Production progress", "Learning progress", "Next action", "Blockers")
+STATUS_FIELDS = ("State", "Owner", "Claimed at", "Updated at", "Production progress", "Learning progress", "Next action", "Blockers")
 STATUS_STATES = {"idle", "in_progress", "blocked"}
 CERTIFICATION_FIELDS = {
     "exam_date": str,
@@ -77,17 +77,25 @@ def main():
                 errors.append(f"missing profile: {path}")
     status_path = root / "STATUS.md"
     if status_path.is_file():
-        status = status_path.read_text(encoding="utf-8")
-        for field in STATUS_FIELDS:
-            if status_value(status, field) is None:
-                errors.append(f"STATUS.md missing field: {field}")
-        state = status_value(status, "State")
-        if state and state not in STATUS_STATES:
-            errors.append(f"STATUS.md invalid State: {state}")
-        if state == "in_progress":
-            for field in ("Owner", "Claimed at"):
-                if status_value(status, field) in (None, "", "—"):
-                    errors.append(f"STATUS.md {field} required while in_progress")
+        try:
+            status = status_path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            errors.append("STATUS.md must be valid UTF-8")
+        else:
+            for field in STATUS_FIELDS:
+                if status_value(status, field) is None:
+                    errors.append(f"STATUS.md missing field: {field}")
+            state = status_value(status, "State")
+            if state and state not in STATUS_STATES:
+                errors.append(f"STATUS.md invalid State: {state}")
+            if state == "in_progress":
+                for field in ("Owner", "Claimed at"):
+                    if status_value(status, field) in (None, "", "—"):
+                        errors.append(f"STATUS.md {field} required while in_progress")
+            for field in ("Owner", "Next action", "Blockers"):
+                val = status_value(status, field) or ""
+                if isinstance(val, str) and ("\n" in val or "|" in val):
+                    errors.append(f"STATUS.{field} must not contain newlines or pipe characters")
     if errors:
         for error in errors:
             print(f"ERROR {error}")
