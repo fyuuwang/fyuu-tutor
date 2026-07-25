@@ -819,6 +819,18 @@ pretest_questions = 0
             sys.path.remove(str(scripts))
             shutil.rmtree(ws, ignore_errors=True)
 
+    def test_portal_scan_ignores_worktree_git_metadata(self):
+        """Git worktree metadata is not published portal content."""
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / ".git").write_text("gitdir: /" + "private/worktree\n", encoding="utf-8")
+            sys.path.insert(0, str(ROOT / "scripts"))
+            try:
+                from build_portal import scan_content
+                self.assertEqual([], scan_content(root, []))
+            finally:
+                sys.path.remove(str(ROOT / "scripts"))
+
     def test_portal_staging_cleanup_on_symlink_failure(self):
         """If copy fails mid-way (symlink), staging temp dir must be cleaned up."""
         import tempfile, shutil, os, glob
