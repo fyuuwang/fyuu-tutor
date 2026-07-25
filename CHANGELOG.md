@@ -2,6 +2,13 @@
 
 All notable changes are recorded here. Preview releases may contain breaking changes, which must include migration notes.
 
+## [0.5.1] — Portal Deployment Patch — 2026-07-26
+
+### Fixed
+
+- The portal privacy scan now excludes a temporary deployment worktree's `.git` metadata while continuing to scan every published file.
+- Added a regression test for the Git worktree deployment path.
+
 ## [0.5.0] — Safe Learning Portal and New Question Types — 2026-07-25
 
 ### Added

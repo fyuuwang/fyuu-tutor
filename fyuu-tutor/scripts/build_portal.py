@@ -175,6 +175,10 @@ def scan_content(out_dir: Path, markers: list[str]) -> list[str]:
         if not path.is_file():
             continue
         rel = path.relative_to(out_dir)
+        # A deployment worktree has Git metadata at its root. It is not part
+        # of the published tree and must not be mistaken for portal content.
+        if rel.parts and rel.parts[0] == ".git":
+            continue
         try:
             text = path.read_text(encoding="utf-8")
         except (UnicodeDecodeError, OSError) as e:
