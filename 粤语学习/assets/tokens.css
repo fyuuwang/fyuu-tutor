@@ -1,0 +1,69 @@
+:root {
+  color-scheme: light;
+  /* Primitive tokens: stable values, never assigned to a course directly. */
+  --neutral-white: #ffffff;
+  --neutral-ink: #202634;
+  --neutral-ink-soft: #5f6673;
+  --neutral-ink-faint: #7d8490;
+  --neutral-page: #eff1f3;
+  --neutral-line: #d9dce2;
+  --neutral-line-strong: #bdc2cb;
+  --neutral-surface-soft: #f7f7f8;
+  --morandi-blue-page: #e8eaf0;
+  --morandi-blue-primary: #6b7696;
+  --morandi-blue-deep: #535d79;
+  --morandi-blue-soft: #eff0f5;
+  --morandi-rose-page: #f0e8e7;
+  --morandi-rose-primary: #987370;
+  --morandi-rose-deep: #765653;
+  --morandi-rose-soft: #f6efee;
+  --morandi-sage-page: #e8ece8;
+  --morandi-sage-primary: #6c806f;
+  --morandi-sage-deep: #526356;
+  --morandi-sage-soft: #eef2ee;
+  --morandi-sand-page: #eeeae2;
+  --morandi-sand-primary: #84765f;
+  --morandi-sand-deep: #655a48;
+  --morandi-sand-soft: #f4f1eb;
+  --morandi-lavender-page: #ece9f0;
+  --morandi-lavender-primary: #7b708b;
+  --morandi-lavender-deep: #5e556b;
+  --morandi-lavender-soft: #f2eff5;
+  --status-success: #526f60;
+  --status-success-soft: #e9f1ec;
+  --status-error: #985b53;
+  --status-error-soft: #f6ecea;
+
+  /* Semantic tokens: the default overview theme. */
+  --page: var(--neutral-page);
+  --practice-page: var(--morandi-blue-page);
+  --surface: var(--neutral-white);
+  --surface-soft: var(--neutral-surface-soft);
+  --ink: var(--neutral-ink);
+  --ink-soft: var(--neutral-ink-soft);
+  --ink-faint: var(--neutral-ink-faint);
+  --line: var(--neutral-line);
+  --line-strong: var(--neutral-line-strong);
+  --indigo: var(--morandi-blue-primary);
+  --indigo-dark: var(--morandi-blue-deep);
+  --indigo-soft: var(--morandi-blue-soft);
+  --green: var(--status-success);
+  --green-soft: var(--status-success-soft);
+  --red: var(--status-error);
+  --red-soft: var(--status-error-soft);
+
+  /* Component tokens: shared behavior across every course theme. */
+  --nav-active: var(--indigo);
+  --focus-ring: var(--indigo-dark);
+  --map-hub-bg: var(--indigo-dark);
+  --map-hub-muted: #f0f1f5;
+  --option-hover-border: var(--indigo);
+  --option-hover-bg: var(--indigo-soft);
+  --feedback-correct: var(--green);
+  --feedback-correct-bg: var(--green-soft);
+  --feedback-wrong: var(--red);
+  --feedback-wrong-bg: var(--red-soft);
+  --shadow: 0 18px 48px rgba(23, 32, 51, 0.08);
+  --radius: 12px;
+  --content: 1080px;
+}

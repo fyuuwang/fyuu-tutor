@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PMP UI v2 的三种课程格式、五组固定主题和反馈语义预览。">
+  <title>PMP UI v2 · 主题与组件预览</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body data-ui-version="2" data-pipeline="certification" data-format="reference" data-theme="overview">
+  <a class="skip-link" href="#gallery-content">跳到预览正文</a>
+  <main class="lesson-shell" id="gallery-content">
+    <header class="lesson-header">
+      <p class="eyebrow">PMP UI v2 · 私有标准库</p>
+      <h1>三种用途，一套稳定的学习界面</h1>
+      <p class="lesson-deck">
+        Agent 不再为每一课重新设计页面。它只判断课程用途与知识领域，
+        然后从固定格式、主题和组件中组合。
+      </p>
+      <dl class="lesson-meta">
+        <div><dt>格式</dt><dd>授课、练习、速查</dd></div>
+        <div><dt>主题</dt><dd>总览、人员、过程、业务、复习</dd></div>
+        <div><dt>状态</dt><dd>UI v2</dd></div>
+      </dl>
+    </header>
+
+    <section class="reference-section" aria-labelledby="themes-title">
+      <p class="eyebrow">固定主题</p>
+      <h2 id="themes-title">颜色表达知识位置，不表达 Agent 个性</h2>
+      <p class="section-intro">
+        Page 是刷题背景，Primary 负责装饰和结构，Deep 负责文字、焦点和白字承载面。
+        正确与错误不随主题变化。
+      </p>
+      <div class="theme-gallery" aria-label="五组固定主题预览">
+        <article class="theme-sample" data-preview-theme="overview">
+          <div class="theme-sample__surface"><strong>Overview</strong><span>总地图 · 跨领域整合</span></div>
+        </article>
+        <article class="theme-sample" data-preview-theme="people">
+          <div class="theme-sample__surface"><strong>People</strong><span>团队 · 沟通 · 干系人</span></div>
+        </article>
+        <article class="theme-sample" data-preview-theme="process">
+          <div class="theme-sample__surface"><strong>Process</strong><span>交付 · 方法 · 控制</span></div>
+        </article>
+        <article class="theme-sample" data-preview-theme="business">
+          <div class="theme-sample__surface"><strong>Business</strong><span>价值 · 治理 · 环境</span></div>
+        </article>
+        <article class="theme-sample" data-preview-theme="review">
+          <div class="theme-sample__surface"><strong>Review</strong><span>复习 · 错题 · 模考</span></div>
+        </article>
+      </div>
+
+      <p class="eyebrow">固定格式</p>
+      <h2 id="formats-title">不同学习任务使用不同设计语言</h2>
+      <div class="format-gallery" aria-labelledby="formats-title">
+        <article class="format-demo">
+          <strong>Lesson · 普通授课</strong>
+          <p>干净中性画布，用地图、关系、编号和贯穿案例建立理解。</p>
+          <p class="takeaway">只有答题区进入莫兰迪练习语言。</p>
+        </article>
+        <article class="format-demo format-demo--practice">
+          <strong>Practice · 刷题训练</strong>
+          <p>莫兰迪背景承托白色题卡，选项、计分、重做和反馈位置固定。</p>
+          <p>答对与答错同时显示文字，不只依赖颜色。</p>
+        </article>
+        <article class="format-demo format-demo--reference">
+          <strong>Reference · 知识速查</strong>
+          <p>信息密度更高，适合公式、边界表和知识地图。</p>
+          <p>不强行加入完整三阶段授课流程。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="reference-section" aria-labelledby="components-title">
+      <p class="eyebrow">有限组件</p>
+      <h2 id="components-title">Agent 负责选组件，不负责发明组件</h2>
+      <div class="reference-grid">
+        <article class="reference-item"><h3>建立结构</h3><p>地图、价值链、判断路径、比较矩阵、关系网。</p></article>
+        <article class="reference-item"><h3>讲清边界</h3><p>边界对照、结论提示、即时检查。</p></article>
+        <article class="reference-item"><h3>保留依据</h3><p>ECO 与来源包进入默认折叠的审计区。</p></article>
+        <article class="reference-item"><h3>验证学习</h3><p>统一题卡、文字反馈、计分与重做。</p></article>
+      </div>
+    </section>
+    <footer class="lesson-footer"><p>规范来源：项目根目录 UI-CONTRACT.md · 本页不包含私人教材正文。</p></footer>
+  </main>
+  <script src="../assets/lesson.js"></script>
+</body>
+</html>

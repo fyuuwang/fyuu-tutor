@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="把&quot;对的东西&quot;交付出去">
+  <title>第 2 课 · 把对的东西交付出去</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="process">
+  <a class="skip-link" href="#lesson-content">跳到课程正文</a>
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
+  <main class="lesson-shell" id="lesson-content">
+    <nav class="lesson-steps" aria-label="课程三阶段">
+      <a href="#map" aria-current="step"><span class="step-number">01</span><span>先看地图</span></a>
+      <a href="#case"><span class="step-number">02</span><span>沿案例走</span></a>
+      <a href="#practice"><span class="step-number">03</span><span>做题验证</span></a>
+    </nav>
+    <header class="lesson-header">
+      <p class="eyebrow">PMP 备考 · 第 2 课</p>
+      <h1>把"对的东西"交付出去</h1>
+      <p class="lesson-deck">老板丢来一句"做个年会报名小程序，下个月用"。你憋两周做完，演示时老板皱眉："我要的是能现场抽奖互动的，你这个只能报名？"这就是交付绩效域要解决的事：保证你交付的是干系人真正要的、达到质量的东西。</p>
+      <dl class="lesson-meta">
+        <div><dt>预计时间</dt><dd>30-45 分钟</dd></div>
+        <div><dt>课程位置</dt><dd>交付绩效域</dd></div>
+        <div><dt>学习结果</dt><dd>需求启发、DoD、质量成本与价值交付</dd></div>
+      </dl>
+    </header>
+    <section class="map-section" id="map" data-stage="map" aria-labelledby="map-title">
+      <p class="eyebrow">先看地图</p>
+      <h2 id="map-title">从小程序看交付五问</h2>
+      <p class="section-intro">交付绩效域关注范围和质量。把报名小程序里 PM 真实要做的事，归成五个问题。</p>
+      <div class="learning-map" aria-label="交付绩效域地图">
+        <div class="map-hub"><strong>交付</strong><span>范围与质量</span></div>
+        <a class="map-node map-node--why" href="#scene-1"><strong>要什么？</strong><span>需求启发与六标准</span></a>
+        <a class="map-node map-node--govern" href="#scene-2"><strong>怎么拆？</strong><span>WBS、用户故事</span></a>
+        <a class="map-node map-node--build" href="#scene-3"><strong>叫完成？</strong><span>DoD 完成的定义</span></a>
+        <a class="map-node map-node--owner" href="#scene-5"><strong>怎么算钱？</strong><span>质量成本 COQ 四类</span></a>
+        <a class="map-node map-node--environment" href="#scene-7"><strong>值不值？</strong><span>商业论证与效益实现</span></a>
+      </div>
+    </section>
+    <section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
+      <p class="eyebrow">沿案例走</p>
+      <h2 id="case-title">报名小程序背后的交付</h2>
+      <p class="section-intro">继续年会世界：这次你负责给年会做一个"报名加现场互动"小程序。七个场景走一遍，概念自然落地。</p>
+      <article class="scene" id="scene-1">
+        <div class="scene-number">01</div>
+        <div class="scene-body">
+          <h3>"做个好用的"——到底要啥？</h3>
+          <p>老板说"好用"，HR 说"能统计报名"，员工说"别卡"。光靠访谈问不出全部。你还去观察了去年手动报名时哪里卡壳、翻了旧系统的缺陷日志、看了竞品的差评数据，这才把需求拼全。</p>
+          <p class="takeaway">需求启发不等于只做访谈：访谈、焦点小组、观察过程、分析数据、审查缺陷日志都可以。好需求要满足六条：清晰、简洁、可核实、一致、完整、可跟踪。</p>
+          <details class="quick-check">
+            <summary>想一想："好用"这种需求，用哪种方式最容易让老板说清？</summary>
+            <p>做个原型或演示给他看（眼见为实）。需求模糊时，适应型用原型或故事板演变需求，比逼他签需求文档有效。</p>
+          </details>
+        </div>
+      </article>
+      <article class="scene" id="scene-2">
+        <div class="scene-number">02</div>
+        <div class="scene-body">
+          <h3>把"好用"拆成能干的活</h3>
+          <p>你得把报名小程序拆开。预测型会画 WBS（工作分解结构），把全部工作层层拆成小块，配 WBS 字典说清每块细节。走敏捷的话，就拆成主题→史诗故事(epic)→特性→用户故事。</p>
+          <dl class="boundary-list">
+            <div class="boundary-row"><dt>用户故事</dt><dd>从用户角度写的简短需求（"作为员工，我想用手机报名，以便不用开电脑"），细节靠对话补。</dd></div>
+            <div class="boundary-row"><dt>史诗故事</dt><dd>太大、一个迭代做不完的用户故事，是装小故事的容器。</dd></div>
+            <div class="boundary-row"><dt>最后责任时刻</dt><dd>在这个时刻才定义故事细节，避免需求变了导致规划白做。</dd></div>
+          </dl>
+          <p class="takeaway">把“好用”拆成可验证的工作，才能在预测型与敏捷型之间选择合适的分解方式。</p>
+        </div>
+      </article>
+      <article class="scene" id="scene-3">
+        <div class="scene-number">03</div>
+        <div class="scene-body">
+          <h3>"做完了"到底谁说了算？</h3>
+          <p>程序员说"这个报名功能我做完了"。你问：测了吗？文档呢？能上线吗？他说"代码写完了呀"。——代码写完不等于完成。</p>
+          <p class="takeaway">完成的定义（DoD）是一张检查清单：可交付物要能供客户使用，必须达到的所有准则（如代码评审过、测试通过、文档齐全、可部署）。没满足 DoD 就不算完成。预测型里类似的叫验收标准或完成标准。</p>
+        </div>
+      </article>
+      <article class="scene" id="scene-4">
+        <div class="scene-number">04</div>
+        <div class="scene-body">
+          <h3>老板不停加功能 vs 竞品不停逼你改</h3>
+          <p>两种"加东西"，PMBOK 给了两个不同的名字，应对方式也完全不同。</p>
+          <dl class="boundary-list">
+            <div class="boundary-row"><dt>范围蔓延 (scope creep)</dt><dd>稳定环境里，接了额外范围却不调进度/预算/资源。老板说"加个签到打卡吧"但不给时间就是它。应对：走变更控制系统，评估影响再交治理机构或产品负责人批准。</dd></div>
+            <div class="boundary-row"><dt>完成漂移 (scope drift)</dt><dd>变化快的环境里，"什么算完成"的目标本身在跑。竞品每月上新功能，你跟着加，上市日期一直推。只能权衡何时发布。</dd></div>
+          </dl>
+          <p class="takeaway">范围蔓延是治理失败，靠变更控制；完成漂移是市场现实，靠权衡发布时机。分类的意义就在于应对方式不同。</p>
+        </div>
+      </article>
+      <article class="scene" id="scene-5">
+        <div class="scene-number">05</div>
+        <div class="scene-body">
+          <h3>返工、测试、培训、保修——这些钱怎么算</h3>
+          <p>你算了笔账：给团队做培训花了钱；每个功能要测试；上线前发现的 bug 要返工；上线后被投诉要紧急修。这四种钱，PMBOK 叫质量成本（COQ），按时序排就记住了。</p>
+          <table class="term-table">
+            <thead><tr><th>类别</th><th>什么时候</th><th>例子</th></tr></thead>
+            <tbody>
+              <tr><td><strong>预防 Prevention</strong></td><td>事前·防缺陷</td><td>培训、质量规划、制定规范、QA 体系</td></tr>
+              <tr><td><strong>评估 Appraisal</strong></td><td>事中·查符合</td><td>测试、核实、质量审计、供应商评级</td></tr>
+              <tr><td><strong>内部失败</strong></td><td>交付前发现</td><td>返工、报废、浪费、失败分析</td></tr>
+              <tr><td><strong>外部失败</strong></td><td>交付后发现</td><td>保修、投诉、退货、召回、声誉受损</td></tr>
+            </tbody>
+          </table>
+          <p class="takeaway">记忆钩子 预防→评估→内部失败→外部失败：按时序排，越往后越糟。前两个是一致性成本（主动投资，把事做对）；后两个是非一致性成本（没做对，被迫赔）。</p>
+          <details class="quick-check">
+            <summary>想一想：上线后被员工投诉导致紧急修复，属于哪类？</summary>
+            <p>外部失败成本——产品已交付到客户手里才发现的缺陷，属于非一致性成本。</p>
+          </details>
+        </div>
+      </article>
+      <article class="scene" id="scene-6">
+        <div class="scene-number">06</div>
+        <div class="scene-body">
+          <h3>为什么"晚发现"那么贵？</h3>
+          <p>你在测试阶段才发现一个需求理解错了，得返工。要是需求阶段就发现，改一下就行。变更成本曲线描述的就是这个：发现缺陷越晚，纠正越贵——需求阶段改 1 块，到生产阶段可能要 150 块。</p>
+          <p class="takeaway">变更成本曲线决定了质量前移、预防胜于检查。越晚发现缺陷，基于它做的设计和开发就越多，改起来牵连越广、越贵。</p>
+        </div>
+      </article>
+      <article class="scene" id="scene-7">
+        <div class="scene-number">07</div>
+        <div class="scene-body">
+          <h3>这玩意儿到底值不值？</h3>
+          <p>年会结束，老板问：花 8 万做这个小程序，值吗？你得拿出商业论证说明它对齐了公司目标（比如省了 HR 200 小时人工），还拿效益实现计划证明收益在规划时间内兑现了。</p>
+          <dl class="boundary-list">
+            <div class="boundary-row"><dt>商业论证</dt><dd>说明"为什么做、值多少"，格式随开发方法变——预测型是详细 ROI 论证，适应型可能是精益创业画布。</dd></div>
+            <div class="boundary-row"><dt>效益实现计划</dt><dd>项目授权文件量化预期成果以便定期测量。适应型可在项目期间持续交付价值，预测型往往结束时才一次性交付。</dd></div>
+          </dl>
+          <p class="takeaway">交付的终点不是交货，而是证明价值实现了。5 个预期成果：推进战略、交付了要交付的成果、规划时间内实现收益、团队对需求有清晰理解、干系人接受并满意。</p>
+        </div>
+      </article>
+    </section>
+    <section class="audit-section" data-stage="case" aria-labelledby="audit-title">
+      <p class="eyebrow">来源与映射</p>
+      <h2 id="audit-title">把场景翻译回 PMBOK</h2>
+      <div class="audit-grid">
+        <details class="audit-card">
+          <summary>场景与交付绩效域对照</summary>
+          <div class="audit-content">
+            <table class="coverage-table">
+              <thead><tr><th>场景</th><th>PMBOK 概念</th></tr></thead>
+              <tbody>
+                <tr><td>1 启发需求</td><td>需求启发 elicitation、需求六标准</td></tr>
+                <tr><td>2 拆活</td><td>WBS、用户故事/史诗故事、最后责任时刻</td></tr>
+                <tr><td>3 谁算完成</td><td>完成的定义 DoD、验收标准</td></tr>
+                <tr><td>4 加功能或被逼改</td><td>范围蔓延 vs 完成漂移、变更控制系统</td></tr>
+                <tr><td>5 四种钱</td><td>质量成本 COQ（预防/评估/内部失败/外部失败）</td></tr>
+                <tr><td>6 晚发现很贵</td><td>变更成本曲线、质量前移、预防胜于检查</td></tr>
+                <tr><td>7 值不值</td><td>价值交付、商业论证、效益实现计划</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+        <details class="audit-card">
+          <summary>本地来源</summary>
+          <div class="audit-content">
+            <ul>
+              <li>PMBOK 第 7 版 2.6 节（交付绩效域）</li>
+              <li>2026 PMP ECO 相关 Task 与 Enabler</li>
+              <li>下一节：测量绩效域</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="quiz-section" id="practice" data-stage="practice" data-question-label="交付情境题" aria-labelledby="practice-title">
+      <p class="eyebrow">做题验证</p>
+      <h2 id="practice-title">十一道题：巩固加情境迁移</h2>
+      <p class="section-intro">前五道直接认概念，后六道是情境题含两道螺旋复习。</p>
+      <div class="quiz-toolbar"><span id="scoreText" aria-live="polite">已答 0 / 11 · 正确 0</span><button class="reset-button" id="resetQuiz" type="button">重新作答</button></div>
+      <div id="quiz"></div>
+    </section>
+    <footer class="lesson-footer"><p>本课对应 PMBOK 2.6 节。做完把错题报给我，下节课开篇重抽。下一节：测量绩效域。</p></footer>
+  </main>
+  <script id="lesson-questions" type="application/json">
+[
+  {
+    "id": "LESSON-0002-DELIVERY-DOMAIN-Q001",
+    "type": "single_choice",
+    "stem": "给团队做\"代码评审培训\"和制定规范，属于哪类质量成本？",
+    "options": [
+      "评估成本",
+      "预防成本",
+      "内部失败成本",
+      "外部失败成本"
+    ],
+    "answer": 1,
+    "rationale": "培训、质量规划、制定规范、QA体系都是 事前防缺陷 → 预防成本 (一致性成本)。"
+  },
+  {
+    "id": "LESSON-0002-DELIVERY-DOMAIN-Q002",
+    "type": "single_choice",
+    "stem": "适应型方法(尤其软件)里，\"完成的定义(DoD)\"是？",
+    "options": [
+      "代码写完即算完成",
+      "可交付物供客户使用须达到的所有准则的检查清单",
+      "老板点头就算完成",
+      "测试通过就算完成"
+    ],
+    "answer": 1,
+    "rationale": "DoD 是一张检查清单，列明可交付物 可供客户使用 须满足的 所有准则 。代码写完/测试通过都只是其中一项，不算完整 DoD。"
+  },
+  {
+    "id": "LESSON-0002-DELIVERY-DOMAIN-Q003",
+    "type": "single_choice",
+    "stem": "PMBOK 里\"质量 (Quality)\"的定义是？",
+    "options": [
+      "产品没有 bug",
+      "一系列内在特征满足需求的程度",
+      "符合进度和预算",
+      "通过验收测试"
+    ],
+    "answer": 1,
+    "rationale": "质量 = 一系列内在特征满足需求的程度 。不是\"没 bug\"那么简单，而是\"满足需求/适合使用\"。"
+  },
+  {
+    "id": "LESSON-0002-DELIVERY-DOMAIN-Q004",
+    "type": "single_choice",
+    "stem": "上线 后 被客户发现缺陷，导致的退货、保修、投诉，属于？",
+    "options": [
+      "预防成本",
+      "评估成本",
+      "内部失败成本",
+      "外部失败成本"
+    ],
+    "answer": 3,
+    "rationale": "产品已交付到客户手里才发现 = 外部失败 成本(非一致性)。内部失败是交付 前 发现的。"
+  },
+  {
+    "id": "LESSON-0002-DELIVERY-DOMAIN-Q005",
+    "type": "single_choice",
+    "stem": "\"范围蔓延 (scope creep)\"指？",
+    "options": [
+      "需求在设计阶段不断演变",
+      "接受额外范围/需求却不调整进度、预算、资源",
+      "竞品逼着不停加功能",
+      "团队自发优化流程"
+    ],
+    "answer": 1,
+    "rationale": "范围蔓延 = 在稳定环境里 接受额外范围，却不相应调整进度/预算/资源 。应对靠变更控制系统。竞品逼你改是\"完成漂移\"。"
+  },
+  {
+    "id": "LESSON-0002-DELIVERY-DOMAIN-Q006",
+    "type": "single_choice",
+    "stem": "项目团队为减少缺陷，安排了代码评审培训并更新了质量检查规范。这属于哪类质量成本？",
+    "options": [
+      "评估成本",
+      "预防成本",
+      "内部失败成本",
+      "外部失败成本"
+    ],
+    "answer": 1,
+    "rationale": "最优=预防 。关键词\"为减少缺陷\"\"培训\"\"规范\"都是 事前防止 。为什么不是评估：评估是\"测试/审计\"等查符合度，不是培训。不是失败成本：那是缺陷已发生后。"
+  },
+  {
+    "id": "LESSON-0002-DELIVERY-DOMAIN-Q007",
+    "type": "single_choice",
+    "stem": "敏捷团队开发年会小程序，干系人对需求只有模糊想法(\"好用就行\")。项目经理最好的做法是？",
+    "options": [
+      "等干系人想清楚再开工",
+      "用原型/演示让干系人",
+      "来演变需求",
+      "先写一份完整需求文档让所有人签字",
+      "由 PM 自己决定需求"
+    ],
+    "answer": 1,
+    "rationale": "最优=原型/演示 。需求模糊时，适应型用 原型、演示、故事板 让干系人眼见为实、演变需求。为什么不是\"等\"：消极，敏捷要推进；不是\"签字文档\"：干系人都说不清，文档签了也会变；不是\"PM 决定\"：没干系人共识=不满意、返工。"
+  },
+  {
+    "id": "LESSON-0002-DELIVERY-DOMAIN-Q008",
+    "type": "single_choice",
+    "stem": "程序员说某用户故事\"做完了\"，但测试没通过、文档缺失。PM 应该？",
+    "options": [
+      "接受，代码写完就算完成",
+      "依据团队共同的 DoD 检查，未达标就不算完成",
+      "先交付，下个迭代再补测试",
+      "让产品负责人一个人决定"
+    ],
+    "answer": 1,
+    "rationale": "最优=按 DoD 检查 。完成的定义是团队共识的检查清单，未达标就不算完成。为什么不是\"代码写完\"：那是部分完成；不是\"先交付后补\"：这会变成外部失败成本、积累技术债；不是\"PO 单独定\"：DoD 是团队共识。"
+  },
+  {
+    "id": "LESSON-0002-DELIVERY-DOMAIN-Q009",
+    "type": "single_choice",
+    "stem": "测试阶段才发现一个需求理解错误，需要大面积返工。这说明最该改进什么？",
+    "options": [
+      "加强最后的测试环节",
+      "尽早把质量纳入，在需求/设计阶段就启发和验证需求",
+      "跳过测试加快交付",
+      "追究测试人员的责任"
+    ],
+    "answer": 1,
+    "rationale": "最优=质量前移 。变更成本曲线：越晚发现越贵(需求1x→生产150x)。应在需求/设计阶段就评审验证，预防胜于检查。为什么不是\"加强测试\"：最后测已经晚了，且测试只能发现不能预防；其余选项明显不对。"
+  },
+  {
+    "id": "LESSON-0002-DELIVERY-DOMAIN-Q010",
+    "type": "single_choice",
+    "stem": "【螺旋复习·项目工作域】年会小程序要采购一批现成的云服务器资源，价格为主、方案现成。用哪种招标文件？",
+    "options": [
+      "RFI 信息邀请书",
+      "RFP 建议邀请书",
+      "RFQ 报价邀请书"
+    ],
+    "answer": 2,
+    "rationale": "最优=RFQ 。现成、价格为主 = Request For Q uotation(报价邀请书)。上节课钩子：最后一个字母=你要什么，Q=比价。RFI 打听信息、RFP 要复杂方案。"
+  },
+  {
+    "id": "LESSON-0002-DELIVERY-DOMAIN-Q011",
+    "type": "single_choice",
+    "stem": "【螺旋复习·项目工作域】小程序(敏捷)进行中，市场部临时要加\"直播\"功能。PM 应？",
+    "options": [
+      "提交变更控制委员会(CCB)审批后改基准",
+      "加入产品待办列表，由产品负责人排优先级",
+      "直接拒绝以保护范围",
+      "PM 自己决定加不加"
+    ],
+    "answer": 1,
+    "rationale": "最优=加进待办列表 。适应型项目新需求进 产品待办列表 ， 产品负责人 排优先级。CCB+基准是 预测型 玩法(上节课)。"
+  }
+]
+  </script>
+  <script src="../assets/lesson.js"></script>
+</body>
+</html>

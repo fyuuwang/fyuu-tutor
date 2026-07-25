@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EVM 关系图速查：以 EV 为中心，看清楚每根连线，公式自然浮现。">
+  <title>EVM 关系图 · 一眼看清所有连线</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body data-ui-version="2" data-pipeline="certification" data-format="reference" data-theme="process">
+  <a class="skip-link" href="#reference-content">跳到正文</a>
+  <main class="lesson-shell" id="reference-content">
+    <header class="lesson-header">
+      <p class="eyebrow">PMP 备考 · 0003c</p>
+      <h1>EVM 关系图：一张图看清所有连线</h1>
+      <p class="lesson-deck">不要背公式。看清楚“谁和谁比”、“比出来的东西又连到哪里”，就全通了。本页配合直觉训练与速查卡使用。</p>
+    </header>
+    <section class="reference-section" data-theme="overview" aria-labelledby="map-legend">
+      <h2 id="map-legend">五类量：先认角色，再看图</h2>
+      <p class="section-intro">整张图只有五种角色。认出它属于哪一类，就能判断它是“输入、比值、还是算出来的预测”。</p>
+      <div class="system-list">
+        <div class="system-item">
+          <strong>EV 挣值（主角，C 位）</strong>
+          <span>你已经挣到的价值，站在正中间，左比 PV、右比 AC。</span>
+        </div>
+        <div class="system-item">
+          <strong>BAC 完工预算（天花板）</strong>
+          <span>总共批了多少钱。它锚定整张图，下面的数最后都要拿它比。</span>
+        </div>
+        <div class="system-item">
+          <strong>PV / AC（输入量）</strong>
+          <span>PV 计划价值、AC 实际成本。是“比什么”的参照，本身不判断好坏。</span>
+        </div>
+        <div class="system-item">
+          <strong>SPI / CPI（指数）</strong>
+          <span>效率比，及格线是 1。大于 1 好，小于 1 坏。</span>
+        </div>
+        <div class="system-item">
+          <strong>EAC / ETC / VAC（预测）</strong>
+          <span>由 CPI 往下算出来的未来花费。</span>
+        </div>
+      </div>
+    </section>
+    <section class="reference-section" aria-labelledby="map-relations">
+      <h2 id="map-relations">以 EV 为中心：每根线都是一个关系</h2>
+      <p class="section-intro">EV 站在正中间。向左比 PV 看进度，向右比 AC 看成本；再沿着 CPI 往下走，就是预测链。</p>
+      <table class="term-table">
+        <thead>
+          <tr>
+            <th>关系</th>
+            <th>公式</th>
+            <th>在问什么</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>EV 左比 PV</strong></td>
+            <td>SPI = EV ÷ PV</td>
+            <td>进度：我比计划快还是慢。看时间。</td>
+          </tr>
+          <tr>
+            <td><strong>EV 右比 AC</strong></td>
+            <td>CPI = EV ÷ AC</td>
+            <td>成本：我烧的钱值不值。看钱。</td>
+          </tr>
+          <tr>
+            <td><strong>同样换减法</strong></td>
+            <td>SV = EV − PV</td>
+            <td>进度偏差。及格线是 0：大于 0 好，小于 0 坏。</td>
+          </tr>
+          <tr>
+            <td><strong>同样换减法</strong></td>
+            <td>CV = EV − AC</td>
+            <td>成本偏差。及格线是 0：大于 0 好，小于 0 坏。</td>
+          </tr>
+          <tr>
+            <td><strong>CPI 往下走</strong></td>
+            <td>EAC = BAC ÷ CPI</td>
+            <td>照现在效率烧下去，总共要花多少。</td>
+          </tr>
+          <tr>
+            <td><strong>总减已花</strong></td>
+            <td>ETC = EAC − AC</td>
+            <td>“总共要花”减去“已经花的”，等于“还要花”。</td>
+          </tr>
+          <tr>
+            <td><strong>预算减实花</strong></td>
+            <td>VAC = BAC − EAC</td>
+            <td>批的总预算与实际总花费的差额。省还是超。</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="takeaway">两个“I”都长得像 1，所以及格线就是 1：大于 1 好，小于 1 坏。SV、CV 的及格线则是 0。预测链记三个字“总、还、差”：EAC 总共、ETC 还要、VAC 差额。</p>
+    </section>
+    <section class="reference-section" data-theme="review" aria-labelledby="walk-through">
+      <h2 id="walk-through">用手指走一遍</h2>
+      <p class="section-intro">顺序很重要。从 EV 起步，一路走到 VAC，把六个动作串成一条线。</p>
+      <div class="reference-grid">
+        <article class="reference-item">
+          <h3>第一步：按住 EV 不动</h3>
+          <p>EV 是你现阶段的结果，是整张地图的中心。</p>
+        </article>
+        <article class="reference-item">
+          <h3>第二步：左移 PV</h3>
+          <p>PV 代表计划。EV ÷ PV = SPI，问“我比计划快还是慢”。</p>
+        </article>
+        <article class="reference-item">
+          <h3>第三步：右移 AC</h3>
+          <p>AC 代表实际开销。EV ÷ AC = CPI，问“我烧的钱值不值”。</p>
+        </article>
+        <article class="reference-item">
+          <h3>第四步：沿 CPI 往下走</h3>
+          <p>成本效率决定你总共能花多少：BAC ÷ CPI = EAC。</p>
+        </article>
+        <article class="reference-item">
+          <h3>第五步：EAC 到 ETC</h3>
+          <p>“总共要花”减去“已经花的”，等于“还要花”。</p>
+        </article>
+        <article class="reference-item">
+          <h3>第六步：BAC − EAC = VAC</h3>
+          <p>预算与实际总花费的差额，告诉你最终是省钱还是超支。</p>
+        </article>
+      </div>
+    </section>
+    <section class="reference-section" aria-labelledby="hooks">
+      <h2 id="hooks">记忆钩子：把四颗珠子插进这张图</h2>
+      <p class="section-intro">先用你已经会的四个事实，对上图的连线；再补上最关键的一句。</p>
+      <div class="reference-grid">
+        <article class="reference-item">
+          <h3>SPI 跟时间有关</h3>
+          <p>SPI 连接 EV 和 PV（planned＝计划的时间进度）。</p>
+        </article>
+        <article class="reference-item">
+          <h3>CPI 跟钱有关</h3>
+          <p>CPI 连接 EV 和 AC（actual＝实际花的钱）。</p>
+        </article>
+        <article class="reference-item">
+          <h3>AC 是中立的</h3>
+          <p>AC 只回答“花了多少”，不判断好坏。判断好坏的是 CPI。</p>
+        </article>
+        <article class="reference-item">
+          <h3>EV 是唯一主角</h3>
+          <p>EV 既要打 PV，又要扛 AC，一个量告诉你两件事。</p>
+        </article>
+      </div>
+      <p class="takeaway">关键补丁：EV 同时比 PV 和 AC。所以一个 EV 能告诉你进度好不好（对 PV）和成本好不好（对 AC）——这就是图里的两条连线。</p>
+    </section>
+    <footer class="lesson-footer">
+      <p>配合 0003b 直觉训练与速查卡：直觉训练练好坏，关系图看结构，速查卡查公式。三件套全了。</p>
+    </footer>
+  </main>
+  <script src="../assets/lesson.js"></script>
+</body>
+</html>

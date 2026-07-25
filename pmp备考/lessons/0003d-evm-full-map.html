@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EVM 完整地图速查：九字母密码表、上半边快照、下半边预测链，附一百万实例走查。">
+  <title>EVM 完整地图 · 上半边 + 下半边</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body data-ui-version="2" data-pipeline="certification" data-format="reference" data-theme="process">
+  <a class="skip-link" href="#reference-content">跳到正文</a>
+  <main class="lesson-shell" id="reference-content">
+    <header class="lesson-header">
+      <p class="eyebrow">PMP 备考 · 0003d</p>
+      <h1>EVM 完整地图：上半边 + 下半边，一张图走完</h1>
+      <p class="lesson-deck">每个缩写都拆开：英文全称加中文。先破解字母，再看上半边快照，最后沿 CPI 走下半边预测。</p>
+    </header>
+    <section class="reference-section" data-theme="overview" aria-labelledby="cipher">
+      <h2 id="cipher">先破解“字母乱码”：9 个字母密码表</h2>
+      <p class="section-intro">所有 EVM 缩写都是下面这 9 个字母拼出来的。记住它们，任何缩写你都能自己拆。</p>
+      <table class="term-table">
+        <thead>
+          <tr>
+            <th>字母</th>
+            <th>英文</th>
+            <th>中文</th>
+            <th>记忆钩子</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>E</strong></td>
+            <td>Earned / Estimate</td>
+            <td>挣 / 估算</td>
+            <td>Earning 挣到；Estimate 估个数</td>
+          </tr>
+          <tr>
+            <td><strong>V</strong></td>
+            <td>Value / Variance</td>
+            <td>价值 / 偏差</td>
+            <td>Value 值多少；Variance 差了多少</td>
+          </tr>
+          <tr>
+            <td><strong>P</strong></td>
+            <td>Planned / Performance</td>
+            <td>计划 / 绩效</td>
+            <td>Plan 计划；Performance 干得咋样</td>
+          </tr>
+          <tr>
+            <td><strong>A</strong></td>
+            <td>Actual / At</td>
+            <td>实际 / 在…时</td>
+            <td>Actual 真实的；At completion 完工时</td>
+          </tr>
+          <tr>
+            <td><strong>C</strong></td>
+            <td>Cost / Completion</td>
+            <td>成本 / 完工</td>
+            <td>Cost 钱；Completion 干完</td>
+          </tr>
+          <tr>
+            <td><strong>B</strong></td>
+            <td>Budget</td>
+            <td>预算</td>
+            <td>Boss 老板批的钱</td>
+          </tr>
+          <tr>
+            <td><strong>S</strong></td>
+            <td>Schedule</td>
+            <td>进度（时间）</td>
+            <td>秒表，看时间</td>
+          </tr>
+          <tr>
+            <td><strong>I</strong></td>
+            <td>Index</td>
+            <td>指数</td>
+            <td>I 长得像 1，及格线就是 1</td>
+          </tr>
+          <tr>
+            <td><strong>T</strong></td>
+            <td>To</td>
+            <td>去 / 还要</td>
+            <td>To Complete = 还要干的</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="takeaway">自己拆一个试试：EAC = Estimate（估算）+ At completion（完工时）+ Completion = “完工时的估算”，即总共要花多少。会拆字母，就不会看成乱码。</p>
+    </section>
+    <section class="reference-section" aria-labelledby="upper">
+      <h2 id="upper">上半边：现在的快照（EV 当主角）</h2>
+      <p class="section-intro">BAC 坐镇最顶上，下面所有数最后都要拿来跟它比。EV 坐中间，左比 PV、右比 AC。</p>
+      <table class="term-table">
+        <thead>
+          <tr>
+            <th>缩写</th>
+            <th>全称</th>
+            <th>关系 / 一句话</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>BAC</strong></td>
+            <td>Budget At Completion · 完工预算</td>
+            <td>整个项目从头做到尾总共批了多少钱。立项签字起定死、永不改变，是头顶的预算天花板。</td>
+          </tr>
+          <tr>
+            <td><strong>EV</strong></td>
+            <td>Earned Value · 挣值</td>
+            <td>你已经挣到的价值（干完的活按预算值多少）。站 C 位：左比 PV、右比 AC。</td>
+          </tr>
+          <tr>
+            <td><strong>PV</strong></td>
+            <td>Planned Value · 计划价值</td>
+            <td>到现在这个时间点，计划该干完多少价值的活。P = Plan。</td>
+          </tr>
+          <tr>
+            <td><strong>AC</strong></td>
+            <td>Actual Cost · 实际成本</td>
+            <td>到目前为止实际花了多少钱。A = Actual。只记账，不判断好坏。</td>
+          </tr>
+          <tr>
+            <td><strong>SV / CV</strong></td>
+            <td>Schedule / Cost Variance · 偏差</td>
+            <td>SV = EV − PV（进度偏差），CV = EV − AC（成本偏差）。及格线 0：大于 0 好，小于 0 坏。</td>
+          </tr>
+          <tr>
+            <td><strong>SPI / CPI</strong></td>
+            <td>Performance Index · 绩效指数</td>
+            <td>SPI = EV ÷ PV（看时间快慢），CPI = EV ÷ AC（看钱值不值）。及格线 1：大于 1 好，小于 1 坏。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="reference-section" data-theme="business" aria-labelledby="lower">
+      <h2 id="lower">下半边：从 CPI 往下走，预测未来要花多少</h2>
+      <p class="section-intro">成本效率（CPI）决定整条预测链。顺着箭头：BAC ÷ CPI 得 EAC，再往下得 ETC 与 VAC。</p>
+      <table class="term-table">
+        <thead>
+          <tr>
+            <th>缩写</th>
+            <th>全称</th>
+            <th>公式 / 一句话</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>EAC</strong></td>
+            <td>Estimate At Completion · 完工估算</td>
+            <td>总共要花多少（含已花的）。照现在 CPI 烧下去 = BAC ÷ CPI。A = At completion（完工时·总共）。</td>
+          </tr>
+          <tr>
+            <td><strong>ETC</strong></td>
+            <td>Estimate To Complete · 完工尚需估算</td>
+            <td>还要花多少（不含已花的）= EAC − AC。T = To complete（还没干的·还要）。</td>
+          </tr>
+          <tr>
+            <td><strong>VAC</strong></td>
+            <td>Variance At Completion · 完工偏差</td>
+            <td>预算与实花的差额 = BAC − EAC。大于 0 省钱，小于 0 超支。回答“最后到底超不超预算”。</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="takeaway">记忆三个字：总、还、差。EAC = 总共要花，ETC = 还要花，VAC = 差多少。</p>
+    </section>
+    <section class="reference-section" data-theme="review" aria-labelledby="eac-vs-etc">
+      <h2 id="eac-vs-etc">EAC vs ETC：一个字母之差（最容易混）</h2>
+      <p class="section-intro">EAC 和 ETC 只差中间一个字母。认出那个字母，就知道问的是“总共”还是“还要”。</p>
+      <div class="system-list">
+        <div class="system-item">
+          <strong>EAC（A = At completion）</strong>
+          <span>完工时·总共。含已经花的。问“整个项目最后一共要花多少”。</span>
+        </div>
+        <div class="system-item">
+          <strong>ETC（T = To complete）</strong>
+          <span>还没干的·还要。不含已花的。问“从现在起还要再花多少”。</span>
+        </div>
+      </div>
+      <p class="takeaway">一句话串起来：EAC = AC + ETC（总共 = 已经花的 + 还要花的）。</p>
+    </section>
+    <section class="reference-section" data-theme="review" aria-labelledby="example">
+      <h2 id="example">用手指走一遍：代入 100 万的例子</h2>
+      <p class="section-intro">设定：你负责上线客户管理系统，BAC = 100 万。项目过半，挣值 EV = 40 万，实际花了 AC = 50 万，计划此时该挣 PV = 45 万。</p>
+      <div class="reference-grid">
+        <article class="reference-item">
+          <h3>第一步：从 EV 起步</h3>
+          <p>你已经挣到的 40 万，站 C 位。</p>
+        </article>
+        <article class="reference-item">
+          <h3>第二步：往左比 PV</h3>
+          <p>SV = 40 − 45 = −5 万（负＝进度落后）；SPI = 40 ÷ 45 ≈ 0.89（小于 1＝慢）。</p>
+        </article>
+        <article class="reference-item">
+          <h3>第三步：往右比 AC</h3>
+          <p>CV = 40 − 50 = −10 万（负＝超支）；CPI = 40 ÷ 50 = 0.8（每花 1 块只挣 0.8，亏）。</p>
+        </article>
+        <article class="reference-item">
+          <h3>第四步：从 CPI 往下走</h3>
+          <p>EAC = BAC ÷ CPI = 100 ÷ 0.8 = 125 万（照这样烧，总共要花 125 万）。</p>
+        </article>
+        <article class="reference-item">
+          <h3>第五步：EAC 到 ETC</h3>
+          <p>ETC = EAC − AC = 125 − 50 = 75 万（还要再花 75 万）。</p>
+        </article>
+        <article class="reference-item">
+          <h3>第六步：BAC − EAC = VAC</h3>
+          <p>100 − 125 = −25 万（负＝预计超支 25 万，老板要追问了）。</p>
+        </article>
+      </div>
+    </section>
+    <section class="reference-section" aria-labelledby="summary">
+      <h2 id="summary">一句话记住整张图</h2>
+      <p class="takeaway">BAC 是头顶的天花板；EV 坐中间，左 PV 右 AC，比出 SV/CV 和 SPI/CPI；从 CPI 往下走，BAC ÷ CPI 得 EAC（总共），减去 AC 得 ETC（还要），BAC 减 EAC 得 VAC（差多少）。</p>
+    </section>
+    <footer class="lesson-footer">
+      <p>微课 0003d：配合 0003b（直觉训练）、0003e（强化刷题）与速查卡（查公式）。</p>
+    </footer>
+  </main>
+  <script src="../assets/lesson.js"></script>
+</body>
+</html>

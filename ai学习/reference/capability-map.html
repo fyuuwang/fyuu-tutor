@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AI 能力大图谱：所有能力按层级分组，标了强度和边界，能点的有定性详解。一眼看全地形，知道每个能信几分。">
+  <title>AI 能力大图谱</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body data-ui-version="2" data-pipeline="capability" data-format="reference" data-theme="overview">
+  <a class="skip-link" href="#map-content">跳到正文</a>
+  <main class="lesson-shell" id="map-content">
+    <header class="lesson-header">
+      <p class="eyebrow">AI 学习 · 参考资料</p>
+      <h1>AI 能力大图谱</h1>
+      <p class="lesson-deck">所有能力按层级分组，标了强度和边界，能点的有定性详解。一眼看全地形，知道每个能信几分。</p>
+    </header>
+    <section class="reference-section" aria-labelledby="legend">
+      <h2 id="legend">怎么看</h2>
+      <div class="system-list">
+        <div class="system-item"><strong>可靠</strong><span>放心用。</span></div>
+        <div class="system-item"><strong>看情况</strong><span>要打配合才能用好。</span></div>
+        <div class="system-item"><strong>别信</strong><span>换个层去做（交给工具或换层）。</span></div>
+      </div>
+      <p class="takeaway">能点的条目 = 已有定性详解（是什么 / 强度刻度 / 边界 / 怎么用 / 案例拆解）。没链接的，是图谱里为你标了强度的速查项。这张图会随你撞新的墙而长——每撞一次，补一条带强度的条目。</p>
+    </section>
+    <section class="reference-section" aria-labelledby="layer1">
+      <h2 id="layer1">第一层：Model（大脑本身）</h2>
+      <p class="section-intro">最底层的能力和天花板。绝大多数「AI 做不好」，都撞在这层的边界上。</p>
+      <p class="eyebrow">理解类</p>
+      <div class="reference-grid">
+        <article class="reference-item"><h3>阅读 / 概括</h3><p>超长文档会漏要点（注意力边界）。</p></article>
+        <article class="reference-item"><h3>分类 / 归纳</h3><p>分类规则模糊时会自己编一套。</p></article>
+        <article class="reference-item"><h3>对比找不同</h3><p>维度不清或跨领域时容易空转。</p></article>
+        <article class="reference-item"><h3>推理 / 分析</h3><p>推理链太长会断、会跳步。</p></article>
+      </div>
+      <p class="eyebrow">生成类</p>
+      <div class="reference-grid">
+        <article class="reference-item"><h3>写作 / 改写</h3><p>语气、风格每次略漂。</p></article>
+        <article class="reference-item"><h3>长文档一致性</h3><p>越往后越串味，正文对、附录飘（注意力边界）。捐献：你的公文附件。详解③ · 待建</p></article>
+        <article class="reference-item"><h3>创意 / 发散</h3><p>会一本正经地编造（幻觉）。</p></article>
+        <article class="reference-item"><h3>质量判断 / 挑最好</h3><p>塞多了就乱挑，别让它替你定质量（注意力边界）。捐献：你「多模板挑最好」翻车。详解⑥ · 待建</p></article>
+      </div>
+      <p class="eyebrow">精确类（边界咬得最狠的地方）</p>
+      <div class="reference-grid">
+        <article class="reference-item"><h3>格式遵从 · 文本档（JSON / Markdown / 字段对齐）</h3><p>几乎不出错。捐献：你 MDG 直接改 XML 打通的那套。详解① · 待建</p></article>
+        <article class="reference-item"><h3>格式遵从 · 版面档（页边距 / 首行缩进 / 页脚 / 字体）</h3><p>排版边界：文字引擎不是排版器，看不见版面。捐献：你公文格式飘。详解① · 待建</p></article>
+        <article class="reference-item"><h3>字符级精确（中英文引号、全半角）</h3><p>token 模糊，随机翻。用后处理正则，别写进 prompt。</p></article>
+        <article class="reference-item"><h3>数据提取（从文本）</h3><p>源结构太乱会漏字段。</p></article>
+        <article class="reference-item"><h3>数学 / 精确计算</h3><p>大数、多步会错。让工具（代码）代劳。</p></article>
+      </div>
+      <p class="eyebrow">感知类（model 的硬伤）</p>
+      <div class="reference-grid">
+        <article class="reference-item"><h3>图像理解（看截图 / 图表）</h3><p>感知边界：看模型，弱模型看不清。接 OCR。捐献：你装 RapidOCR。详解② · 待建</p></article>
+        <article class="reference-item"><h3>版面感知</h3><p>看不见版面，所以排版档不可靠。</p></article>
+      </div>
+    </section>
+    <section class="reference-section" aria-labelledby="layer2">
+      <h2 id="layer2">第二层：Agent（model + 工具 + 循环）</h2>
+      <p class="section-intro">给大脑接上手脚，跨过 model 的一些边界。不是更聪明，是能动手。</p>
+      <p class="eyebrow">工具（跨过具体边界）</p>
+      <div class="reference-grid">
+        <article class="reference-item"><h3>读写文件</h3><p>跨过「记不住」→ 状态落盘。</p></article>
+        <article class="reference-item"><h3>执行代码</h3><p>跨过「算不准 / 排版不精确」→ 让 Python 算、Python 排。</p></article>
+        <article class="reference-item"><h3>联网搜索</h3><p>跨过「知识过时 / 不知道」。</p></article>
+        <article class="reference-item"><h3>工具路径格式</h3><p>环境路径边界：文件工具用 Win 原生路径、Bash 用 Linux 虚拟路径，混了就卡。捐献：你 daily-morning-reminder 卡死。</p></article>
+      </div>
+      <p class="eyebrow">编排</p>
+      <div class="reference-grid">
+        <article class="reference-item"><h3>工具链 / 多轮迭代</h3><p>链太长会跑偏，要有检查点。</p></article>
+        <article class="reference-item"><h3>自动化触发（定时 / 事件）</h3><p>跨过「被动」→ 用触发替代监听。捐献：你工作记录 skill 的定时任务。<a href="detail-05-trigger-idempotent.html">详解⑤ →</a></p></article>
+      </div>
+    </section>
+    <section class="reference-section" aria-labelledby="layer3">
+      <h2 id="layer3">第三层：Skill / 编排（指令契约 + 触发）</h2>
+      <p class="section-intro">你写的那层。怎么把上面两层打包成稳定、可复用的行为。</p>
+      <p class="eyebrow">契约设计</p>
+      <div class="reference-grid">
+        <article class="reference-item"><h3>单行为契约（一个 skill 干一件事）</h3><p>范围边界：塞太多会飘，换文体格式乱。捐献：你几十种公文塞一个 skill。详解④ · 待建</p></article>
+        <article class="reference-item"><h3>路由分发（router）</h3><p>解决「一个入口管很多变体」，对外一个 skill、内部分流。详解④ · 待建</p></article>
+      </div>
+      <p class="eyebrow">机制</p>
+      <div class="reference-grid">
+        <article class="reference-item"><h3>状态管理（用文件记「到哪了」）</h3><p>跨过「多轮失忆」→ workspace 文件。详解 · 待建（拆 teach）</p></article>
+        <article class="reference-item"><h3>触发机制（手动 / 定时 / 事件）</h3><p>执行边界：skill 本身是被动的，必须被触发。捐献：你的工作记录改造。<a href="detail-05-trigger-idempotent.html">详解⑤ →</a></p></article>
+        <article class="reference-item"><h3>调度条件判断</h3><p>调度语义边界：cron 的周几字段脆、易歧义，条件逻辑放进脚本（date +%u）。捐献：你 weekly-report 重构。</p></article>
+        <article class="reference-item"><h3>幂等（重跑 / 补抓不重复）</h3><p>幂等边界：默认重跑会重复，靠「只处理水位线之后」挡住。捐献：work-log-sync 的 .sync-state.json。<a href="detail-05-trigger-idempotent.html">详解⑤ →</a></p></article>
+        <article class="reference-item"><h3>需求结构化（乱对话 → 规范文档）</h3><p>得有清晰的输出契约，否则结构会飘。详解⑦ · 待建（拆 to-prd）</p></article>
+        <article class="reference-item"><h3>自我审查（AI 找自己漏洞）</h3><p>同上下文自我审查会护短 → 要「换视角」或「新上下文」。详解⑧ · 待建（拆 doubt-driven）</p></article>
+      </div>
+    </section>
+    <footer class="lesson-footer"><p>怎么用这张图：遇到任务，先在图里找到它落在哪个能力，看强度标记——放心交、要打配合、别让 model 直接做（换工具 / 换层）。点进详解看「怎么用」和真实案例。</p></footer>
+  </main>
+  <script src="../assets/lesson.js"></script>
+</body>
+</html>
