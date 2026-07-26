@@ -143,6 +143,20 @@ bash fyuu-tutor/scripts/deploy_portal.sh \
 
 你的门户标记文件列出了绝不能出现在发布内容中的字符串--姓名、邮箱、账号、私人日期。不要列项目名或教学词汇；那些是课程内容。你有责任保持这个列表最新。拿不准的时候，不要发布。
 
+## 离线单文件导出
+
+HTTPS 门户是手机学习的推荐入口。当你需要一份自包含的副本用于 Safari、离线阅读或传输时，使用离线导出器：
+
+```bash
+python3 fyuu-tutor/scripts/export_offline_lesson.py \
+  --file <项目>/outputs/lessons/<课件>.html \
+  --out <目标>/<课件>.offline.html
+```
+
+导出器将共享的 `lesson.css` 和 `lesson.js` 内联为单个 HTML 文件，保留题库 JSON 和音频声明，并拒绝远程资源、`file://` 链接、缺失资源和非法 UTF-8。源文件不会被修改。
+
+`outputs/` 下的源码 HTML 依赖 `outputs/assets/` 下的共享资源；导出的 `.offline.html` 文件是完全独立的。不要将源码 HTML 当作自包含的离线文件直接使用。
+
 ## 安装
 
 最简单的方法，是把下面这句话发给 Codex：

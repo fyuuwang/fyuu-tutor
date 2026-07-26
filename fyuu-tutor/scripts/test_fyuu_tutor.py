@@ -856,6 +856,402 @@ pretest_questions = 0
             shutil.rmtree(out, ignore_errors=True)
 
 
+    def _portal_multi(self, temp, projects):
+        """Build a multi-project portal fixture. projects=[(id, name, pipeline, files)]."""
+        workspace = Path(temp) / "workspace"
+        for pid, name, pipeline, files in projects:
+            self._valid_portal_project(workspace, pid, name)
+            # adjust pipeline via project.toml rewrite
+            proj = workspace / "projects" / pid
+            toml = proj / "project.toml"
+            txt = toml.read_text(encoding="utf-8")
+            txt = txt.replace('pipeline = "capability"', f'pipeline = "{pipeline}"')
+            toml.write_text(txt, encoding="utf-8")
+            # write declared lesson/reference HTML files (titles)
+            for rel, title in files:
+                p = proj / "outputs" / rel
+                p.parent.mkdir(parents=True, exist_ok=True)
+                p.write_text(
+                    '<!doctype html><html lang="en"><head>'
+                    '<link rel="stylesheet" href="../assets/lesson.css">'
+                    f'<title>{title}</title></head>'
+                    '<body data-ui-version="2" data-pipeline="capability" '
+                    'data-format="reference" data-theme="overview">'
+                    '<main class="lesson-shell" id="main"><header class="lesson-header">'
+                    f'<h1>{title}</h1></header><section class="reference-section">'
+                    '<h2>Content</h2></section><footer class="lesson-footer">'
+                    '<p>Done</p></footer></main>'
+                    '<script src="../assets/lesson.js"></script></body></html>',
+                    encoding="utf-8")
+        return workspace
+
+    def test_portal_root_is_project_switcher_only(self):
+        """Root homepage shows only three project entries, no lesson-title links."""
+        import tempfile, shutil
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "PMP备考", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+                ("business-cantonese", "粤语学习", "capability",
+                 [("lessons/0001.html", "第 1 課 · B")]),
+                ("ai-systems-designer", "AI学习", "capability",
+                 [("lessons/0001.html", "第 1 课 · C")]),
+            ])
+            out = Path(temp) / "portal"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_portal.py"),
+                 "--workspace", str(ws), "--out", str(out),
+                 "--project", "pmp-certification", "--project", "business-cantonese",
+                 "--project", "ai-systems-designer"],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            root = (out / "index.html").read_text(encoding="utf-8")
+            # Three project tabs in fixed order PMP / Cantonese / AI
+            self.assertIn('data-hash="pmp"', root)
+            self.assertIn('data-hash="cantonese"', root)
+            self.assertIn('data-hash="ai"', root)
+            self.assertLess(root.index('data-hash="pmp"'), root.index('data-hash="cantonese"'))
+            self.assertLess(root.index('data-hash="cantonese"'), root.index('data-hash="ai"'))
+            self.assertIn('aria-selected="true"', root)
+            # Default selection is the first tab (PMP)
+            self.assertIn('id="tab-pmp" role="tab" href="#pmp"', root)
+            # No lesson titles or per-lesson cards on the root page
+            self.assertNotIn("第 1 课 · A", root)
+            self.assertNotIn("第 1 課 · B", root)
+            self.assertNotIn("第 1 课 · C", root)
+            self.assertNotIn('class="entry"', root)
+            # Generated assets exist, not copied into private projects
+            self.assertTrue((out / "portal.css").is_file())
+            self.assertTrue((out / "portal.js").is_file())
+
+    def test_portal_project_catalog_buckets_and_counts(self):
+        """Project catalog splits 课程 / 复习 / 资料 with accurate counts."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "PMP备考", "capability", [
+                    ("lessons/0001.html", "第 1 课 · 项目工作"),
+                    ("lessons/0003.html", "第 3 课 · 测量"),
+                    ("lessons/0003b.html", "0003b · EVM 指标"),
+                    ("lessons/0004.html", "第 4 课 · 不确定性"),
+                    ("lessons/review-0001-0007.html", "复习 · 0001-0007"),
+                    ("reference/formula.html", "公式速查"),
+                ]),
+            ])
+            out = Path(temp) / "portal"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_portal.py"),
+                 "--workspace", str(ws), "--out", str(out),
+                 "--project", "pmp-certification"],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            idx = (out / "pmp备考" / "index.html").read_text(encoding="utf-8")
+            # Counts: 课程=4, 复习=1, 资料=1
+            self.assertIn('<span>课程</span><span class="count">4</span>', idx)
+            self.assertIn('<span>复习</span><span class="count">1</span>', idx)
+            # 资料=2: reference/formula.html above + the default reference/page.html
+            # that _valid_portal_project always creates.
+            self.assertIn('<span>资料</span><span class="count">2</span>', idx)
+            # Stable sort: 0001 < 0003 < 0003b < 0004
+            self.assertLess(idx.index("0001.html"), idx.index("0003.html"))
+            self.assertLess(idx.index("0003.html"), idx.index("0003b.html"))
+            self.assertLess(idx.index("0003b.html"), idx.index("0004.html"))
+            # Review item sorted last (unnumbered-as-review by filename)
+            self.assertLess(idx.index("0004.html"), idx.index("review-0001-0007.html"))
+            # Empty state is an explicit element, not an empty <div>
+            # (this project has no empty categories, so check the helper on an empty one)
+
+    def test_portal_catalog_empty_state_not_empty_div(self):
+        """An empty category shows a clear empty state, not an empty div."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "PMP备考", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            out = Path(temp) / "portal"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_portal.py"),
+                 "--workspace", str(ws), "--out", str(out),
+                 "--project", "pmp-certification"],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            idx = (out / "pmp备考" / "index.html").read_text(encoding="utf-8")
+            # 资料 (reference) is empty here -> explicit empty state
+            self.assertIn('暂无内容', idx)
+            # No bare empty panel div
+            self.assertNotIn('class="panel" id="panel-reference" role="tabpanel" '
+                             'data-group="catalog" data-active="false" '
+                             'aria-labelledby="tab-reference"></div>', idx)
+
+    def test_portal_generated_pages_have_no_private_data(self):
+        """Generated pages contain no STATUS text, absolute paths, file:// or markers."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "PMP备考", "capability",
+                 [("lessons/0001.html", "第 1 课 · A"),
+                  ("reference/r.html", "速查")]),
+            ])
+            # Drop a private marker file and a STATUS-like string into the project
+            # (the scanner rejects markers; STATUS text must never be echoed).
+            markers = Path(temp) / "markers.txt"
+            markers.write_text("SECRET_LEARNER_RECORD\n", encoding="utf-8")
+            out = Path(temp) / "portal"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_portal.py"),
+                 "--workspace", str(ws), "--out", str(out),
+                 "--project", "pmp-certification", "--markers", str(markers)],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            for html in [out / "index.html", out / "pmp备考" / "index.html"]:
+                t = html.read_text(encoding="utf-8")
+                self.assertNotIn("Learning progress", t)
+                self.assertNotIn("Next action", t)
+                self.assertNotIn("SECRET_LEARNER_RECORD", t)
+                self.assertNotIn("file://", t)
+                for pat in ("/Users/", "/home/", "/private/"):
+                    self.assertNotIn(pat, t)
+
+    def test_offline_export_inlines_css_js(self):
+        """Offline export inlines lesson.css/.js, removes external refs, keeps JSON."""
+        import tempfile, shutil, hashlib
+        scripts = Path(__file__).resolve().parent
+        export_script = scripts / "export_offline_lesson.py"
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("test-project", "Test", "capability",
+                 [("lessons/0001.html", "第 1 课 · A"),
+                  ("reference/r.html", "速查参考")]),
+            ])
+            proj = Path(temp) / "workspace" / "projects" / "test-project"
+            lesson = proj / "outputs" / "lessons" / "0001.html"
+            src_hash = hashlib.sha256(lesson.read_bytes()).hexdigest()
+            out = Path(temp) / "0001.offline.html"
+            result = subprocess.run(
+                [sys.executable, str(export_script), "--file", str(lesson), "--out", str(out)],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue(out.is_file())
+            exported = out.read_text(encoding="utf-8")
+            # No external references
+            self.assertNotIn('<link rel="stylesheet"', exported)
+            self.assertNotIn('<script src=', exported)
+            self.assertNotIn("http:", exported.lower())
+            # CSS inlined
+            self.assertIn("<style>", exported)
+            # JS inlined (as <script> block without src)
+            self.assertIn("<script>", exported)
+            # Source untouched
+            self.assertEqual(hashlib.sha256(lesson.read_bytes()).hexdigest(), src_hash)
+            # Output not in any portal-whitelisted directory
+            self.assertNotIn("outputs/", str(out.resolve()))
+            self.assertNotIn("portal", str(out.resolve()).lower())
+
+    def test_offline_export_rejects_remote_and_file_refs(self):
+        """Offline export rejects http: and file:// resources."""
+        import tempfile, shutil
+        scripts = Path(__file__).resolve().parent
+        export_script = scripts / "export_offline_lesson.py"
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("test-project", "Test", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            proj = Path(temp) / "workspace" / "projects" / "test-project"
+            lesson = proj / "outputs" / "lessons" / "0001.html"
+            out = Path(temp) / "0001.offline.html"
+            orig_html = lesson.read_text(encoding="utf-8")
+
+            # Inject a remote stylesheet
+            html_remote = orig_html.replace('href="../assets/lesson.css"',
+                                    'href="http://cdn.example/evil.css"')
+            lesson.write_text(html_remote, encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(export_script), "--file", str(lesson), "--out", str(out)],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("remote", result.stderr.lower())
+
+            # Inject a file:// script
+            html_file = orig_html.replace('src="../assets/lesson.js"',
+                                         'src="file:///etc/passwd"')
+            lesson.write_text(html_file, encoding="utf-8")
+            result2 = subprocess.run(
+                [sys.executable, str(export_script), "--file", str(lesson), "--out", str(out)],
+                capture_output=True, text=True)
+            self.assertNotEqual(result2.returncode, 0)
+            self.assertIn("file:", result2.stderr.lower())
+
+    # ---- publish_portal wrapper tests ----
+
+    def _portal_toml(self, temp, projects, publish=True):
+        """Write a temporary portal.toml for test use."""
+        p = Path(temp) / "portal.toml"
+        ids = "\n".join(f'  "{pid}",' for pid in projects)
+        p.write_text(
+            f'[portal]\n'
+            f'publish_after_validation = {str(publish).lower()}\n'
+            f'repo = "../system"\n'
+            f'marker_file = "portal-markers.txt"\n'
+            f'projects = [\n{ids}\n]\n',
+            encoding="utf-8")
+        return p
+
+    def test_publish_portal_rejects_missing_config(self):
+        """Missing portal.toml is rejected cleanly."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            result = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(Path(temp) / "ws"),
+                 "--config", str(Path(temp) / "missing.toml"),
+                 "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("not found", result.stderr.lower())
+
+    def test_publish_portal_rejects_invalid_project_id(self):
+        """A project_id not in the workspace is rejected."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [("tp", "TP", "capability", [])])
+            self._portal_toml(temp, ["nonexistent"])
+            result = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(ws),
+                 "--config", str(Path(temp) / "portal.toml"),
+                 "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("not found", result.stderr.lower())
+
+    def test_publish_portal_rejects_empty_project_list(self):
+        """Empty project list is rejected."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            self._portal_toml(temp, [])
+            result = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(Path(temp) / "ws"),
+                 "--config", str(Path(temp) / "portal.toml"),
+                 "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+
+    def test_publish_portal_rejects_dup_project_ids(self):
+        """Duplicate project IDs in config are rejected."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            self._portal_toml(temp, ["dup", "dup"])
+            result = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(Path(temp) / "ws"),
+                 "--config", str(Path(temp) / "portal.toml"),
+                 "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("duplicate", result.stderr.lower())
+
+    def test_publish_portal_rejects_non_idle_project(self):
+        """A non-idle project is rejected."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [("claimed", "CL", "capability",
+                                            [("lessons/0001.html", "第 1 课 · A")])])
+            # Mark project as claimed
+            proj = Path(temp) / "workspace" / "projects" / "claimed"
+            (proj / "STATUS.md").write_text(
+                "| State | claimed |\n| Owner | agent |\n| Claimed at | 2026-01-01 |\n"
+                "| Updated at | 2026-01-01 |\n| Production progress | n |\n"
+                "| Learning progress | n |\n| Next action | n |\n| Blockers | n |\n",
+                encoding="utf-8")
+            self._portal_toml(temp, ["claimed"])
+            result = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(ws),
+                 "--config", str(Path(temp) / "portal.toml"),
+                 "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("idle", result.stderr.lower())
+
+    def test_publish_portal_build_only_succeeds(self):
+        """Build-only succeeds and does NOT touch git remote."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "PMP备考", "capability",
+                 [("lessons/0001.html", "第 1 课 · A"),
+                  ("lessons/0002.html", "第 2 课 · B"),
+                  ("reference/r.html", "速查")]),
+            ])
+            self._portal_toml(temp, ["pmp-certification"])
+            build_out = Path(temp) / "build-out"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(ws),
+                 "--config", str(Path(temp) / "portal.toml"),
+                 "--build-only"],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("OK build-only", result.stdout)
+            # Verify build output exists with pages
+            out_line = [l for l in result.stdout.split("\n") if "OK build-only" in l]
+            self.assertTrue(out_line, "expected OK build-only line in stdout")
+            # Build output is in a system temp dir; verify stdout reports pages > 0
+            self.assertIn("pages", out_line[0])
+
+    def test_publish_portal_rejects_dirty_worktree(self):
+        """--publish with dirty worktree is rejected."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            temp_p = Path(temp)
+            # Create a real git repo with a clean main branch
+            repo = temp_p / "system-repo"
+            repo.mkdir()
+            sp_git = lambda *a: subprocess.run(["git", "-C", str(repo)] + list(a),
+                                       capture_output=True, text=True)
+            sp_git("init")
+            sp_git("checkout", "-b", "main")
+            sp_git("config", "user.email", "test@test")
+            sp_git("config", "user.name", "test")
+            (repo / "README.md").write_text("# test", encoding="utf-8")
+            sp_git("add", "README.md")
+            sp_git("commit", "-m", "init")
+
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "PMP备考", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            # Point portal.toml to our clean repo
+            toml = Path(temp) / "portal.toml"
+            ids = '\n'.join(f'  "{pid}",' for pid in ["pmp-certification"])
+            toml.write_text(
+                f'[portal]\npublish_after_validation = true\n'
+                f'repo = "{repo}"\nmarker_file = "portal-markers.txt"\n'
+                f'projects = [\n{ids}\n]\n',
+                encoding="utf-8")
+
+            # Make worktree dirty
+            (repo / "dirty.txt").write_text("unsaved change", encoding="utf-8")
+
+            result = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(ws),
+                 "--config", str(toml),
+                 "--publish"],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertTrue("clean" in result.stderr.lower() or
+                            "worktree" in result.stderr.lower() or
+                            "status" in result.stderr.lower(),
+                            f"expected clean/worktree rejection, got: {result.stderr}")
+
     def test_privacy_audit_catches_untracked_file(self):
         """Audit must check untracked (not yet git-added) files, not just tracked ones."""
         import tempfile, shutil, subprocess as sp

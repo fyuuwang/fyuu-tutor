@@ -28,7 +28,7 @@ jobs:
       - name: Audit public boundary
         run: python3 fyuu-tutor/scripts/audit_privacy.py --system .
       - name: Compile-check all Python scripts
-        run: python3 -m py_compile fyuu-tutor/scripts/validate_lesson_ui.py fyuu-tutor/scripts/validate_project.py fyuu-tutor/scripts/audit_privacy.py fyuu-tutor/scripts/build_portal.py fyuu-tutor/scripts/project_config.py fyuu-tutor/scripts/update_status.py fyuu-tutor/scripts/build_index.py fyuu-tutor/scripts/check_links.py fyuu-tutor/scripts/pdf/ocr_pdf.py fyuu-tutor/scripts/pdf/convert_pdf.py fyuu-tutor/scripts/pipelines/language/cantonese/convert_pronunciation.py
+        run: python3 -m py_compile fyuu-tutor/scripts/validate_lesson_ui.py fyuu-tutor/scripts/validate_project.py fyuu-tutor/scripts/audit_privacy.py fyuu-tutor/scripts/build_portal.py fyuu-tutor/scripts/export_offline_lesson.py fyuu-tutor/scripts/publish_portal.py fyuu-tutor/scripts/project_config.py fyuu-tutor/scripts/update_status.py fyuu-tutor/scripts/build_index.py fyuu-tutor/scripts/check_links.py fyuu-tutor/scripts/pdf/ocr_pdf.py fyuu-tutor/scripts/pdf/convert_pdf.py fyuu-tutor/scripts/pipelines/language/cantonese/convert_pronunciation.py
       - name: JavaScript syntax check
         run: node --check fyuu-tutor/assets/ui-kit/assets/lesson.js
       - name: Shell syntax check

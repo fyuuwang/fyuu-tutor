@@ -15,9 +15,15 @@
          Each simple #target must exist once as an id and match every section data-stage in that tab.
          Keep tab content within a 3x item ratio. Delete this nav and data-stage attrs for short pages. -->
     <nav class="section-index" aria-label="Section navigation">
-      <a href="#domain-a" class="section-index-link">01 · [Domain A]</a>
-      <a href="#domain-b" class="section-index-link">02 · [Domain B]</a>
-      <a href="#domain-c" class="section-index-link">03 · [Domain C]</a>
+      <a class="course-back" href="../index.html" aria-label="返回课程目录">
+        <span aria-hidden="true">←</span>
+        <span class="course-back-label">课程目录</span>
+      </a>
+      <div class="section-index-links">
+        <a href="#domain-a" class="section-index-link">01 · [Domain A]</a>
+        <a href="#domain-b" class="section-index-link">02 · [Domain B]</a>
+        <a href="#domain-c" class="section-index-link">03 · [Domain C]</a>
+      </div>
     </nav>
     <header class="lesson-header">
       <p class="eyebrow">__PROJECT_NAME__ · __REFERENCE_NUMBER__</p>

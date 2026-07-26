@@ -233,10 +233,30 @@
         </article>
         <article class="reference-item">
           <h3>section-index · Chapter navigation</h3>
-          <p>Two or three sticky tabs for reference pages with at least three chapters. Place inside lesson-shell before the header. Each target must exist as an id and match the data-stage of every chapter in that tab; JavaScript switches tabs with aria-current.</p>
+          <p>Two or three sticky tabs for reference pages with at least three chapters. Place inside lesson-shell before the header. A course-back return button sits on the left (not counted as a tab); the section-index-links row holds the tabs in repeat(3, minmax(0, 1fr)). Each target must exist as an id and match the data-stage of every chapter in that tab; JavaScript switches tabs with aria-current.</p>
 <pre>&lt;nav class="section-index" aria-label="Section navigation"&gt;
+  &lt;a class="course-back" href="../index.html" aria-label="返回课程目录"&gt;
+    &lt;span aria-hidden="true"&gt;←&lt;/span&gt;&lt;span class="course-back-label"&gt;课程目录&lt;/span&gt;
+  &lt;/a&gt;
+  &lt;div class="section-index-links"&gt;
   &lt;a href="#domain-a" class="section-index-link"&gt;01 &middot; [Domain A]&lt;/a&gt;
   &lt;a href="#domain-b" class="section-index-link"&gt;02 &middot; [Domain B]&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;</pre>
+        </article>
+        <article class="reference-item">
+          <h3>course-nav · Catalog return + stage bar</h3>
+          <p>Persistent navigation that wraps a course-back return button and the three-stage lesson-steps (01/02/03) on lesson pages, or stands alone as course-nav--simple on practice pages. course-back links to ../index.html so the same href works for local outputs/lessons/* and GitHub Pages &lt;project&gt;/lessons/*. Desktop: back button left, three stages evenly fill the rest. Mobile: back button keeps the arrow icon only and the three stages split evenly with no horizontal scroll.</p>
+<pre>&lt;nav class="course-nav" aria-label="Lesson navigation"&gt;
+  &lt;a class="course-back" href="../index.html" aria-label="返回课程目录"&gt;
+    &lt;span aria-hidden="true"&gt;←&lt;/span&gt;
+    &lt;span class="course-back-label"&gt;课程目录&lt;/span&gt;
+  &lt;/a&gt;
+  &lt;nav class="lesson-steps" aria-label="Lesson stages"&gt;
+    &lt;a href="#map"&gt;&lt;span class="step-number"&gt;01&lt;/span&gt;&lt;span&gt;[Map]&lt;/span&gt;&lt;/a&gt;
+    &lt;a href="#case"&gt;&lt;span class="step-number"&gt;02&lt;/span&gt;&lt;span&gt;[Case]&lt;/span&gt;&lt;/a&gt;
+    &lt;a href="#practice"&gt;&lt;span class="step-number"&gt;03&lt;/span&gt;&lt;span&gt;[Practice]&lt;/span&gt;&lt;/a&gt;
+  &lt;/nav&gt;
 &lt;/nav&gt;</pre>
         </article>
       </div>

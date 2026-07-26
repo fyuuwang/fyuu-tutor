@@ -2,6 +2,33 @@
 
 All notable changes are recorded here. Preview releases may contain breaking changes, which must include migration notes.
 
+## [0.5.2] — Mobile Learning Portal — 2026-07-26
+
+### Added
+
+- Portal tab navigation: root page is a project switcher only (PMP / Cantonese / AI tabs, hash routing, default PMP); no lesson cards on the root page.
+- Per-project catalog with secondary tabs (课程 / 复习 / 资料), stable sorting by leading number, and explicit empty states.
+- Shared catalog-return component (`course-nav` / `course-back`) on lesson, reference, and practice pages; old UI v2 pages are backfilled at load time by `lesson.js`.
+- Offline single-file HTML exporter (`export_offline_lesson.py`) that inlines `lesson.css` and `lesson.js`, rejects remote / `file://` dependencies, and never modifies the source file.
+- Portal publish wrapper (`publish_portal.py`) that reads private `<workspace>/portal.toml`, runs all validators, builds the portal, scans for private data, and calls `deploy_portal.sh --publish`.
+
+### Changed
+
+- Web-first delivery: the HTTPS portal (`fyuuwang.github.io/fyuu-tutor`) is the recommended phone-based entry point; offline single-file HTML is for Safari, transfer, and archive use only.
+- Mobile 01/02/03 stage bar now uses `grid-template-columns: repeat(3, 1fr)` (equal thirds, no horizontal scroll or overflow).
+- `section-index` on reference pages restructured: `course-back` on the left, `section-index-links` row for chapter tabs.
+
+### Fixed
+
+- Mobile three-stage navigation offset and horizontal scroll eliminated.
+- Portal root page no longer stacks lesson cards from all projects; is now a clean project switcher.
+- Missing catalog-return button on short reference pages: `course-nav--simple` is now inserted at the top by `lesson.js`.
+
+### Migration
+
+- Run `sync_ui_kit.py --build-css` and `sync_ui_kit.py --project <project> --upgrade` for all three projects.
+- Create a private `<workspace>/portal.toml` following the schema shown in `publish_portal.py --help`.
+
 ## [0.5.1] — Portal Deployment Patch — 2026-07-26
 
 ### Fixed

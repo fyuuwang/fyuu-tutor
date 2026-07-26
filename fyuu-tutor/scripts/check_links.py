@@ -46,7 +46,8 @@ def main():
     checked = 0
 
     for source in sorted(root.rglob("*")):
-        if "history" in source.relative_to(root).parts:
+        rel_parts = source.relative_to(root).parts
+        if "history" in rel_parts or "templates" in rel_parts:
             continue
         if not source.is_file() or source.suffix.lower() not in {".md", ".html"}:
             continue

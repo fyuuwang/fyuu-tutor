@@ -29,6 +29,20 @@ A mixed lesson uses the `lesson` format. Only the quiz area switches to practice
 
 Short reference pages omit `section-index`. Pages with three or more chapters may group them into two or three balanced tabs. Each tab link uses a simple local target such as `#process`; that target must appear once as an element `id` and must match the `data-stage` of every chapter in the tab. Every tab needs at least one chapter, and no tab may contain more than three times another tab's reference items.
 
+## Catalog return (course-back / course-nav)
+
+Every lesson, reference, and practice page carries a shared catalog-return entry so the reader can always get back to the project directory. New templates include it statically; old UI v2 pages are backfilled at load time by `lesson.js`, so they do not need a manual edit.
+
+The `course-back` link always points to `../index.html`. That single href works for both `outputs/lessons/*` (local, resolves to `outputs/index.html`) and the published `<project>/lessons/*` on GitHub Pages (resolves to `<project>/index.html`).
+
+On `lesson` pages the return button and the 01/02/03 stage bar sit together in a `course-nav`: back button on the left, three stages evenly filling the rest on desktop; on mobile the back button keeps only the arrow icon and the three stages split evenly with no horizontal scroll. The back button is not a fourth stage and is never counted as a tab.
+
+On `reference` pages the `course-back` sits at the left of the `section-index`, and the `section-index-links` row holds the two or three chapter tabs in `repeat(3, minmax(0, 1fr))`. Short reference pages without a `section-index` get a `course-nav--simple` bar at the top instead. The return button is not counted toward the three-tab limit.
+
+On `practice` pages a `course-nav--simple` bar shows only the catalog return; it does not fabricate a 01/02/03 stage bar.
+
+Do not add a per-page custom back link class. The shared `course-back` is the only sanctioned catalog-return entry.
+
 ## Themes
 
 Themes express knowledge domain, not aesthetic preference. Fixed set only:

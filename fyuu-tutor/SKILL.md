@@ -53,5 +53,7 @@ Pipeline defaults yield to the private learner profile and project rules for tea
 - Optional pipeline implementations: `scripts/pipelines/`.
 - UI kit: `scripts/sync_ui_kit.py` (install/check/upgrade) and `scripts/validate_lesson_ui.py` (--file/--project/--kit/--self-test).
 - Learning portal: `scripts/build_portal.py` (explicit `--project` only; never publishes all projects by default). Deployment via `scripts/deploy_portal.sh` requires user authorization and `--publish`.
+- Offline export: `scripts/export_offline_lesson.py` creates a self-contained single-file HTML by inlining local `lesson.css` and `lesson.js`. Use it when a reader needs a standalone copy for Safari or offline reading. It rejects remote resources, `file://` links, and missing assets and never modifies the source file.
+- Portal publish wrapper: `scripts/publish_portal.py` reads a private `<workspace>/portal.toml` to determine which projects to publish, runs all validators, builds the portal, scans for private data, and calls `deploy_portal.sh --publish`. After a course is produced and the claim is released, run this wrapper with `--publish` if `<workspace>/portal.toml`'s `publish_after_validation` is true. If publishing fails, record the failure reason in STATUS.md without changing course status. Never bypass the wrapper to copy private directories into gh-pages.
 
 Do not install dependencies, publish content, expose private sources, or resolve another agent's claim without explicit user authority.

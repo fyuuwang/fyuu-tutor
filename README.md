@@ -143,6 +143,20 @@ If any private content is detected, the build stops and nothing is published.
 
 Your portal markers file lists strings that must never appear in published content -- personal names, email addresses, account numbers, private dates. Do not list project names or teaching vocabulary; those are course content. You are responsible for keeping this list current. When in doubt, do not publish.
 
+## Offline single-file export
+
+The HTTPS portal is the recommended entry point for phone-based learning. When you need a self-contained copy for Safari, offline reading, or transfer, use the offline exporter:
+
+```bash
+python3 fyuu-tutor/scripts/export_offline_lesson.py \
+  --file <project>/outputs/lessons/<lesson>.html \
+  --out <destination>/<lesson>.offline.html
+```
+
+The exporter inlines the shared `lesson.css` and `lesson.js` into a single HTML file, keeps the question bank and audio declarations intact, and rejects remote resources, `file://` links, missing assets, and non-UTF-8 content. The source file is never modified.
+
+The source HTML in `outputs/` depends on shared assets under `outputs/assets/`; the exported `.offline.html` file is fully standalone. Do not treat raw source HTML as a self-contained offline file.
+
 ## Install
 
 The easiest option is to give Codex this instruction:

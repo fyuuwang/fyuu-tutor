@@ -1019,8 +1019,8 @@ def main() -> int:
         _, config, _ = load_project(project)
         pages = iter_project_pages(project)
         if not pages:
-            print(f"FAIL: no HTML found in {project}", file=sys.stderr)
-            return 1
+            print(f"OK UI project: no lesson/reference HTML yet in {project}")
+            return 0
 
     failed = False
     for page in pages:

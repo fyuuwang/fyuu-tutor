@@ -421,6 +421,26 @@
         "certification",
         "language"
       ]
+    },
+    "course-nav": {
+      "sections": [
+        "root"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "course-back": {
+      "sections": [
+        "root"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
     }
   },
   "composition_patterns": {
