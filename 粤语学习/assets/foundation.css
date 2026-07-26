@@ -123,7 +123,6 @@ summary:focus-visible {
   position: sticky;
   top: 0;
   z-index: 10;
-  border-radius: 18px 18px 0 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   background: rgba(255, 255, 255, 0.96);
@@ -251,19 +250,13 @@ h3 {
 @media (max-width: 480px) {
   .lesson-steps {
     border-radius: 0;
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
   }
 
   .lesson-steps a {
     padding: 8px 6px;
     font-size: 12px;
     gap: 4px;
-    flex: 0 0 auto;
-    min-width: 110px;
-    white-space: nowrap;
+    min-width: 0;
   }
 
   .step-number {

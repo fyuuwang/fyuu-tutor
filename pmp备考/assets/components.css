@@ -1352,11 +1352,18 @@ code {
   position: sticky;
   top: 0;
   z-index: 10;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  align-items: stretch;
   background: rgba(255, 255, 255, 0.96);
   border-bottom: 1px solid var(--line);
   border-radius: 18px 18px 0 0;
+}
+
+.section-index-links {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  min-width: 0;
 }
 
 .section-index-link {
@@ -1387,15 +1394,78 @@ code {
 @media (max-width: 480px) {
   .section-index {
     border-radius: 0;
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
   }
   .section-index-link {
-    flex: 0 0 auto;
-    min-width: 110px;
+    min-width: 0;
     padding: 8px 6px;
     font-size: 12px;
+  }
+}
+
+/* course-nav: persistent catalog-return + stage navigation bar.
+   Desktop: back button left, three stages evenly fill the rest.
+   Mobile: back button keeps the arrow icon only, three stages split evenly. */
+.course-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: stretch;
+  border-radius: 18px 18px 0 0;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid var(--line);
+}
+
+.course-nav .lesson-steps {
+  flex: 1 1 auto;
+  position: static;
+  border-radius: 0;
+  background: transparent;
+  border-bottom: none;
+}
+
+.course-back {
+  flex: 0 0 auto;
+  min-height: 52px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  border: none;
+  border-right: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-weight: 650;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.course-back:hover {
+  color: var(--indigo-dark);
+}
+
+.course-back:focus-visible {
+  outline: 2px solid var(--indigo);
+  outline-offset: -2px;
+}
+
+.course-nav--simple {
+  justify-content: flex-start;
+}
+
+@media (max-width: 480px) {
+  .course-nav {
+    border-radius: 0;
+  }
+  .course-back {
+    min-height: 48px;
+    padding: 10px 12px;
+  }
+  .course-back-label {
+    display: none;
+  }
+  .course-nav--simple .course-back-label {
+    display: inline;
   }
 }

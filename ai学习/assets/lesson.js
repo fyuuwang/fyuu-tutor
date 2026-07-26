@@ -421,7 +421,9 @@
 
   function resetQuiz() { answered.clear(); renderQuiz(); }
 
-  var PERSISTENT = ["lesson-footer", "lesson-steps", "section-index"];
+  // course-nav / course-back are persistent: they must never be hidden when
+  // the 01/02/03 stage switch toggles section visibility.
+  var PERSISTENT = ["lesson-footer", "lesson-steps", "section-index", "course-nav", "course-back"];
 
   function stageGroups() {
     var shell = document.querySelector(".lesson-shell");
@@ -565,8 +567,68 @@ function initAudio() {
   window.addEventListener("scroll", updateProgress, { passive: true });
   window.addEventListener("resize", updateProgress);
   if (reset) reset.addEventListener("click", resetQuiz);
+  ensureCourseNav();
   renderQuiz();
   initStages();
   initAudio();
   updateProgress();
 })();
+
+// --- course-nav compatibility: backfill old UI v2 pages that predate the
+//     shared course-back return button. New templates ship the structure
+//     statically; this only runs when it is missing. ---
+function ensureCourseNav() {
+  if (document.querySelector(".course-back")) return;
+  var shell = document.querySelector(".lesson-shell");
+  if (!shell) return;
+  var fmt = (document.body.getAttribute("data-format") || "").toLowerCase();
+  var backHref = "../index.html";
+
+  function makeBack() {
+    var a = document.createElement("a");
+    a.className = "course-back";
+    a.setAttribute("href", backHref);
+    a.setAttribute("aria-label", "返回课程目录");
+    var arrow = document.createElement("span");
+    arrow.setAttribute("aria-hidden", "true");
+    arrow.textContent = "←";
+    var label = document.createElement("span");
+    label.className = "course-back-label";
+    label.textContent = "课程目录";
+    a.appendChild(arrow);
+    a.appendChild(label);
+    return a;
+  }
+
+  if (fmt === "lesson") {
+    var steps = shell.querySelector(".lesson-steps");
+    if (!steps) return;
+    var nav = document.createElement("nav");
+    nav.className = "course-nav";
+    nav.setAttribute("aria-label", "Lesson navigation");
+    shell.insertBefore(nav, steps);
+    nav.appendChild(makeBack());
+    nav.appendChild(steps);
+  } else if (fmt === "reference") {
+    var idx = shell.querySelector(".section-index");
+    if (idx) {
+      idx.insertBefore(makeBack(), idx.firstChild);
+    } else {
+      // Short reference page without section-index: add a simple return bar
+      // at the top so the catalog return is always reachable.
+      var simple = document.createElement("nav");
+      simple.className = "course-nav course-nav--simple";
+      simple.setAttribute("aria-label", "Reference navigation");
+      simple.appendChild(makeBack());
+      shell.insertBefore(simple, shell.firstChild);
+    }
+  } else if (fmt === "practice") {
+    var header = shell.querySelector(".lesson-header");
+    if (!header) return;
+    var simple = document.createElement("nav");
+    simple.className = "course-nav course-nav--simple";
+    simple.setAttribute("aria-label", "Practice navigation");
+    simple.appendChild(makeBack());
+    shell.insertBefore(simple, header);
+  }
+}
