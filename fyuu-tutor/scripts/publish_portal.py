@@ -47,6 +47,11 @@ def read_config(config_path: Path) -> dict:
     if len(projects) != len(set(projects)):
         print("ERROR: portal.projects contains duplicates", file=sys.stderr)
         sys.exit(1)
+    # Old or hand-written configs are preview-only unless they opt in.
+    publish_after_validation = portal.get("publish_after_validation", False)
+    if not isinstance(publish_after_validation, bool):
+        print("ERROR: portal.publish_after_validation must be true or false", file=sys.stderr)
+        sys.exit(1)
     repo = portal.get("repo", "")
     marker_file = portal.get("marker_file")
     if not isinstance(marker_file, str) or not marker_file.strip():
@@ -54,6 +59,7 @@ def read_config(config_path: Path) -> dict:
         sys.exit(1)
     return {
         "projects": projects,
+        "publish_after_validation": publish_after_validation,
         "repo": repo,
         "marker_file": marker_file,
     }
@@ -214,6 +220,11 @@ def main() -> int:
     system_root = scripts_dir.parent.parent
 
     cfg = read_config(config_path)
+    if args.publish and not cfg["publish_after_validation"]:
+        print("ERROR: portal.publish_after_validation is false; use --build-only "
+              "or explicitly enable incremental publishing in portal.toml",
+              file=sys.stderr)
+        return 1
     authorized = set(cfg["projects"])
 
     # Validate marker file BEFORE any project validation (fail-closed gate)

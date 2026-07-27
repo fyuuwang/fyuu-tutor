@@ -6,7 +6,7 @@
 - `STATUS.md` is the only current state source.
 - A produced artifact does not prove that the learner studied or mastered it.
 - Do not modify a project already claimed by another agent or device.
-- Do not install dependencies, publish packages, or expose private material without explicit authority.
+- Do not install dependencies, publish packages, or expose private material without explicit current-session authority or documented project-level standing authorization.
 - Stop when project rules conflict with these safety rules.
 
 ## Lifecycle

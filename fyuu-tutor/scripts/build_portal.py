@@ -27,6 +27,7 @@ from project_config import load_project, status_value
 # File whitelist: only these subdirs and extensions are copied from outputs/
 ALLOWED_HTML_SUBDIRS = ("lessons", "reference")
 ALLOWED_ASSET_EXTS = {".css", ".js"}
+REFERENCE_PREFIX = "ref-"
 
 # Absolute-path patterns that must never appear in published content
 # Built via concatenation to avoid self-triggering the privacy auditor
@@ -49,8 +50,17 @@ PROJECT_ORDER = {
 }
 
 # Stable hash fragment per project_id, for #hash tab routing on the root portal.
-# Falls back to the project slug when an id is not listed here.
+# Falls back to the public URL slug when an id is not listed here.
 PROJECT_HASH = {
+    "pmp-certification": "pmp",
+    "business-cantonese": "cantonese",
+    "ai-systems-designer": "ai",
+}
+
+# Public routes are English, short, and independent of a learner's private
+# directory or localized display name.  New projects fall back to their
+# ASCII project_id; non-ASCII project IDs are rejected for public publishing.
+PROJECT_PUBLIC_SLUG = {
     "pmp-certification": "pmp",
     "business-cantonese": "cantonese",
     "ai-systems-designer": "ai",
@@ -196,11 +206,13 @@ PORTAL_JS = """\
 """
 
 
-def safe_slug(name: str) -> str:
-    """URL-safe slug from a project display name."""
-    slug = re.sub(r"[^\w\s-]", "", name, flags=re.UNICODE).strip().lower()
-    slug = re.sub(r"[-\s]+", "-", slug)
-    return slug or "project"
+def public_slug(project_id: str) -> str:
+    """Return the stable ASCII route for one public project."""
+    if project_id in PROJECT_PUBLIC_SLUG:
+        return PROJECT_PUBLIC_SLUG[project_id]
+    if re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", project_id):
+        return project_id
+    raise ValueError(f"project_id has no safe public ASCII route: {project_id!r}")
 
 
 def page_title(path: Path) -> str:
@@ -266,8 +278,40 @@ def check_output_dir(out_dir: Path, workspace: Path) -> None:
         sys.exit(1)
 
 
+def _rewrite_flattened_page(text: str, *, reference: bool) -> str:
+    """Adapt one copied page from local outputs/ to its flat public route."""
+    replacements = {
+        'href="../assets/lesson.css"': 'href="assets/lesson.css"',
+        "href='../assets/lesson.css'": "href='assets/lesson.css'",
+        'src="../assets/lesson.js"': 'src="assets/lesson.js"',
+        "src='../assets/lesson.js'": "src='assets/lesson.js'",
+        'href="../index.html"': 'href="index.html"',
+        "href='../index.html'": "href='index.html'",
+    }
+    for source, target in replacements.items():
+        text = text.replace(source, target)
+    if reference:
+        def rewrite_sibling_reference(match: re.Match[str]) -> str:
+            target = match.group(2)
+            if target == "index.html":
+                return match.group(1) + target + match.group(3)
+            return match.group(1) + REFERENCE_PREFIX + target + match.group(3)
+        text = re.sub(r'(\bhref\s*=\s*["\'])([^/"\'#?]+\.html)(["\'])',
+                      rewrite_sibling_reference, text)
+    text = re.sub(r'(["\'])\.\./lessons/([^/"\'#?]+\.html)(\1)',
+                  r'\1\2\3', text)
+    text = re.sub(r'(["\'])\.\./reference/([^/"\'#?]+\.html)(\1)',
+                  rf'\1{REFERENCE_PREFIX}\2\3', text)
+    return text
+
+
 def copy_whitelisted(project_root: Path, dest: Path) -> list[tuple[str, str]]:
-    """Copy only whitelisted files from outputs/. Returns [(rel_path, title)] for HTML pages."""
+    """Copy approved public files and return [(public_href, title)].
+
+    Lesson files are published as ``<project>/<lesson>.html`` and reference
+    aids as ``<project>/ref-<aid>.html``. Source HTML stays untouched: only
+    copied pages have local asset, catalog, and cross-category links rewritten.
+    """
     outputs = project_root / "outputs"
     if not outputs.is_dir():
         print(f"WARNING: no outputs/ in {project_root.name}", file=sys.stderr)
@@ -275,6 +319,7 @@ def copy_whitelisted(project_root: Path, dest: Path) -> list[tuple[str, str]]:
 
     pages: list[tuple[str, str]] = []
 
+    public_hrefs: set[str] = set()
     for sub in ALLOWED_HTML_SUBDIRS:
         subdir = outputs / sub
         if not subdir.is_dir():
@@ -282,11 +327,23 @@ def copy_whitelisted(project_root: Path, dest: Path) -> list[tuple[str, str]]:
         for html in sorted(subdir.rglob("*.html")):
             if not is_symlink_safe(html):
                 raise RuntimeError(f"symlink detected: {html}")
-            rel = html.relative_to(outputs)
+            if not re.fullmatch(r"[a-z0-9][a-z0-9.-]*\.html", html.name):
+                raise RuntimeError(
+                    f"public page filename must be lowercase ASCII: {html.name}")
+            if sub == "lessons":
+                rel = Path(html.name)
+            else:
+                rel = Path(REFERENCE_PREFIX + html.name)
+            public_href = str(rel).replace("\\", "/")
+            if public_href == "index.html" or public_href in public_hrefs:
+                raise RuntimeError(f"public route collision: {public_href}")
+            public_hrefs.add(public_href)
             out_file = dest / rel
             out_file.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(html, out_file)
-            pages.append((str(rel).replace("\\", "/"), page_title(html)))
+            out_file.write_text(_rewrite_flattened_page(
+                html.read_text(encoding="utf-8"), reference=(sub == "reference")),
+                encoding="utf-8")
+            pages.append((public_href, page_title(html)))
 
     assets = outputs / "assets"
     if assets.is_dir():
@@ -349,18 +406,16 @@ def classify_page(href: str, title: str) -> str:
     """Bucket a copied page into one of: lessons / review / reference.
 
     Rules (v0.5.2 information architecture):
-      - reference/** -> reference
-      - lessons/* whose filename contains `review` or whose title contains 复习 -> review
-      - remaining lessons/* -> lessons
+      - ref-* -> reference
+      - flat page names containing `review` or whose title contains 复习 -> review
+      - remaining flat pages -> lessons
     """
-    if href.startswith("reference/"):
+    if href.startswith(REFERENCE_PREFIX):
         return "reference"
-    if href.startswith("lessons/"):
-        name = href.rsplit("/", 1)[-1]
-        if "review" in name.lower() or "复习" in title:
-            return "review"
-        return "lessons"
-    return "reference"
+    name = href.rsplit("/", 1)[-1]
+    if "review" in name.lower() or "复习" in title:
+        return "review"
+    return "lessons"
 
 
 def sort_pages(pages: list[tuple[str, str]], category: str) -> list[tuple[str, str]]:
@@ -636,7 +691,11 @@ def _build_to_dir(staging: Path, workspace: Path, projects_root: Path,
         project_root, config = matches[0]
         display_name = config.get("display_name", project_root.name)
         pipeline = config.get("pipeline", "capability")
-        slug = safe_slug(display_name)
+        try:
+            slug = public_slug(pid)
+        except ValueError as exc:
+            print(f"ERROR: {exc}", file=sys.stderr)
+            return [], False
         project_hash = PROJECT_HASH.get(pid, slug)
 
         # Validate project and UI Kit before copying any content

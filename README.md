@@ -127,7 +127,7 @@ python3 fyuu-tutor/scripts/publish_portal.py \
   --publish
 ```
 
-This pushes the portal to a public GitHub Pages branch. The private `portal.toml` explicitly selects every project, marker file, and repository; do not call the lower-level deployment script directly. Enable Pages in the repository settings first, confirm publication authority, and treat publication as a **one-way, public** action.
+This pushes the portal to a public GitHub Pages branch. The private `portal.toml` explicitly selects every project, marker file, and repository; `publish_after_validation` is a technical eligibility gate, not publication authority. Do not call the lower-level deployment script directly. A current-session authorization or a documented project-level standing authorization is required; treat publication as a **one-way, public** action.
 
 Before publishing, the build script runs a privacy scan that rejects:
 
