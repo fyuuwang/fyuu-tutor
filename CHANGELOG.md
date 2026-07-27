@@ -2,7 +2,19 @@
 
 All notable changes are recorded here. Preview releases may contain breaking changes, which must include migration notes.
 
-## [0.5.2] — Mobile Learning Portal — 2026-07-26
+## [0.5.3] - Hardening Release - 2026-07-27
+
+### Fixed
+
+- Offline HTML exporter (`export_offline_lesson.py`) now opens source files via a file descriptor with `O_NOFOLLOW`, validates symlinks on the full path chain, and rejects unsupported external resources, `file://` links, `srcset`, `poster`, `track src`, `base href`, `meta refresh`, `link preload`, `iframe srcdoc`, `form action`, `anchor ping`, inline event handlers, `javascript:` URIs, inline scripts, duplicate type attributes, CSS escapes, CSS `url()`, wrong asset names, inline `style` attributes, inline SVGs, data iframes, and non-UTF-8 content rather than producing a partial output. It preserves `audio-config` only in an offline-safe form that disables remote TTS and online fallback. Attribute order, self-closing tags, and path-escape attempts no longer bypass validation.
+- Portal publish wrapper (`publish_portal.py`) marker gate is now fail-closed: marker source files are read through `O_NOFOLLOW` file descriptors, a permission-restricted normalized snapshot is created for build and deploy, and the snapshot is verified by inode and content hash before every build and deploy step. Original marker files changed after validation can no longer affect the current run. Missing, empty, symlinked, parent-symlinked, non-UTF-8, and directory marker files are all rejected.
+- Portal CSS no longer unconditionally hides `.panel` elements; panels are hidden only when `portal.js` adds a `js` class to `<html>`. Without JavaScript, all project entries and catalog links (课程 / 复习 / 资料) remain visible and reachable in source order.
+
+### Changed
+
+- README (EN and zh-CN) version references and Hero SVG version labels updated from `v0.3.0` / `v0.5.1` to `v0.5.3`. Offline export description no longer claims absolute self-containment; it states the exporter only accepts its recognized local shared resources and rejects unsupported external resources.
+
+## [0.5.2] - Mobile Learning Portal - 2026-07-26
 
 ### Added
 

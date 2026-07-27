@@ -1017,6 +1017,464 @@ pretest_questions = 0
                 for pat in ("/Users/", "/home/", "/private/"):
                     self.assertNotIn(pat, t)
 
+    def test_portal_css_does_not_unconditionally_hide_panels(self):
+        """Generated portal.css must not hide .panel without a JS-enable gate."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "PMP备考", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            out = Path(temp) / "portal"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_portal.py"),
+                 "--workspace", str(ws), "--out", str(out),
+                 "--project", "pmp-certification"],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            css = (out / "portal.css").read_text(encoding="utf-8")
+            # The old unconditional rule must be gone: no .panel hiding
+            # unless preceded by the .js gate.  Use regex so the check is
+            # not fooled by the new ".js .panel{display:none}" substring.
+            import re
+            bare = re.search(r'(?<!\.js )\.panel\{display:none\}', css)
+            self.assertIsNone(bare,
+                "unconditional .panel{display:none} still present in CSS")
+            # Hiding must be gated behind a JS-enable selector on <html>.
+            self.assertIn(".js .panel{display:none}", css)
+            self.assertIn(".js .panel[data-active=\"true\"]{display:block}", css)
+
+    def test_portal_js_adds_html_js_class(self):
+        """portal.js must add the 'js' class to <html> so panel hiding engages."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "PMP备考", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            out = Path(temp) / "portal"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_portal.py"),
+                 "--workspace", str(ws), "--out", str(out),
+                 "--project", "pmp-certification"],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            js = (out / "portal.js").read_text(encoding="utf-8")
+            # The script must add the js class to the document root.
+            self.assertIn("documentElement", js)
+            self.assertIn("classList.add('js')", js)
+            # It must do so early, before panel activation logic.
+            self.assertLess(js.index("documentElement"),
+                            js.index("function groups"))
+
+    def test_portal_root_has_three_project_panels_no_js(self):
+        """Root portal must contain all three project panels visible without JS."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "PMP备考", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+                ("business-cantonese", "粤语学习", "capability",
+                 [("lessons/0001.html", "第 1 課 · B")]),
+                ("ai-systems-designer", "AI系统设计", "capability",
+                 [("lessons/0001.html", "第 1 课 · C")]),
+            ])
+            out = Path(temp) / "portal"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_portal.py"),
+                 "--workspace", str(ws), "--out", str(out),
+                 "--project", "pmp-certification", "--project", "business-cantonese",
+                 "--project", "ai-systems-designer"],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            root = (out / "index.html").read_text(encoding="utf-8")
+            # All three project panels present in source order.
+            for ph in ("pmp", "cantonese", "ai"):
+                self.assertIn(f'data-hash="{ph}"', root)
+            self.assertLess(root.index('data-hash="pmp"'),
+                            root.index('data-hash="cantonese"'))
+            self.assertLess(root.index('data-hash="cantonese"'),
+                            root.index('data-hash="ai"'))
+            # Each project panel has a "查看课程目录" link.
+            self.assertEqual(root.count("查看课程目录"), 3)
+            # No <html class="js"> baked into the static HTML; the class is
+            # added at runtime by portal.js only.
+            self.assertNotIn('class="js"', root)
+            self.assertNotIn('class=" js"', root)
+
+    def test_portal_catalog_has_three_panels_no_js(self):
+        """Each project catalog must keep lessons/review/reference panels reachable."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "PMP备考", "capability", [
+                    ("lessons/0001.html", "第 1 课 · A"),
+                    ("reference/r.html", "速查"),
+                ]),
+            ])
+            out = Path(temp) / "portal"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_portal.py"),
+                 "--workspace", str(ws), "--out", str(out),
+                 "--project", "pmp-certification"],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            idx = (out / "pmp备考" / "index.html").read_text(encoding="utf-8")
+            # Three catalog tab panels exist: lessons, review, reference.
+            self.assertIn('id="panel-lessons"', idx)
+            self.assertIn('id="panel-review"', idx)
+            self.assertIn('id="panel-reference"', idx)
+            # The three tab links are present and use hash routing.
+            for h in ("lessons", "review", "reference"):
+                self.assertIn(f'href="#{h}"', idx)
+            # No JS class baked into static HTML.
+            self.assertNotIn('class="js"', idx)
+
+    def test_portal_existing_tab_structure_unchanged(self):
+        """Existing hash/tab generation structure must still work after CSS change."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "PMP备考", "capability", [
+                    ("lessons/0001.html", "第 1 课 · A"),
+                    ("lessons/0002.html", "第 2 课 · B"),
+                    ("reference/r.html", "速查"),
+                ]),
+            ])
+            out = Path(temp) / "portal"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_portal.py"),
+                 "--workspace", str(ws), "--out", str(out),
+                 "--project", "pmp-certification"],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            idx = (out / "pmp备考" / "index.html").read_text(encoding="utf-8")
+            # aria-selected and data-active attributes still generated.
+            self.assertIn('aria-selected="true"', idx)
+            self.assertIn('data-active="true"', idx)
+            self.assertIn('data-active="false"', idx)
+            # tablist role and data-group still present.
+            self.assertIn('role="tablist"', idx)
+            self.assertIn('data-group="catalog"', idx)
+            # Tab IDs and hash routing intact.
+            self.assertIn('id="tab-lessons"', idx)
+            self.assertIn('data-hash="lessons"', idx)
+
+    _EXPORT_LESSON_HTML = (
+        '<!doctype html><html lang="en"><head>'
+        '<link rel="stylesheet" href="../assets/lesson.css">'
+        '<title>第 1 课 · A</title></head>'
+        '<body data-ui-version="2" data-pipeline="capability" '
+        'data-format="reference" data-theme="overview">'
+        '<main class="lesson-shell" id="main"><header class="lesson-header">'
+        '<h1>第 1 课 · A</h1></header><section class="reference-section">'
+        '<h2>Content</h2></section><footer class="lesson-footer">'
+        '<p>Done</p></footer></main>{payload}'
+        '<script src="../assets/lesson.js"></script></body></html>'
+    )
+
+    def _run_offline_export(self, temp, payload="", html=None, css=None):
+        """Build a one-lesson fixture, run the offline exporter, return (result, out)."""
+        scripts = Path(__file__).resolve().parent
+        self._portal_multi(temp, [
+            ("test-project", "Test", "capability",
+             [("lessons/0001.html", "第 1 课 · A")]),
+        ])
+        proj = Path(temp) / "workspace" / "projects" / "test-project"
+        if css is not None:
+            (proj / "outputs" / "assets" / "lesson.css").write_text(css, encoding="utf-8")
+        lesson = proj / "outputs" / "lessons" / "0001.html"
+        lesson.write_text(
+            html if html is not None else self._EXPORT_LESSON_HTML.format(payload=payload),
+            encoding="utf-8")
+        out = Path(temp) / "0001.offline.html"
+        result = subprocess.run(
+            [sys.executable, str(scripts / "export_offline_lesson.py"),
+             "--file", str(lesson), "--out", str(out)],
+            capture_output=True, text=True)
+        return result, out
+
+    def _assert_offline_rejected(self, result, out):
+        self.assertNotEqual(result.returncode, 0, result.stderr)
+        self.assertFalse(out.exists(), "output must not exist on rejection")
+
+    def test_offline_export_unquoted_stylesheet_attr(self):
+        """Unquoted stylesheet attributes must inline cleanly, no residual dependency."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload="").replace(
+                '<link rel="stylesheet" href="../assets/lesson.css">',
+                "<link rel=stylesheet href=../assets/lesson.css>")
+            result, out = self._run_offline_export(temp, html=html)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            exported = out.read_text(encoding="utf-8")
+            self.assertIn("<style>", exported)
+            self.assertNotIn("../assets/lesson.css", exported)
+            self.assertNotIn('<link rel="stylesheet"', exported.lower())
+
+    def test_offline_export_self_closing_stylesheet(self):
+        """Self-closing <link ... /> must inline without leaving a dangling tag."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload="").replace(
+                '<link rel="stylesheet" href="../assets/lesson.css">',
+                '<link rel="stylesheet" href="../assets/lesson.css" />')
+            result, out = self._run_offline_export(temp, html=html)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            exported = out.read_text(encoding="utf-8")
+            self.assertIn("<style>", exported)
+            self.assertNotIn("lesson.css", exported)
+
+    def test_offline_export_rejects_file_uri_css(self):
+        """file:// stylesheet must be rejected, no output."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload="").replace(
+                'href="../assets/lesson.css"', 'href="file:///etc/passwd"')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_non_stylesheet_link(self):
+        """Non-stylesheet <link href> (e.g. icon) must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload="").replace(
+                "</head>", '<link rel="icon" href="https://x/fav.ico"></head>')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_srcset(self):
+        """srcset attribute must be rejected (external resource channel)."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload='<img srcset="a.jpg 1x">')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_poster(self):
+        """video poster attribute must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload='<video poster="x.jpg"></video>')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_track_src(self):
+        """track src attribute must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload='<track src="en.vtt">')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_base_href(self):
+        """<base href> must be rejected (redirects relative URLs)."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload="").replace(
+                "</head>", '<base href="https://evil/"></head>')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_meta_refresh(self):
+        """meta refresh must be rejected (navigation/redirect channel)."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload="").replace(
+                "</head>", '<meta http-equiv="refresh" content="0;url=https://x"></head>')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_link_preload(self):
+        """<link rel=preload/imagesrcset> must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload="").replace(
+                "</head>", '<link rel="preload" href="https://x/f.js" as="script"></head>')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_iframe_srcdoc(self):
+        """iframe srcdoc must be rejected (embedded active document)."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload='<iframe srcdoc="<script>1</script>"></iframe>')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_form_action(self):
+        """form action attribute must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload='<form action="https://x"></form>')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_anchor_ping(self):
+        """anchor ping attribute must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload='<a href="https://ok.example" ping="https://track">x</a>')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_onclick(self):
+        """on* event handler attribute must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload='<button onclick="alert(1)">x</button>')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_javascript_href(self):
+        """javascript: href must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload='<a href="javascript:alert(1)">x</a>')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_javascript_href_newline_encoded(self):
+        """Newline-obfuscated javascript: href must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload='<a href="java\nscript:alert(1)">x</a>')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_arbitrary_inline_script(self):
+        """Executable inline script (no JSON type) must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload="<script>alert(1)</script>")
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_duplicate_type_attr(self):
+        """Duplicate attribute on a tag must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload="").replace(
+                "</body>", '<script id="lesson-questions" type="application/json" '
+                'type="application/json">{"q":1}</script></body>')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_css_escape(self):
+        """CSS identifier escape (backslash escape) must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            result, out = self._run_offline_export(temp, css="body{background:u\\72l(x)}")
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_css_url(self):
+        """CSS url() must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            result, out = self._run_offline_export(temp, css="body{background:url(x.png)}")
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_wrong_asset_name(self):
+        """Only lesson.css/lesson.js may be inlined; another assets-root CSS is rejected."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            self._portal_multi(temp, [
+                ("test-project", "Test", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            proj = Path(temp) / "workspace" / "projects" / "test-project"
+            assets = proj / "outputs" / "assets"
+            (assets / "other.css").write_text("body{color:red}", encoding="utf-8")
+            lesson = proj / "outputs" / "lessons" / "0001.html"
+            lesson.write_text(self._EXPORT_LESSON_HTML.format(payload="").replace(
+                'href="../assets/lesson.css"', 'href="../assets/other.css"'), encoding="utf-8")
+            out = Path(temp) / "0001.offline.html"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "export_offline_lesson.py"),
+                 "--file", str(lesson), "--out", str(out)],
+                capture_output=True, text=True)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_inline_style_attr(self):
+        """style= attribute must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload='<div style="color:red">x</div>')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_inline_svg(self):
+        """Inline SVG must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload="<svg><circle/></svg>")
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_rejects_data_iframe(self):
+        """data: iframe src must be rejected."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload='<iframe src="data:text/html,<b>x</b>"></iframe>')
+            result, out = self._run_offline_export(temp, html=html)
+            self._assert_offline_rejected(result, out)
+
+    def test_offline_export_denetworks_audio_config(self):
+        """audio-config keeps lang, drops remote TTS, forces allow_remote_tts=false."""
+        with tempfile.TemporaryDirectory() as temp:
+            html = self._EXPORT_LESSON_HTML.format(payload="").replace(
+                "</body>", '<script id="audio-config" type="application/json">'
+                '{"lang":"zh","allow_remote_tts":true,"online_tts":"https://x/tts",'
+                '"online_dictionary":"https://x/dict"}</script></body>')
+            result, out = self._run_offline_export(temp, html=html)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            exported = out.read_text(encoding="utf-8")
+            self.assertIn('id="audio-config"', exported)
+            self.assertIn('"allow_remote_tts":false', exported)
+            self.assertIn('"lang":"zh"', exported)
+            self.assertNotIn("online_tts", exported)
+            self.assertNotIn("online_dictionary", exported)
+
+    def test_offline_export_failure_creates_no_output_dir(self):
+        """Rejection must not create the output parent directory."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            self._portal_multi(temp, [
+                ("test-project", "Test", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            proj = Path(temp) / "workspace" / "projects" / "test-project"
+            lesson = proj / "outputs" / "lessons" / "0001.html"
+            lesson.write_text(self._EXPORT_LESSON_HTML.format(
+                payload='<img src="https://x/a.jpg">'), encoding="utf-8")
+            out = Path(temp) / "deep" / "nested" / "x.offline.html"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "export_offline_lesson.py"),
+                 "--file", str(lesson), "--out", str(out)],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(out.exists())
+            self.assertFalse((Path(temp) / "deep").exists(),
+                             "rejection must not create the output parent dir")
+
+    def test_offline_export_preserves_existing_target_on_midwrite_change(self):
+        """If the source hash diverges mid-write, an existing target is left intact."""
+        import importlib
+        scripts = Path(__file__).resolve().parent
+        sys.path.insert(0, str(scripts))
+        try:
+            import export_offline_lesson as exp
+            importlib.reload(exp)
+            with tempfile.TemporaryDirectory() as temp:
+                self._portal_multi(temp, [
+                    ("test-project", "Test", "capability",
+                     [("lessons/0001.html", "第 1 课 · A")]),
+                ])
+                proj = Path(temp) / "workspace" / "projects" / "test-project"
+                lesson = proj / "outputs" / "lessons" / "0001.html"
+                out = Path(temp) / "target.offline.html"
+                out.write_text("SENTINEL", encoding="utf-8")
+                real_sha = exp.sha256_file
+                state = {"n": 0}
+                def drifting(path):
+                    state["n"] += 1
+                    if state["n"] >= 3:  # post-write source-hash check
+                        return "0" * 64
+                    return real_sha(path)
+                exp.sha256_file = drifting
+                try:
+                    returned = exp.export_offline(lesson, out)
+                finally:
+                    exp.sha256_file = real_sha
+                self.assertEqual(returned, "")
+                self.assertTrue(out.is_file(), "pre-existing target must be preserved")
+                self.assertEqual(out.read_text(encoding="utf-8"), "SENTINEL")
+        finally:
+            if str(scripts) in sys.path:
+                sys.path.remove(str(scripts))
+
     def test_offline_export_inlines_css_js(self):
         """Offline export inlines lesson.css/.js, removes external refs, keeps JSON."""
         import tempfile, shutil, hashlib
@@ -1087,10 +1545,230 @@ pretest_questions = 0
             self.assertNotEqual(result2.returncode, 0)
             self.assertIn("file:", result2.stderr.lower())
 
+
+    def test_offline_export_stylesheet_attr_order(self):
+        """Stylesheet with href before rel must still inline and remove the tag."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        export_script = scripts / "export_offline_lesson.py"
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("test-project", "Test", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            proj = Path(temp) / "workspace" / "projects" / "test-project"
+            lesson = proj / "outputs" / "lessons" / "0001.html"
+            out = Path(temp) / "0001.offline.html"
+            orig_html = lesson.read_text(encoding="utf-8")
+            html_reordered = orig_html.replace(
+                '<link rel="stylesheet" href="../assets/lesson.css">',
+                '<link href="../assets/lesson.css" rel="stylesheet">')
+            lesson.write_text(html_reordered, encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(export_script), "--file", str(lesson), "--out", str(out)],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue(out.is_file())
+            exported = out.read_text(encoding="utf-8")
+            self.assertNotIn('<link rel="stylesheet"', exported.lower())
+            self.assertNotIn('href="../assets/lesson.css"', exported)
+            self.assertIn("<style>", exported)
+
+    def test_offline_export_escape_path_rejected(self):
+        """../ escape outside assets root must be rejected and produce no output."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        export_script = scripts / "export_offline_lesson.py"
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("test-project", "Test", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            proj = Path(temp) / "workspace" / "projects" / "test-project"
+            lesson = proj / "outputs" / "lessons" / "0001.html"
+            out = Path(temp) / "0001.offline.html"
+            orig_html = lesson.read_text(encoding="utf-8")
+            html_escape = orig_html.replace(
+                'href="../assets/lesson.css"',
+                'href="../../outside.css"')
+            lesson.write_text(html_escape, encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(export_script), "--file", str(lesson), "--out", str(out)],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(out.exists())
+
+    def test_offline_export_absolute_path_rejected(self):
+        """Absolute path in ref must be rejected."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        export_script = scripts / "export_offline_lesson.py"
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("test-project", "Test", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            proj = Path(temp) / "workspace" / "projects" / "test-project"
+            lesson = proj / "outputs" / "lessons" / "0001.html"
+            out = Path(temp) / "0001.offline.html"
+            orig_html = lesson.read_text(encoding="utf-8")
+            html_abs = orig_html.replace(
+                'href="../assets/lesson.css"',
+                'href="/etc/passwd"')
+            lesson.write_text(html_abs, encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(export_script), "--file", str(lesson), "--out", str(out)],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(out.exists())
+
+    def test_offline_export_rejects_external_img(self):
+        """Page with external image reference must be rejected."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        export_script = scripts / "export_offline_lesson.py"
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("test-project", "Test", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            proj = Path(temp) / "workspace" / "projects" / "test-project"
+            lesson = proj / "outputs" / "lessons" / "0001.html"
+            out = Path(temp) / "0001.offline.html"
+            orig = lesson.read_text(encoding="utf-8")
+            html_img = orig.replace("</body>",
+                '<img src="https://example.com/photo.jpg"></body>')
+            lesson.write_text(html_img, encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(export_script), "--file", str(lesson), "--out", str(out)],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(out.exists())
+
+    def test_offline_export_rejects_external_audio(self):
+        """Page with external audio reference must be rejected."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        export_script = scripts / "export_offline_lesson.py"
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("test-project", "Test", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            proj = Path(temp) / "workspace" / "projects" / "test-project"
+            lesson = proj / "outputs" / "lessons" / "0001.html"
+            out = Path(temp) / "0001.offline.html"
+            orig = lesson.read_text(encoding="utf-8")
+            html_audio = orig.replace("</body>",
+                '<audio src="file:///tmp/secret.mp3"></audio></body>')
+            lesson.write_text(html_audio, encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(export_script), "--file", str(lesson), "--out", str(out)],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(out.exists())
+
+    def test_offline_export_rejects_css_import(self):
+        """CSS containing @import must be rejected."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        export_script = scripts / "export_offline_lesson.py"
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("test-project", "Test", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            proj = Path(temp) / "workspace" / "projects" / "test-project"
+            assets_dir = proj / "outputs" / "assets"
+            css = assets_dir / "lesson.css"
+            css.write_text('@import url("http://evil.com/bad.css");', encoding="utf-8")
+            lesson = proj / "outputs" / "lessons" / "0001.html"
+            out = Path(temp) / "0001.offline.html"
+            result = subprocess.run(
+                [sys.executable, str(export_script), "--file", str(lesson), "--out", str(out)],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(out.exists())
+
+    def test_offline_export_json_scripts_preserved(self):
+        """Inline JSON blocks survive export untouched."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        export_script = scripts / "export_offline_lesson.py"
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("test-project", "Test", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            proj = Path(temp) / "workspace" / "projects" / "test-project"
+            lesson = proj / "outputs" / "lessons" / "0001.html"
+            orig = lesson.read_text(encoding="utf-8")
+            html_json = orig.replace("</body>",
+                '<script id="lesson-questions" type="application/json">{"q":1}</script></body>')
+            lesson.write_text(html_json, encoding="utf-8")
+            out = Path(temp) / "0001.offline.html"
+            result = subprocess.run(
+                [sys.executable, str(export_script), "--file", str(lesson), "--out", str(out)],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            exported = out.read_text(encoding="utf-8")
+            self.assertIn('id="lesson-questions"', exported)
+
+    def test_offline_export_rejects_symlink_asset(self):
+        """Symlink assets must be rejected."""
+        import tempfile, os
+        scripts = Path(__file__).resolve().parent
+        export_script = scripts / "export_offline_lesson.py"
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("test-project", "Test", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            proj = Path(temp) / "workspace" / "projects" / "test-project"
+            assets_dir = proj / "outputs" / "assets"
+            real_css = assets_dir / "lesson.css"
+            real_css.unlink()
+            (assets_dir / "real.css").write_text("body{color:red}", encoding="utf-8")
+            os.symlink(str(assets_dir / "real.css"), str(assets_dir / "lesson.css"))
+            lesson = proj / "outputs" / "lessons" / "0001.html"
+            out = Path(temp) / "0001.offline.html"
+            result = subprocess.run(
+                [sys.executable, str(export_script), "--file", str(lesson), "--out", str(out)],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(out.exists())
+
+    def test_offline_export_rejects_relative_img(self):
+        """Relative image path must be rejected (not inlineable)."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        export_script = scripts / "export_offline_lesson.py"
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("test-project", "Test", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            proj = Path(temp) / "workspace" / "projects" / "test-project"
+            lesson = proj / "outputs" / "lessons" / "0001.html"
+            orig = lesson.read_text(encoding="utf-8")
+            html_img = orig.replace("</body>",
+                '<img src="../assets/diagram.png"></body>')
+            lesson.write_text(html_img, encoding="utf-8")
+            out = Path(temp) / "0001.offline.html"
+            result = subprocess.run(
+                [sys.executable, str(export_script), "--file", str(lesson), "--out", str(out)],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(out.exists())
     # ---- publish_portal wrapper tests ----
 
-    def _portal_toml(self, temp, projects, publish=True):
+    def _portal_toml(self, temp, projects, publish=True, workspace=None):
         """Write a temporary portal.toml for test use."""
+        if workspace is None:
+            workspace = Path(temp) / "workspace"
+        workspace.mkdir(parents=True, exist_ok=True)
+        marker = workspace / "portal-markers.txt"
+        marker.write_text("SECRET-MARKER\nPROJECT-PLAN\n", encoding="utf-8")
         p = Path(temp) / "portal.toml"
         ids = "\n".join(f'  "{pid}",' for pid in projects)
         p.write_text(
@@ -1228,6 +1906,7 @@ pretest_questions = 0
                 ("pmp-certification", "PMP备考", "capability",
                  [("lessons/0001.html", "第 1 课 · A")]),
             ])
+            (ws / "portal-markers.txt").write_text("SECRET-MARKER\n", encoding="utf-8")
             # Point portal.toml to our clean repo
             toml = Path(temp) / "portal.toml"
             ids = '\n'.join(f'  "{pid}",' for pid in ["pmp-certification"])
@@ -1347,5 +2026,342 @@ pretest_questions = 0
 
 
 
+
+    def test_publish_portal_rejects_missing_marker_file(self):
+        """Missing marker_file in config is rejected."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            p = Path(temp) / "portal.toml"
+            p.write_text(
+                "[portal]\n"
+                'projects = ["tp"]\n',
+                encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(Path(temp) / "ws"),
+                 "--config", str(p),
+                 "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("marker_file", result.stderr.lower())
+
+    def test_publish_portal_rejects_empty_marker_file(self):
+        """Empty marker_file value is rejected."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            p = Path(temp) / "portal.toml"
+            p.write_text(
+                "[portal]\n"
+                'marker_file = ""\n'
+                'projects = ["tp"]\n',
+                encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(Path(temp) / "ws"),
+                 "--config", str(p),
+                 "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("marker_file", result.stderr.lower())
+
+    def test_publish_portal_rejects_missing_marker_on_disk(self):
+        """Marker file configured but not present on disk is rejected."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = Path(temp) / "ws"
+            ws.mkdir()
+            p = Path(temp) / "portal.toml"
+            p.write_text(
+                "[portal]\n"
+                'marker_file = "missing.txt"\n'
+                'projects = ["tp"]\n',
+                encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(ws),
+                 "--config", str(p),
+                 "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("not found", result.stderr.lower())
+
+    def test_publish_portal_rejects_directory_as_marker(self):
+        """A valid project still rejects a directory marker at the marker gate."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [("tp", "TP", "capability", [])])
+            (ws / "markers").mkdir()
+            p = Path(temp) / "portal.toml"
+            p.write_text(
+                "[portal]\n"
+                'marker_file = "markers"\n'
+                'projects = ["tp"]\n',
+                encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(ws),
+                 "--config", str(p),
+                 "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("not a regular file", result.stderr.lower())
+
+    def test_publish_portal_rejects_escape_marker_path(self):
+        """A valid project still rejects an escaping marker path at the marker gate."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [("tp", "TP", "capability", [])])
+            p = Path(temp) / "portal.toml"
+            p.write_text(
+                "[portal]\n"
+                'marker_file = "../outside.txt"\n'
+                'projects = ["tp"]\n',
+                encoding="utf-8")
+            result = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(ws),
+                 "--config", str(p),
+                 "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("simple relative path", result.stderr.lower())
+
+    def test_publish_portal_build_uses_immutable_marker_snapshot(self):
+        """A source rewrite after validation cannot change the markers sent to build."""
+        scripts = Path(__file__).resolve().parent
+        sys.path.insert(0, str(scripts))
+        try:
+            import publish_portal
+            with tempfile.TemporaryDirectory() as temp:
+                ws = self._portal_multi(temp, [
+                    ("tp", "TP", "capability",
+                     [("lessons/0001.html", "第 1 课 · A")]),
+                ])
+                marker_path = ws / "portal-markers.txt"
+                marker_path.write_text("ZZ-MARKER\n# comment\n", encoding="utf-8")
+                p = Path(temp) / "portal.toml"
+                p.write_text(
+                    "[portal]\n"
+                    'marker_file = "portal-markers.txt"\n'
+                    'repo = "../system"\n'
+                    'projects = ["tp"]\n',
+                    encoding="utf-8")
+                captured = {}
+                original_run = publish_portal._run
+                def spy(cmd, label):
+                    if any("build_portal.py" in str(c) for c in cmd):
+                        captured["argv"] = [str(c) for c in cmd]
+                        marker_path.write_text("REPLACED-MARKER\n", encoding="utf-8")
+                        snapshot = Path(captured["argv"][captured["argv"].index("--markers") + 1])
+                        captured["snapshot"] = snapshot
+                        captured["contents"] = snapshot.read_text(encoding="utf-8")
+                    return original_run(cmd, label)
+                publish_portal._run = spy
+                old_argv = sys.argv
+                sys.argv = ["publish_portal.py", "--workspace", str(ws),
+                            "--config", str(p), "--build-only"]
+                try:
+                    rc = publish_portal.main()
+                finally:
+                    sys.argv = old_argv
+                    publish_portal._run = original_run
+                self.assertEqual(rc, 0)
+                self.assertIn("argv", captured, "build_portal.py was never invoked")
+                argv = captured["argv"]
+                self.assertIn("--markers", argv)
+                self.assertNotEqual(argv[argv.index("--markers") + 1], str(marker_path.resolve()))
+                self.assertEqual(captured["contents"], "ZZ-MARKER\n")
+                self.assertFalse(captured["snapshot"].exists(), "snapshot must be cleaned up")
+        finally:
+            if str(scripts) in sys.path:
+                sys.path.remove(str(scripts))
+
+    def test_publish_portal_rejects_marker_replaced_by_symlink_before_read(self):
+        """The source marker is read through O_NOFOLLOW after the path checks."""
+        import os, unittest.mock as mock
+        scripts = Path(__file__).resolve().parent
+        sys.path.insert(0, str(scripts))
+        try:
+            import publish_portal
+            with tempfile.TemporaryDirectory() as temp:
+                ws = Path(temp) / "ws"; ws.mkdir()
+                marker = ws / "marker.txt"
+                marker.write_text("SAFE\n", encoding="utf-8")
+                external = Path(temp) / "external.txt"
+                external.write_text("EXTERNAL\n", encoding="utf-8")
+                original_read = publish_portal._read_regular_file
+                replaced = False
+                def replace_then_read(path):
+                    nonlocal replaced
+                    if not replaced:
+                        marker.unlink()
+                        os.symlink(external, marker)
+                        replaced = True
+                    return original_read(path)
+                with mock.patch.object(publish_portal, "_read_regular_file", replace_then_read):
+                    with self.assertRaises(SystemExit):
+                        publish_portal._validate_marker_file(ws.resolve(), "marker.txt")
+                self.assertTrue(replaced)
+        finally:
+            sys.path.remove(str(scripts))
+
+    def test_publish_portal_rejects_snapshot_replaced_before_deploy(self):
+        """A snapshot replacement after build blocks deployment and is cleaned up."""
+        scripts = Path(__file__).resolve().parent
+        sys.path.insert(0, str(scripts))
+        try:
+            import publish_portal
+            with tempfile.TemporaryDirectory() as temp:
+                ws = self._portal_multi(temp, [("tp", "TP", "capability",
+                                                [("lessons/0001.html", "第 1 课 · A")])])
+                (ws / "portal-markers.txt").write_text("MARKER\n", encoding="utf-8")
+                repo = Path(temp) / "repo"; repo.mkdir()
+                for command in (("init",), ("checkout", "-b", "main"),
+                                ("config", "user.email", "test@test"),
+                                ("config", "user.name", "test")):
+                    subprocess.run(["git", "-C", str(repo), *command], check=True,
+                                   capture_output=True, text=True)
+                (repo / "README.md").write_text("# test\n", encoding="utf-8")
+                subprocess.run(["git", "-C", str(repo), "add", "README.md"], check=True)
+                subprocess.run(["git", "-C", str(repo), "commit", "-m", "init"], check=True,
+                               capture_output=True, text=True)
+                config = Path(temp) / "portal.toml"
+                config.write_text('[portal]\nrepo = "../repo"\nmarker_file = "portal-markers.txt"\n'
+                                  'projects = ["tp"]\n', encoding="utf-8")
+                original_run, labels, snapshot = publish_portal._run, [], []
+                def replace_after_build(cmd, label):
+                    labels.append(label)
+                    result = original_run(cmd, label)
+                    if label == "portal build":
+                        path = Path(cmd[cmd.index("--markers") + 1])
+                        replacement = path.with_name("replacement.txt")
+                        replacement.write_text("REPLACED\n", encoding="utf-8")
+                        replacement.replace(path)
+                        snapshot.append(path)
+                    return result
+                publish_portal._run = replace_after_build
+                old_argv = sys.argv
+                sys.argv = ["publish_portal.py", "--workspace", str(ws),
+                            "--config", str(config), "--publish"]
+                try:
+                    self.assertEqual(publish_portal.main(), 1)
+                finally:
+                    sys.argv = old_argv
+                    publish_portal._run = original_run
+                self.assertNotIn("portal deploy", labels)
+                self.assertTrue(snapshot)
+                self.assertFalse(snapshot[0].exists(), "snapshot must be cleaned up")
+        finally:
+            sys.path.remove(str(scripts))
+
+    def test_publish_portal_rejects_absolute_marker_path(self):
+        """Absolute marker_file path is rejected."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = Path(temp) / "ws"; ws.mkdir()
+            p = Path(temp) / "portal.toml"
+            p.write_text('[portal]\nmarker_file = "/etc/passwd"\nprojects = ["tp"]\n',
+                         encoding="utf-8")
+            r = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(ws), "--config", str(p), "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(r.returncode, 0)
+            self.assertIn("marker_file", r.stderr.lower())
+
+    def test_publish_portal_rejects_symlink_marker(self):
+        """A marker file that is itself a symlink is rejected."""
+        import os
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = Path(temp) / "ws"; ws.mkdir()
+            (ws / "real.txt").write_text("MARKER-A\n", encoding="utf-8")
+            os.symlink(str(ws / "real.txt"), str(ws / "marker.txt"))
+            p = Path(temp) / "portal.toml"
+            p.write_text('[portal]\nmarker_file = "marker.txt"\nprojects = ["tp"]\n',
+                         encoding="utf-8")
+            r = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(ws), "--config", str(p), "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(r.returncode, 0)
+            self.assertIn("symlink", r.stderr.lower())
+
+    def test_publish_portal_rejects_parent_symlink_marker(self):
+        """A marker under a symlinked directory is rejected."""
+        import os
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = Path(temp) / "ws"; ws.mkdir()
+            realdir = ws / "realdir"; realdir.mkdir()
+            (realdir / "marker.txt").write_text("MARKER-B\n", encoding="utf-8")
+            os.symlink(str(realdir), str(ws / "linked"))
+            p = Path(temp) / "portal.toml"
+            p.write_text('[portal]\nmarker_file = "linked/marker.txt"\nprojects = ["tp"]\n',
+                         encoding="utf-8")
+            r = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(ws), "--config", str(p), "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(r.returncode, 0)
+            self.assertIn("symlink", r.stderr.lower())
+
+    def test_publish_portal_rejects_empty_marker_content(self):
+        """A marker file with only whitespace/comments is treated as empty."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = Path(temp) / "ws"; ws.mkdir()
+            (ws / "marker.txt").write_text("  \n# top comment\n  # indented comment\n",
+                                           encoding="utf-8")
+            p = Path(temp) / "portal.toml"
+            p.write_text('[portal]\nmarker_file = "marker.txt"\nprojects = ["tp"]\n',
+                         encoding="utf-8")
+            r = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(ws), "--config", str(p), "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(r.returncode, 0)
+            self.assertIn("no non-comment", r.stderr.lower())
+
+    def test_publish_portal_rejects_non_utf8_marker(self):
+        """A non-UTF-8 marker file is rejected."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = Path(temp) / "ws"; ws.mkdir()
+            (ws / "marker.txt").write_bytes(bytes([0xFF, 0xFE]) + b"MARKER\n")
+            p = Path(temp) / "portal.toml"
+            p.write_text('[portal]\nmarker_file = "marker.txt"\nprojects = ["tp"]\n',
+                         encoding="utf-8")
+            r = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(ws), "--config", str(p), "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(r.returncode, 0)
+            self.assertIn("utf-8", r.stderr.lower())
+
+    def test_publish_portal_rejects_marker_in_published_content(self):
+        """Wrapper rejects when a published page contains a configured marker."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("tp", "TP", "capability", [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            lesson = ws / "projects" / "tp" / "outputs" / "lessons" / "0001.html"
+            lesson.write_text(lesson.read_text(encoding="utf-8").replace(
+                "<p>Done</p>", "<p>SECRETZZ</p>"), encoding="utf-8")
+            (ws / "portal-markers.txt").write_text("SECRETZZ\n", encoding="utf-8")
+            p = Path(temp) / "portal.toml"
+            p.write_text(
+                "[portal]\n"
+                'marker_file = "portal-markers.txt"\n'
+                'repo = "../system"\n'
+                'projects = ["tp"]\n',
+                encoding="utf-8")
+            r = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(ws), "--config", str(p), "--build-only"],
+                capture_output=True, text=True)
+            self.assertNotEqual(r.returncode, 0)
+            self.assertIn("marker", r.stderr.lower())
 if __name__ == "__main__":
     unittest.main()

@@ -82,7 +82,7 @@ h1{margin:0 0 6px;font-size:clamp(28px,6vw,48px)}
 .tab{display:flex;align-items:center;justify-content:center;min-height:48px;padding:10px 12px;border:1px solid var(--line);border-bottom:none;border-radius:10px 10px 0 0;background:var(--bg);color:var(--muted);text-decoration:none;font-weight:600;font-size:15px;text-align:center}
 .tab[aria-selected="true"]{background:var(--card);color:var(--ink);border-color:var(--accent)}
 .tab .count{margin-left:6px;font-size:12px;font-weight:600;opacity:.8}
-.panel{display:none}.panel[data-active="true"]{display:block}
+.js .panel{display:none}.js .panel[data-active="true"]{display:block}
 .proj-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
 .proj-head h2{margin:0;font-size:22px}
 .badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:600;background:var(--accent);color:#fff}
@@ -106,6 +106,11 @@ footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:v
 # links remain reachable (no hidden-by-default content).
 PORTAL_JS = """\
 (function () {
+  // Progressive enhancement: hide non-active panels only when JS runs.
+  // Without JS the class is never added, so every panel stays visible and
+  // all project/lesson links remain reachable in source order.
+  var root = document.documentElement;
+  root.classList.add('js');
   function groups(scope) {
     return Array.prototype.slice.call(
       scope.querySelectorAll('[role="tablist"]'));
