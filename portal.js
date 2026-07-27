@@ -1,4 +1,9 @@
 (function () {
+  // Progressive enhancement: hide non-active panels only when JS runs.
+  // Without JS the class is never added, so every panel stays visible and
+  // all project/lesson links remain reachable in source order.
+  var root = document.documentElement;
+  root.classList.add('js');
   function groups(scope) {
     return Array.prototype.slice.call(
       scope.querySelectorAll('[role="tablist"]'));
