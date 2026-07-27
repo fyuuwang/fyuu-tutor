@@ -1,6 +1,6 @@
 # Fyuu Tutor
 
-[English](README.md) · 当前版本：**v0.5.1 — 门户部署补丁**
+[English](README.md) · 当前版本：**v0.5.3 - 加固发布**
 
 <p align="center">
   <img src="./assets/readme/hero-zh-cn.svg" width="100%" alt="Fyuu Tutor 把教材、题库或学习目标变成一个会根据学习表现持续调整的课程">
@@ -153,9 +153,9 @@ python3 fyuu-tutor/scripts/export_offline_lesson.py \
   --out <目标>/<课件>.offline.html
 ```
 
-导出器将共享的 `lesson.css` 和 `lesson.js` 内联为单个 HTML 文件，保留题库 JSON 和音频声明，并拒绝远程资源、`file://` 链接、缺失资源和非法 UTF-8。源文件不会被修改。
+导出器只将其认可的本地共享资源（`lesson.css` 和 `lesson.js`）内联为单个 HTML 文件，保留题库 JSON，并只以离线安全形式保留 `audio-config`：远程 TTS 和在线回退会被禁用。遇到不受支持的外部资源、`file://` 链接、缺失资源或非法 UTF-8 时，导出器会拒绝输出，而不是生成残缺文件。源文件不会被修改。
 
-`outputs/` 下的源码 HTML 依赖 `outputs/assets/` 下的共享资源；导出的 `.offline.html` 文件是完全独立的。不要将源码 HTML 当作自包含的离线文件直接使用。
+`outputs/` 下的源码 HTML 依赖 `outputs/assets/` 下的共享资源；只有导出的 `.offline.html` 文件是自包含的。不要将源码 HTML 当作独立的离线文件直接使用。
 
 ## 安装
 
@@ -210,7 +210,7 @@ Fyuu Tutor 最初基于 Matt Pocock 的 [`teach`](https://github.com/mattpocock/
 
 ## 当前状态
 
-Fyuu Tutor 目前是 `v0.5.1` 公开预览版。
+Fyuu Tutor 目前是 `v0.5.3` 公开预览版。
 
 它已经在三个长期学习项目中使用，但还需要更多不同用户、不同教材和不同学习目标的验证。预览阶段如果修改项目格式或使用方式，会在更新记录中附上迁移说明。
 

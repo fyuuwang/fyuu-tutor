@@ -1,6 +1,6 @@
 # Fyuu Tutor
 
-[中文说明](README.zh-CN.md) · Current release: **v0.5.1 — Portal Deployment Patch**
+[中文说明](README.zh-CN.md) · Current release: **v0.5.3 - Hardening Release**
 
 <p align="center">
   <img src="./assets/readme/hero.svg" width="100%" alt="Fyuu Tutor turns materials, question banks, or learning goals into an adaptive course that continues from the learner's response">
@@ -153,9 +153,9 @@ python3 fyuu-tutor/scripts/export_offline_lesson.py \
   --out <destination>/<lesson>.offline.html
 ```
 
-The exporter inlines the shared `lesson.css` and `lesson.js` into a single HTML file, keeps the question bank and audio declarations intact, and rejects remote resources, `file://` links, missing assets, and non-UTF-8 content. The source file is never modified.
+The exporter inlines only the local shared assets it recognizes (`lesson.css` and `lesson.js`) into a single HTML file. It keeps the question bank and retains `audio-config` only in an offline-safe form: remote TTS and online fallback are disabled. It rejects any unsupported external resource, `file://` link, missing asset, or non-UTF-8 content rather than producing a partial output. The source file is never modified.
 
-The source HTML in `outputs/` depends on shared assets under `outputs/assets/`; the exported `.offline.html` file is fully standalone. Do not treat raw source HTML as a self-contained offline file.
+The source HTML in `outputs/` depends on shared assets under `outputs/assets/`; only the exported `.offline.html` file is self-contained. Do not treat raw source HTML as a standalone offline file.
 
 ## Install
 
@@ -211,7 +211,7 @@ Other tutoring projects informed product research, but their code and prompts we
 
 ## Project status
 
-Fyuu Tutor is currently a `v0.5.1` public preview.
+Fyuu Tutor is currently a `v0.5.3` public preview.
 
 It has been used in three long-running learning projects, but it still needs testing with more learners, source types, and learning goals. Any breaking preview change will include migration notes.
 
