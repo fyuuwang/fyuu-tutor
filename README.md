@@ -121,15 +121,13 @@ This creates a local directory you can open in a browser. Nothing leaves your ma
 ### Publishing (`--publish` is a dangerous operation)
 
 ```bash
-bash fyuu-tutor/scripts/deploy_portal.sh \
+python3 fyuu-tutor/scripts/publish_portal.py \
   --workspace <workspace-path> \
-  --repo <fyuu-tutor-repo-path> \
-  --markers <portal-markers-file> \
-  --project <project-id> \
+  --config <workspace-path>/portal.toml \
   --publish
 ```
 
-This pushes the portal to a public GitHub Pages branch. Enable Pages in the repository settings first, confirm every selected project individually, and treat publication as a **one-way, public** action.
+This pushes the portal to a public GitHub Pages branch. The private `portal.toml` explicitly selects every project, marker file, and repository; do not call the lower-level deployment script directly. Enable Pages in the repository settings first, confirm publication authority, and treat publication as a **one-way, public** action.
 
 Before publishing, the build script runs a privacy scan that rejects:
 
