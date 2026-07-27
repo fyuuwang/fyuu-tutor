@@ -127,7 +127,7 @@ python3 fyuu-tutor/scripts/publish_portal.py \
   --publish
 ```
 
-这会把门户推送到公开的 GitHub Pages 分支。私有 `portal.toml` 会明确选择项目、标记文件和仓库；不要直接调用底层部署脚本。请先在仓库设置中启用 Pages、确认发布授权；发布属于**单向、公开**的操作。
+这会把门户推送到公开的 GitHub Pages 分支。私有 `portal.toml` 会明确选择项目、标记文件和仓库；`publish_after_validation` 是技术资格门，不是发布授权。不要直接调用底层部署脚本。发布需要当次授权或项目文件中已记录的长期授权；发布属于**单向、公开**的操作。
 
 发布前，构建脚本会运行隐私扫描，拒绝以下内容：
 

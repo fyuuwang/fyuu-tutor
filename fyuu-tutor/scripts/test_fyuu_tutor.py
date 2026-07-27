@@ -584,7 +584,7 @@ pretest_questions = 0
             )
             self.assertEqual(result.returncode, 0, result.stderr)
             # Whitelisted files present
-            self.assertTrue(Path(out, "tp/reference/page.html").is_file())
+            self.assertTrue(Path(out, "tp/ref-page.html").is_file())
             self.assertTrue(Path(out, "tp/assets/lesson.css").is_file())
             self.assertTrue(Path(out, "tp/assets/lesson.js").is_file())
             # Private index NOT copied
@@ -634,26 +634,77 @@ pretest_questions = 0
             shutil.rmtree(ws, ignore_errors=True)
             shutil.rmtree(out, ignore_errors=True)
 
-    def test_portal_slug_collision(self):
-        """Portal must reject slug collisions."""
+    def test_portal_public_route_is_independent_of_display_name(self):
+        """Localized display names never become public URL path segments."""
         import tempfile, shutil
         scripts = Path(__file__).resolve().parent
         ws = tempfile.mkdtemp() + "/ws"
-        for pid, dn in [("pa", "Dup"), ("pb", "Dup")]:
-            project, _ = self._valid_portal_project(ws, pid, dn)
-            project.rename(Path(ws) / "projects" / f"proj-{pid}")
+        project, _ = self._valid_portal_project(ws, "pmp-certification", "Exam Prep")
         out = tempfile.mkdtemp() + "/portal"
         try:
             result = subprocess.run(
                 [sys.executable, str(scripts / "build_portal.py"),
-                 "--workspace", ws, "--out", out, "--project", "pa", "--project", "pb"],
+                 "--workspace", ws, "--out", out, "--project", "pmp-certification"],
                 capture_output=True, text=True,
             )
-            self.assertNotEqual(result.returncode, 0)
-            self.assertIn("slug", result.stderr.lower())
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue(Path(out, "pmp/index.html").is_file())
+            self.assertFalse(Path(out, "Exam Prep").exists())
         finally:
             shutil.rmtree(ws, ignore_errors=True)
             shutil.rmtree(out, ignore_errors=True)
+
+    def test_portal_rejects_non_ascii_public_filename(self):
+        """A localized filename cannot silently create a localized public URL."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "Exam Prep", "capability", [
+                    ("lessons/0001-中文.html", "第 1 课"),
+                ]),
+            ])
+            out = Path(temp) / "portal"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_portal.py"),
+                 "--workspace", str(ws), "--out", str(out),
+                 "--project", "pmp-certification"],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("lowercase ascii", result.stderr.lower())
+
+    def test_portal_flattens_pages_and_rewrites_local_links(self):
+        """Published copies use short routes while source-relative links still work."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "Exam Prep", "capability", [
+                    ("lessons/0001.html", "第 1 课 · A"),
+                    ("reference/guide.html", "速查"),
+                ]),
+            ])
+            guide = ws / "projects" / "pmp-certification" / "outputs" / "reference" / "guide.html"
+            guide.write_text(guide.read_text(encoding="utf-8").replace(
+                "Done", '<a href="../lessons/0001.html">进入课程</a>'
+                '<a href="page.html">更多资料</a>'), encoding="utf-8")
+            out = Path(temp) / "portal"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_portal.py"),
+                 "--workspace", str(ws), "--out", str(out),
+                 "--project", "pmp-certification"],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            lesson = (out / "pmp" / "0001.html").read_text(encoding="utf-8")
+            reference = (out / "pmp" / "ref-guide.html").read_text(encoding="utf-8")
+            index = (out / "pmp" / "index.html").read_text(encoding="utf-8")
+            self.assertIn('href="assets/lesson.css"', lesson)
+            self.assertIn('src="assets/lesson.js"', lesson)
+            self.assertIn('href="0001.html"', reference)
+            self.assertIn('href="ref-page.html"', reference)
+            self.assertIn('href="ref-guide.html"', index)
+            self.assertFalse((out / "pmp" / "lessons").exists())
+            self.assertFalse((out / "pmp" / "reference").exists())
 
     def test_validator_rejects_bool_and_duplicate_right(self):
         """Validator must reject boolean single_choice answer and duplicate matching right."""
@@ -717,14 +768,14 @@ pretest_questions = 0
         """The final scan must include generated files before output is published."""
         with tempfile.TemporaryDirectory() as temp:
             workspace = Path(temp) / "workspace"
-            self._valid_portal_project(workspace, "marker-project", "Private Marker")
+            self._valid_portal_project(workspace, "private-marker", "Private Marker")
             markers = Path(temp) / "markers.txt"
             markers.write_text("private-marker\n", encoding="utf-8")
             out = Path(temp) / "portal"
             result = subprocess.run(
                 [sys.executable, str(ROOT / "scripts" / "build_portal.py"),
                  "--workspace", str(workspace), "--out", str(out),
-                 "--project", "marker-project", "--markers", str(markers)],
+                "--project", "private-marker", "--markers", str(markers)],
                 capture_output=True, text=True,
             )
             self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -891,11 +942,11 @@ pretest_questions = 0
         scripts = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as temp:
             ws = self._portal_multi(temp, [
-                ("pmp-certification", "PMP备考", "capability",
+                ("pmp-certification", "Exam Prep", "capability",
                  [("lessons/0001.html", "第 1 课 · A")]),
-                ("business-cantonese", "粤语学习", "capability",
+                ("business-cantonese", "Language Lab", "capability",
                  [("lessons/0001.html", "第 1 課 · B")]),
-                ("ai-systems-designer", "AI学习", "capability",
+                ("ai-systems-designer", "Capability Lab", "capability",
                  [("lessons/0001.html", "第 1 课 · C")]),
             ])
             out = Path(temp) / "portal"
@@ -931,7 +982,7 @@ pretest_questions = 0
         scripts = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as temp:
             ws = self._portal_multi(temp, [
-                ("pmp-certification", "PMP备考", "capability", [
+                ("pmp-certification", "Exam Prep", "capability", [
                     ("lessons/0001.html", "第 1 课 · 项目工作"),
                     ("lessons/0003.html", "第 3 课 · 测量"),
                     ("lessons/0003b.html", "0003b · EVM 指标"),
@@ -947,7 +998,7 @@ pretest_questions = 0
                  "--project", "pmp-certification"],
                 capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
-            idx = (out / "pmp备考" / "index.html").read_text(encoding="utf-8")
+            idx = (out / "pmp" / "index.html").read_text(encoding="utf-8")
             # Counts: 课程=4, 复习=1, 资料=1
             self.assertIn('<span>课程</span><span class="count">4</span>', idx)
             self.assertIn('<span>复习</span><span class="count">1</span>', idx)
@@ -969,7 +1020,7 @@ pretest_questions = 0
         scripts = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as temp:
             ws = self._portal_multi(temp, [
-                ("pmp-certification", "PMP备考", "capability",
+                ("pmp-certification", "Exam Prep", "capability",
                  [("lessons/0001.html", "第 1 课 · A")]),
             ])
             out = Path(temp) / "portal"
@@ -979,7 +1030,7 @@ pretest_questions = 0
                  "--project", "pmp-certification"],
                 capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
-            idx = (out / "pmp备考" / "index.html").read_text(encoding="utf-8")
+            idx = (out / "pmp" / "index.html").read_text(encoding="utf-8")
             # 资料 (reference) is empty here -> explicit empty state
             self.assertIn('暂无内容', idx)
             # No bare empty panel div
@@ -993,7 +1044,7 @@ pretest_questions = 0
         scripts = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as temp:
             ws = self._portal_multi(temp, [
-                ("pmp-certification", "PMP备考", "capability",
+                ("pmp-certification", "Exam Prep", "capability",
                  [("lessons/0001.html", "第 1 课 · A"),
                   ("reference/r.html", "速查")]),
             ])
@@ -1008,7 +1059,7 @@ pretest_questions = 0
                  "--project", "pmp-certification", "--markers", str(markers)],
                 capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
-            for html in [out / "index.html", out / "pmp备考" / "index.html"]:
+            for html in [out / "index.html", out / "pmp" / "index.html"]:
                 t = html.read_text(encoding="utf-8")
                 self.assertNotIn("Learning progress", t)
                 self.assertNotIn("Next action", t)
@@ -1023,7 +1074,7 @@ pretest_questions = 0
         scripts = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as temp:
             ws = self._portal_multi(temp, [
-                ("pmp-certification", "PMP备考", "capability",
+                ("pmp-certification", "Exam Prep", "capability",
                  [("lessons/0001.html", "第 1 课 · A")]),
             ])
             out = Path(temp) / "portal"
@@ -1051,7 +1102,7 @@ pretest_questions = 0
         scripts = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as temp:
             ws = self._portal_multi(temp, [
-                ("pmp-certification", "PMP备考", "capability",
+                ("pmp-certification", "Exam Prep", "capability",
                  [("lessons/0001.html", "第 1 课 · A")]),
             ])
             out = Path(temp) / "portal"
@@ -1075,9 +1126,9 @@ pretest_questions = 0
         scripts = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as temp:
             ws = self._portal_multi(temp, [
-                ("pmp-certification", "PMP备考", "capability",
+                ("pmp-certification", "Exam Prep", "capability",
                  [("lessons/0001.html", "第 1 课 · A")]),
-                ("business-cantonese", "粤语学习", "capability",
+                ("business-cantonese", "Language Lab", "capability",
                  [("lessons/0001.html", "第 1 課 · B")]),
                 ("ai-systems-designer", "AI系统设计", "capability",
                  [("lessons/0001.html", "第 1 课 · C")]),
@@ -1111,7 +1162,7 @@ pretest_questions = 0
         scripts = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as temp:
             ws = self._portal_multi(temp, [
-                ("pmp-certification", "PMP备考", "capability", [
+                ("pmp-certification", "Exam Prep", "capability", [
                     ("lessons/0001.html", "第 1 课 · A"),
                     ("reference/r.html", "速查"),
                 ]),
@@ -1123,7 +1174,7 @@ pretest_questions = 0
                  "--project", "pmp-certification"],
                 capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
-            idx = (out / "pmp备考" / "index.html").read_text(encoding="utf-8")
+            idx = (out / "pmp" / "index.html").read_text(encoding="utf-8")
             # Three catalog tab panels exist: lessons, review, reference.
             self.assertIn('id="panel-lessons"', idx)
             self.assertIn('id="panel-review"', idx)
@@ -1140,7 +1191,7 @@ pretest_questions = 0
         scripts = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as temp:
             ws = self._portal_multi(temp, [
-                ("pmp-certification", "PMP备考", "capability", [
+                ("pmp-certification", "Exam Prep", "capability", [
                     ("lessons/0001.html", "第 1 课 · A"),
                     ("lessons/0002.html", "第 2 课 · B"),
                     ("reference/r.html", "速查"),
@@ -1153,7 +1204,7 @@ pretest_questions = 0
                  "--project", "pmp-certification"],
                 capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
-            idx = (out / "pmp备考" / "index.html").read_text(encoding="utf-8")
+            idx = (out / "pmp" / "index.html").read_text(encoding="utf-8")
             # aria-selected and data-active attributes still generated.
             self.assertIn('aria-selected="true"', idx)
             self.assertIn('data-active="true"', idx)
@@ -1863,7 +1914,7 @@ pretest_questions = 0
         scripts = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as temp:
             ws = self._portal_multi(temp, [
-                ("pmp-certification", "PMP备考", "capability",
+                ("pmp-certification", "Exam Prep", "capability",
                  [("lessons/0001.html", "第 1 课 · A"),
                   ("lessons/0002.html", "第 2 课 · B"),
                   ("reference/r.html", "速查")]),
@@ -1903,7 +1954,7 @@ pretest_questions = 0
             sp_git("commit", "-m", "init")
 
             ws = self._portal_multi(temp, [
-                ("pmp-certification", "PMP备考", "capability",
+                ("pmp-certification", "Exam Prep", "capability",
                  [("lessons/0001.html", "第 1 课 · A")]),
             ])
             (ws / "portal-markers.txt").write_text("SECRET-MARKER\n", encoding="utf-8")
@@ -1930,6 +1981,22 @@ pretest_questions = 0
                             "worktree" in result.stderr.lower() or
                             "status" in result.stderr.lower(),
                             f"expected clean/worktree rejection, got: {result.stderr}")
+
+    def test_publish_portal_rejects_disabled_incremental_publish(self):
+        """A portal configured for preview-only cannot publish."""
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "Exam Prep", "capability",
+                 [("lessons/0001.html", "第 1 课 · A")]),
+            ])
+            config = self._portal_toml(temp, ["pmp-certification"], publish=False)
+            result = subprocess.run(
+                [sys.executable, str(scripts / "publish_portal.py"),
+                 "--workspace", str(ws), "--config", str(config), "--publish"],
+                capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("publish_after_validation is false", result.stderr)
 
     def test_privacy_audit_catches_untracked_file(self):
         """Audit must check untracked (not yet git-added) files, not just tracked ones."""
@@ -2226,7 +2293,7 @@ pretest_questions = 0
                 subprocess.run(["git", "-C", str(repo), "commit", "-m", "init"], check=True,
                                capture_output=True, text=True)
                 config = Path(temp) / "portal.toml"
-                config.write_text('[portal]\nrepo = "../repo"\nmarker_file = "portal-markers.txt"\n'
+                config.write_text('[portal]\npublish_after_validation = true\nrepo = "../repo"\nmarker_file = "portal-markers.txt"\n'
                                   'projects = ["tp"]\n', encoding="utf-8")
                 original_run, labels, snapshot = publish_portal._run, [], []
                 def replace_after_build(cmd, label):

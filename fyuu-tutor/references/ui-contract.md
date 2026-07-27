@@ -33,7 +33,7 @@ Short reference pages omit `section-index`. Pages with three or more chapters ma
 
 Every lesson, reference, and practice page carries a shared catalog-return entry so the reader can always get back to the project directory. New templates include it statically; old UI v2 pages are backfilled at load time by `lesson.js`, so they do not need a manual edit.
 
-The `course-back` link always points to `../index.html`. That single href works for both `outputs/lessons/*` (local, resolves to `outputs/index.html`) and the published `<project>/lessons/*` on GitHub Pages (resolves to `<project>/index.html`).
+The `course-back` link always points to `../index.html` in source HTML. That keeps local `outputs/lessons/*` and `outputs/reference/*` self-contained. The portal builder rewrites only the published copy to the flat public route; course authors must not add GitHub Pages paths, localized project names, or custom public URLs to source pages.
 
 On `lesson` pages the return button and the 01/02/03 stage bar sit together in a `course-nav`: back button on the left, three stages evenly filling the rest on desktop; on mobile the back button keeps only the arrow icon and the three stages split evenly with no horizontal scroll. The back button is not a fourth stage and is never counted as a tab.
 
