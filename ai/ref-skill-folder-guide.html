@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="怎么组织一个 skill 的文件夹：标准四件套 + 三个复杂度档 + 决策规则，落到你自己的公文 / MDG skill。">
+  <title>skill 文件夹怎么组织</title>
+  <link rel="stylesheet" href="assets/lesson.css">
+</head>
+<body data-ui-version="2" data-pipeline="capability" data-format="reference" data-theme="process">
+  <a class="skip-link" href="#folder-content">跳到正文</a>
+  <main class="lesson-shell" id="folder-content">
+    <header class="lesson-header">
+      <p class="eyebrow">AI 学习 · 参考资料</p>
+      <h1>怎么组织一个 skill 的文件夹</h1>
+      <p class="lesson-deck">不是写 SKILL.md 的内容，是决定「哪些文件放哪、什么时候该拆出来」。市面官方方案 + 你本机真实样板，一个原则讲透。</p>
+    </header>
+    <section class="reference-section" aria-labelledby="f-hook">
+      <h2 id="f-hook">你撞过的墙</h2>
+      <p>你把几十种公文（采购、请示、评分表……）全塞进一个 skill。结果换一种文体，格式就乱。你问过自己「总不能写几十个 skill 吧」——对，不能。但问题不是 skill 太少，是结构不对。这一节讲的就是这个结构。</p>
+    </section>
+    <section class="reference-section" aria-labelledby="f-principle">
+      <h2 id="f-principle">一个原则管全部：Progressive Disclosure（渐进式披露）</h2>
+      <p>所有官方方案——Anthropic 文档、GitHub 仓库、社区教程——背后都是这同一个原则：</p>
+      <p class="takeaway">SKILL.md 是门厅，其他文件是按需才进的房间。门厅永远开着（每次用 skill 都会读），所以要精简；详细的资料、脚本、模板放进各个房间，需要时才开门进去拿。这样门厅不会塞爆，但你又随时能拿到细节。</p>
+      <p>对应到你 50 种公文的问题：不要把 50 种文体的写法全堆在 SKILL.md（门厅塞爆了，每次都串味）。门厅里只放「判断这是哪种文体 + 去哪个房间拿模板」的路由逻辑；每种文体一个房间（一个文件），用到才开。这就是路由模式（图谱④），它的物理实现就是文件夹结构。</p>
+    </section>
+    <section class="reference-section" aria-labelledby="f-parts">
+      <h2 id="f-parts">标准四件套（官方共识）</h2>
+      <p>一个 skill = 一个文件夹。文件夹里最多这四样：</p>
+      <div class="reference-grid">
+        <article class="reference-item"><h3>SKILL.md（必需）</h3><p>门厅。开头是 YAML 元数据（至少 name + description），后面是指令。永远被读，所以要精简（官方建议几百行以内）。只放：做什么、什么时候用、该去哪个房间找细节。</p></article>
+        <article class="reference-item"><h3>scripts/（可选）</h3><p>放确定性的脚本——Python、Shell。凡是 model 不擅长的（精确计算、格式转换、文件处理），交给脚本。本机 pptx / docx skill 的 scripts/ 里就是打包解包、清洗 OOXML 的 Python。</p></article>
+        <article class="reference-item"><h3>references/（可选）</h3><p>放参考文档——长说明书、API 用法、规则手册。SKILL.md 里写「详细规则见 references/xxx.md」，用到才读，不污染门厅。</p></article>
+        <article class="reference-item"><h3>assets/（可选）</h3><p>放模板、样例、数据文件。你的公文 skill 里，国标格式模板、各文体的范文就该放这。</p></article>
+      </div>
+      <p class="section-intro">标准结构示意：</p>
+      <div class="system-list">
+        <div class="system-item"><strong>my-skill/</strong><span>文件夹名 = skill 名</span></div>
+        <div class="system-item"><strong>SKILL.md</strong><span>必需：元数据 + 指令（门厅）</span></div>
+        <div class="system-item"><strong>scripts/</strong><span>可选：脚本（.py / .sh）</span></div>
+        <div class="system-item"><strong>references/</strong><span>可选：参考文档（按需读）</span></div>
+        <div class="system-item"><strong>assets/</strong><span>可选：模板 / 数据 / 样例</span></div>
+      </div>
+    </section>
+    <section class="reference-section" aria-labelledby="f-tiers">
+      <h2 id="f-tiers">三个复杂度档（你本机都有样板）</h2>
+      <div class="reference-grid">
+        <article class="reference-item"><h3>档① 最小：只有 SKILL.md</h3><p>本机样板：grill-me、teach、write-a-skill。逻辑短、没脚本、没模板——一个文件搞定。别为了「显得专业」硬拆。</p></article>
+        <article class="reference-item"><h3>档② 典型：SKILL.md + 几个参考文件</h3><p>本机样板：pptx（SKILL.md + pptxgenjs.md + editing.md）。主线精简放 SKILL.md，大段专题资料拆成几个 .md 平级摆放。这是大多数 skill 该有的样子。</p></article>
+        <article class="reference-item"><h3>档③ 复杂：SKILL.md + scripts/ + 数据 / schema</h3><p>本机样板：docx（带 scripts/office/schemas/ 一堆 .xsd）。要处理二进制格式、跑确定性逻辑——才上 scripts/ 和数据目录。你 MDG skill 改 XML 那套，就够格上这档。</p></article>
+      </div>
+    </section>
+    <section class="reference-section" aria-labelledby="f-rules">
+      <h2 id="f-rules">决策规则：什么时候该拆出新文件</h2>
+      <table class="term-table">
+        <thead><tr><th>问题</th><th>怎么办</th></tr></thead>
+        <tbody>
+          <tr><td>SKILL.md 超过约 300-500 行了？</td><td>拆。把大段专题内容挪进 references/xxx.md，SKILL.md 留一句「详见……」。</td></tr>
+          <tr><td>有一段确定性逻辑（计算、格式处理、文件操作）？</td><td>写成脚本放 scripts/，别让 model 用 prompt 硬干（会飘）。你 MDG 改 XML、公文引号统一，都该是脚本。</td></tr>
+          <tr><td>同一个 skill 要服务多种「变体」（文体 / 场景）？</td><td>SKILL.md 只放路由（判断是哪种 + 指向哪个文件），每种变体单独一个文件放 assets/ 或 references/。这就是治你 50 种公文的方法。</td></tr>
+          <tr><td>有模板 / 范文 / 数据表要复用？</td><td>放 assets/。国标公文格式模板、各文体范文都归这。</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="reference-section" aria-labelledby="f-recipe">
+      <h2 id="f-recipe">落到你自己的 skill</h2>
+      <p class="eyebrow">公文写作 skill（档③，重构）</p>
+      <div class="system-list">
+        <div class="system-item"><strong>gongwen/SKILL.md</strong><span>门厅：判断文体 + 路由 + 通用规则</span></div>
+        <div class="system-item"><strong>references/caigou.md</strong><span>采购文件写法</span></div>
+        <div class="system-item"><strong>references/qingshi.md</strong><span>请示写法（含子类）</span></div>
+        <div class="system-item"><strong>references/pingfen.md</strong><span>评分表写法</span></div>
+        <div class="system-item"><strong>assets/guobiao-template.docx</strong><span>国标格式模板（版面在这，不在 prompt）</span></div>
+        <div class="system-item"><strong>scripts/normalize.py</strong><span>统一引号 / 全半角（确定性后处理）</span></div>
+      </div>
+      <p class="takeaway">版面交给模板文件，不交给 model——这同时治了「页边距乱 / 页脚漏」那批毛病（图谱①排版边界）。</p>
+      <p class="eyebrow">MDG skill（档③）</p>
+      <div class="system-list">
+        <div class="system-item"><strong>mdg/SKILL.md</strong><span>门厅：流程 + 字段规则入口</span></div>
+        <div class="system-item"><strong>references/field-rules.md</strong><span>客商各字段校验规则（按需查）</span></div>
+        <div class="system-item"><strong>scripts/extract.py</strong><span>调 OCR 抽数据（感知边界交给工具）</span></div>
+        <div class="system-item"><strong>scripts/build_xml.py</strong><span>直接生成 MDG 识别的 XML（钉死 substrate）</span></div>
+      </div>
+    </section>
+    <section class="reference-section" aria-labelledby="f-sources">
+      <h2 id="f-sources">参考来源</h2>
+      <p>这些是外部链接，因本页面要求离线可用，以文字形式列出，可自行复制到浏览器打开：</p>
+      <div class="system-list">
+        <div class="system-item"><strong>Anthropic 官方工程博客</strong><span>Equipping agents for the real world with Agent Skills（最权威）：anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills</span></div>
+        <div class="system-item"><strong>anthropics/skills</strong><span>官方 GitHub 仓库，每个 skill 一个自包含文件夹：github.com/anthropics/skills</span></div>
+        <div class="system-item"><strong>AgentSkills.io 规范页</strong><span>标准目录结构定义：agentskills.io/specification</span></div>
+        <div class="system-item"><strong>Claude 帮助中心</strong><span>如何创建自定义 skill（打包规则）：support.claude.com/en/articles/12512198</span></div>
+        <div class="system-item"><strong>KDnuggets</strong><span>Anthropic Claude Skills 构建完整指南：kdnuggets.com/anthropics-complete-guide-to-claude-skills-building</span></div>
+        <div class="system-item"><strong>实战对照</strong><span>拆解 Claude 自带 skill 文件夹的真实结构：tao-hpu.medium.com（i-took-apart-the-folders-claude-ships-with）</span></div>
+      </div>
+    </section>
+    <footer class="lesson-footer"><p>一句话带走：SKILL.md 是门厅（永远读、要精简），其他都是按需才进的房间。scripts/ 放确定性逻辑，references/ 放长文档，assets/ 放模板数据。多文体用「路由 + 分文件」治，别堆门厅。</p></footer>
+  </main>
+  <script src="assets/lesson.js"></script>
+</body>
+</html>

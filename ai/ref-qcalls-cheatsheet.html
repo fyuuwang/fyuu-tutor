@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="QCALLS 框架速查表：做任何 AI 系统设计决策时过一遍的 6 个维度。">
+  <title>QCALLS 框架速查表</title>
+  <link rel="stylesheet" href="assets/lesson.css">
+</head>
+<body data-ui-version="2" data-pipeline="capability" data-format="reference" data-theme="process">
+  <a class="skip-link" href="#qcalls-content">跳到正文</a>
+  <main class="lesson-shell" id="qcalls-content">
+    <header class="lesson-header">
+      <p class="eyebrow">AI 学习 · 参考资料</p>
+      <h1>QCALLS 框架速查表</h1>
+      <p class="lesson-deck">做任何 AI 系统设计决策时，过一遍这 6 个维度。每个维度给一个判断刻度和典型示例，帮你快速定位约束在哪。</p>
+    </header>
+    <section class="reference-section" aria-labelledby="qcalls-six">
+      <h2 id="qcalls-six">六个维度</h2>
+      <table class="term-table">
+        <thead><tr><th>维度</th><th>判断刻度 · 示例</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Q · Quality</strong></td><td>精度要求多高？错一个后果是什么？医疗 / 金融 → 高 Q；内容推荐 → 中 Q；草稿 / 初筛 → 低 Q 可接受。</td></tr>
+          <tr><td><strong>C · Cost</strong></td><td>预算上限多少？token 消耗 × 轮次 × 日活。关键公式：单次 cost × 日均调用 × 30 = 月成本。</td></tr>
+          <tr><td><strong>A · Automation</strong></td><td>全自动还是人机协同？人在环中的阈值在哪：95% 精度就能全自动，还是要 99.9% + 人工终审？</td></tr>
+          <tr><td><strong>L · Latency</strong></td><td>用户能等多久？流式输出还是整段返回？实时聊天小于 2s；邮件摘要 30s 也行；后台处理不限时。</td></tr>
+          <tr><td><strong>L · Long Context</strong></td><td>需要保持多少轮 / 多少 token 的历史？客服 3-5 轮；代码审查完整文件；对话 Agent 滑动窗口。</td></tr>
+          <tr><td><strong>S · Speed</strong></td><td>吞吐量要求？并发多高？100 条 / 天 → 简单；10000 条 / 天 → 要考虑排队 / 分批 / 并行。</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="reference-section" aria-labelledby="qcalls-check">
+      <h2 id="qcalls-check">快速自检模板</h2>
+      <p class="takeaway">遇到一个场景，填三句话定位约束：（维度）绝对不能低于 X 分；（维度）可以接受较低，因为……；（维度）是约束条件，其他维度在它的限制下优化。</p>
+    </section>
+    <footer class="lesson-footer"><p>配合 AI 能力大图谱使用：先在图谱里找到能力，再用 QCALLS 定设计约束。</p></footer>
+  </main>
+  <script src="assets/lesson.js"></script>
+</body>
+</html>
