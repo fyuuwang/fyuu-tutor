@@ -423,7 +423,7 @@
 
   // course-nav / course-back are persistent: they must never be hidden when
   // the 01/02/03 stage switch toggles section visibility.
-  var PERSISTENT = ["lesson-footer", "lesson-steps", "section-index", "course-nav", "course-back"];
+  var PERSISTENT = ["lesson-footer", "lesson-steps", "section-index", "course-nav", "course-back", "course-home"];
 
   function stageGroups() {
     var shell = document.querySelector(".lesson-shell");
@@ -578,11 +578,27 @@ function initAudio() {
 //     shared course-back return button. New templates ship the structure
 //     statically; this only runs when it is missing. ---
 function ensureCourseNav() {
-  if (document.querySelector(".course-back")) return;
   var shell = document.querySelector(".lesson-shell");
   if (!shell) return;
   var fmt = (document.body.getAttribute("data-format") || "").toLowerCase();
   var backHref = "../index.html";
+  var homeHref = document.body.getAttribute("data-portal-home") || "../../../index.html";
+
+  function makeHome() {
+    var a = document.createElement("a");
+    a.className = "course-home";
+    a.setAttribute("href", homeHref);
+    a.setAttribute("aria-label", "返回学习门户");
+    var icon = document.createElement("span");
+    icon.setAttribute("aria-hidden", "true");
+    icon.textContent = "⌂";
+    var label = document.createElement("span");
+    label.className = "course-home-label";
+    label.textContent = "学习门户";
+    a.appendChild(icon);
+    a.appendChild(label);
+    return a;
+  }
 
   function makeBack() {
     var a = document.createElement("a");
@@ -594,10 +610,22 @@ function ensureCourseNav() {
     arrow.textContent = "←";
     var label = document.createElement("span");
     label.className = "course-back-label";
-    label.textContent = "课程目录";
+    label.textContent = "课程路线";
     a.appendChild(arrow);
     a.appendChild(label);
     return a;
+  }
+
+  var existingBack = document.querySelector(".course-back");
+  if (existingBack) {
+    existingBack.setAttribute("aria-label", "返回课程路线");
+    var existingLabel = existingBack.querySelector(".course-back-label");
+    if (existingLabel) existingLabel.textContent = "课程路线";
+    var existingNav = existingBack.parentElement;
+    if (existingNav && !existingNav.querySelector(".course-home")) {
+      existingNav.insertBefore(makeHome(), existingBack);
+    }
+    return;
   }
 
   if (fmt === "lesson") {
@@ -607,18 +635,21 @@ function ensureCourseNav() {
     nav.className = "course-nav";
     nav.setAttribute("aria-label", "Lesson navigation");
     shell.insertBefore(nav, steps);
+    nav.appendChild(makeHome());
     nav.appendChild(makeBack());
     nav.appendChild(steps);
   } else if (fmt === "reference") {
     var idx = shell.querySelector(".section-index");
     if (idx) {
       idx.insertBefore(makeBack(), idx.firstChild);
+      idx.insertBefore(makeHome(), idx.firstChild);
     } else {
       // Short reference page without section-index: add a simple return bar
       // at the top so the catalog return is always reachable.
       var simple = document.createElement("nav");
       simple.className = "course-nav course-nav--simple";
       simple.setAttribute("aria-label", "Reference navigation");
+      simple.appendChild(makeHome());
       simple.appendChild(makeBack());
       shell.insertBefore(simple, shell.firstChild);
     }
@@ -628,6 +659,7 @@ function ensureCourseNav() {
     var simple = document.createElement("nav");
     simple.className = "course-nav course-nav--simple";
     simple.setAttribute("aria-label", "Practice navigation");
+    simple.appendChild(makeHome());
     simple.appendChild(makeBack());
     shell.insertBefore(simple, header);
   }
