@@ -29,19 +29,19 @@ A mixed lesson uses the `lesson` format. Only the quiz area switches to practice
 
 Short reference pages omit `section-index`. Pages with three or more chapters may group them into two or three balanced tabs. Each tab link uses a simple local target such as `#process`; that target must appear once as an element `id` and must match the `data-stage` of every chapter in the tab. Every tab needs at least one chapter, and no tab may contain more than three times another tab's reference items.
 
-## Catalog return (course-back / course-nav)
+## Navigation return (course-home / course-back / course-nav)
 
-Every lesson, reference, and practice page carries a shared catalog-return entry so the reader can always get back to the project directory. New templates include it statically; old UI v2 pages are backfilled at load time by `lesson.js`, so they do not need a manual edit.
+Every lesson, reference, and practice page carries two shared return entries: `course-home` goes to the workspace learning portal; `course-back` goes to the current project's course route. New templates include them statically; old UI v2 pages are backfilled at load time by `lesson.js`.
 
-The `course-back` link always points to `../index.html` in source HTML. That keeps local `outputs/lessons/*` and `outputs/reference/*` self-contained. The portal builder rewrites only the published copy to the flat public route; course authors must not add GitHub Pages paths, localized project names, or custom public URLs to source pages.
+In source HTML, `course-home` always points to `../../../index.html` and `course-back` to `../index.html`. The portal builder rewrites only its published copy to the flat public routes; course authors must not add GitHub Pages paths, localized project names, or custom public URLs.
 
-On `lesson` pages the return button and the 01/02/03 stage bar sit together in a `course-nav`: back button on the left, three stages evenly filling the rest on desktop; on mobile the back button keeps only the arrow icon and the three stages split evenly with no horizontal scroll. The back button is not a fourth stage and is never counted as a tab.
+On `lesson` pages the home icon, course-route return and 01/02/03 stage bar sit together in a `course-nav`. On mobile both return labels collapse to icons and the three stages split evenly with no horizontal scroll. Neither return entry is a stage or tab.
 
-On `reference` pages the `course-back` sits at the left of the `section-index`, and the `section-index-links` row holds the two or three chapter tabs in `repeat(3, minmax(0, 1fr))`. Short reference pages without a `section-index` get a `course-nav--simple` bar at the top instead. The return button is not counted toward the three-tab limit.
+On `reference` pages `course-home` and `course-back` sit before the `section-index`; the link row holds the two or three chapter tabs. Short reference pages without a `section-index` get a `course-nav--simple` bar at the top instead. Return entries are not counted toward the three-tab limit.
 
-On `practice` pages a `course-nav--simple` bar shows only the catalog return; it does not fabricate a 01/02/03 stage bar.
+On `practice` pages a `course-nav--simple` bar shows the two return entries; it does not fabricate a 01/02/03 stage bar.
 
-Do not add a per-page custom back link class. The shared `course-back` is the only sanctioned catalog-return entry.
+Do not add per-page custom return link classes. `course-home` and `course-back` are the only sanctioned top return entries. The public portal may add bottom previous/next links to its copied pages; source lessons must not hard-code public routes.
 
 ## Themes
 

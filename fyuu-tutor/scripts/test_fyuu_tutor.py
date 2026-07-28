@@ -936,8 +936,8 @@ pretest_questions = 0
                     encoding="utf-8")
         return workspace
 
-    def test_portal_root_is_project_switcher_only(self):
-        """Root homepage shows only three project entries, no lesson-title links."""
+    def test_portal_root_has_direct_project_cards(self):
+        """Root homepage links directly to projects, without a tab-and-CTA detour."""
         import tempfile, shutil
         scripts = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as temp:
@@ -958,15 +958,14 @@ pretest_questions = 0
                 capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             root = (out / "index.html").read_text(encoding="utf-8")
-            # Three project tabs in fixed order PMP / Cantonese / AI
-            self.assertIn('data-hash="pmp"', root)
-            self.assertIn('data-hash="cantonese"', root)
-            self.assertIn('data-hash="ai"', root)
-            self.assertLess(root.index('data-hash="pmp"'), root.index('data-hash="cantonese"'))
-            self.assertLess(root.index('data-hash="cantonese"'), root.index('data-hash="ai"'))
-            self.assertIn('aria-selected="true"', root)
-            # Default selection is the first tab (PMP)
-            self.assertIn('id="tab-pmp" role="tab" href="#pmp"', root)
+            # Three project cards in fixed PMP / Cantonese / AI order.
+            self.assertIn('href="pmp/index.html"', root)
+            self.assertIn('href="cantonese/index.html"', root)
+            self.assertIn('href="ai/index.html"', root)
+            self.assertLess(root.index('href="pmp/index.html"'), root.index('href="cantonese/index.html"'))
+            self.assertLess(root.index('href="cantonese/index.html"'), root.index('href="ai/index.html"'))
+            self.assertNotIn('role="tablist"', root)
+            self.assertNotIn('role="tabpanel"', root)
             # No lesson titles or per-lesson cards on the root page
             self.assertNotIn("第 1 课 · A", root)
             self.assertNotIn("第 1 課 · B", root)
@@ -1014,8 +1013,8 @@ pretest_questions = 0
             # Empty state is an explicit element, not an empty <div>
             # (this project has no empty categories, so check the helper on an empty one)
 
-    def test_portal_catalog_empty_state_not_empty_div(self):
-        """An empty category shows a clear empty state, not an empty div."""
+    def test_portal_catalog_hides_empty_categories(self):
+        """A project route never shows empty review/reference destinations."""
         import tempfile
         scripts = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as temp:
@@ -1031,12 +1030,68 @@ pretest_questions = 0
                 capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             idx = (out / "pmp" / "index.html").read_text(encoding="utf-8")
-            # 资料 (reference) is empty here -> explicit empty state
-            self.assertIn('暂无内容', idx)
-            # No bare empty panel div
-            self.assertNotIn('class="panel" id="panel-reference" role="tabpanel" '
-                             'data-group="catalog" data-active="false" '
-                             'aria-labelledby="tab-reference"></div>', idx)
+            self.assertNotIn('tab-review', idx)
+            self.assertNotIn('panel-review', idx)
+            self.assertNotIn('href="#review"', idx)
+            self.assertNotIn('暂无内容', idx)
+            self.assertIn('tab-lessons', idx)
+            self.assertIn('tab-reference', idx)
+
+    def test_portal_catalog_with_one_category_has_no_tab_semantics(self):
+        """One populated category is a route list, never an orphaned tabpanel."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "Exam Prep", "capability", [("lessons/0001.html", "第 01 课 · A")]),
+            ])
+            (ws / "projects" / "pmp-certification" / "outputs" / "reference" / "page.html").unlink()
+            out = Path(temp) / "portal"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_portal.py"),
+                 "--workspace", str(ws), "--out", str(out), "--project", "pmp-certification"],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            idx = (out / "pmp" / "index.html").read_text(encoding="utf-8")
+            self.assertIn("课程路线", idx)
+            self.assertNotIn('role="tablist"', idx)
+            self.assertNotIn('role="tabpanel"', idx)
+
+    def test_portal_catalog_manifest_groups_micro_lessons(self):
+        """Optional public metadata turns A/B pages into one visible course package."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "Exam Prep", "capability", [
+                    ("lessons/0001.html", "第 01 课 · Value"),
+                    ("lessons/0002a.html", "第 02A 课 · Build vision"),
+                    ("lessons/0002b.html", "第 02B 课 · Renew vision"),
+                    ("lessons/0003.html", "第 03 课 · Stakeholders"),
+                ]),
+            ])
+            manifest = ws / "projects" / "pmp-certification" / "outputs" / "catalog.json"
+            manifest.write_text('''{"schema_version":1,"groups":[{"id":"0002","title":"Shared vision","parts":[{"id":"0002A","title":"Build vision","href":"0002a.html"},{"id":"0002B","title":"Renew vision","href":"0002b.html"}]}]}\n''', encoding="utf-8")
+            out = Path(temp) / "portal"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_portal.py"),
+                 "--workspace", str(ws), "--out", str(out), "--project", "pmp-certification"],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            idx = (out / "pmp" / "index.html").read_text(encoding="utf-8")
+            self.assertEqual(idx.count("Shared vision"), 1)
+            self.assertLess(idx.index("0001.html"), idx.index("Shared vision"))
+            self.assertLess(idx.index("Shared vision"), idx.index("0003.html"))
+            self.assertLess(idx.index("0002a.html"), idx.index("0002b.html"))
+            self.assertIn('href="0003.html"', idx)
+            first = (out / "pmp" / "0001.html").read_text(encoding="utf-8")
+            middle = (out / "pmp" / "0002a.html").read_text(encoding="utf-8")
+            self.assertIn('data-portal-home="../index.html"', first)
+            self.assertIn('data-portal-home', (out / "pmp" / "assets" / "lesson.js").read_text(encoding="utf-8"))
+            self.assertIn('class="course-pagination"', first)
+            self.assertIn('href="0002a.html"', first)
+            self.assertIn('href="0001.html"', middle)
+            self.assertIn('href="0002b.html"', middle)
 
     def test_portal_generated_pages_have_no_private_data(self):
         """Generated pages contain no STATUS text, absolute paths, file:// or markers."""
@@ -1120,8 +1175,8 @@ pretest_questions = 0
             self.assertLess(js.index("documentElement"),
                             js.index("function groups"))
 
-    def test_portal_root_has_three_project_panels_no_js(self):
-        """Root portal must contain all three project panels visible without JS."""
+    def test_portal_root_has_three_direct_cards_without_js(self):
+        """Root portal has three direct project links and no JavaScript dependency."""
         import tempfile
         scripts = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as temp:
@@ -1142,22 +1197,14 @@ pretest_questions = 0
                 capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             root = (out / "index.html").read_text(encoding="utf-8")
-            # All three project panels present in source order.
-            for ph in ("pmp", "cantonese", "ai"):
-                self.assertIn(f'data-hash="{ph}"', root)
-            self.assertLess(root.index('data-hash="pmp"'),
-                            root.index('data-hash="cantonese"'))
-            self.assertLess(root.index('data-hash="cantonese"'),
-                            root.index('data-hash="ai"'))
-            # Each project panel has a "查看课程目录" link.
-            self.assertEqual(root.count("查看课程目录"), 3)
-            # No <html class="js"> baked into the static HTML; the class is
-            # added at runtime by portal.js only.
+            for href in ("pmp/index.html", "cantonese/index.html", "ai/index.html"):
+                self.assertIn(f'href="{href}"', root)
+            self.assertNotIn('role="tablist"', root)
             self.assertNotIn('class="js"', root)
             self.assertNotIn('class=" js"', root)
 
-    def test_portal_catalog_has_three_panels_no_js(self):
-        """Each project catalog must keep lessons/review/reference panels reachable."""
+    def test_portal_catalog_has_only_populated_panels_no_js(self):
+        """Catalog tabs expose every populated category and omit empty ones."""
         import tempfile
         scripts = Path(__file__).resolve().parent
         with tempfile.TemporaryDirectory() as temp:
@@ -1175,12 +1222,11 @@ pretest_questions = 0
                 capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             idx = (out / "pmp" / "index.html").read_text(encoding="utf-8")
-            # Three catalog tab panels exist: lessons, review, reference.
+            # Lessons and reference exist; review remains absent.
             self.assertIn('id="panel-lessons"', idx)
-            self.assertIn('id="panel-review"', idx)
             self.assertIn('id="panel-reference"', idx)
-            # The three tab links are present and use hash routing.
-            for h in ("lessons", "review", "reference"):
+            self.assertNotIn('id="panel-review"', idx)
+            for h in ("lessons", "reference"):
                 self.assertIn(f'href="#{h}"', idx)
             # No JS class baked into static HTML.
             self.assertNotIn('class="js"', idx)
