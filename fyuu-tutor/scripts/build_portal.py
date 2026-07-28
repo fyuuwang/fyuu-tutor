@@ -13,6 +13,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import shutil
 import sys
@@ -81,34 +82,11 @@ PIPELINE_BLURBS = {
 # Hash fragments for the per-project catalog tabs (课程 / 复习 / 资料).
 TAB_HASH = ("lessons", "review", "reference")
 TAB_LABELS = {"lessons": "课程", "review": "复习", "reference": "资料"}
+PIPELINE_THEME = {"capability": "overview", "certification": "business", "language": "people"}
+UI_KIT_TOKENS = Path(__file__).resolve().parents[1] / "assets" / "ui-kit" / "assets" / "tokens.css"
 
-PORTAL_CSS = """\
-:root{--bg:#f5f1e8;--card:#fffdf8;--ink:#27231f;--muted:#746c62;--accent:#aa4a2a;--line:#ded5c8;--blue:#3b6ea5}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,sans-serif}
-main{max-width:920px;margin:auto;padding:42px 20px 80px}
-h1{margin:0 0 6px;font-size:clamp(28px,6vw,48px)}
-.muted{color:var(--muted)}.intro{color:var(--muted);margin:0 0 28px}
-.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 24px;border-bottom:1px solid var(--line)}
-.tab{display:flex;align-items:center;justify-content:center;min-height:48px;padding:10px 12px;border:1px solid var(--line);border-bottom:none;border-radius:10px 10px 0 0;background:var(--bg);color:var(--muted);text-decoration:none;font-weight:600;font-size:15px;text-align:center}
-.tab[aria-selected="true"]{background:var(--card);color:var(--ink);border-color:var(--accent)}
-.tab .count{margin-left:6px;font-size:12px;font-weight:600;opacity:.8}
-.js .panel{display:none}.js .panel[data-active="true"]{display:block}
-.proj-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
-.proj-head h2{margin:0;font-size:22px}
-.badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:600;background:var(--accent);color:#fff}
-.badge.cert{background:var(--blue)}
-.blurb{color:var(--muted);margin:0 0 20px}
-.entries{list-style:none;margin:0;padding:0}
-.entry{display:flex;align-items:center;gap:10px;min-height:48px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;margin-bottom:10px;background:var(--card);color:inherit;text-decoration:none;transition:border-color .15s}
-.entry:hover{border-color:var(--accent)}
-.entry .num{flex:0 0 auto;min-width:30px;font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent)}
-.entry .tag{flex:0 0 auto;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;background:var(--bg);color:var(--muted);border:1px solid var(--line)}
-.entry .title{flex:1 1 auto;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4}
-.empty{padding:18px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);text-align:center}
-.btn-back{display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;padding:8px 14px;min-height:40px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);text-decoration:none;font-weight:600}
-.btn-back:hover{border-color:var(--accent)}
-footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
-@media(max-width:520px){main{padding:28px 16px 60px}}
+PORTAL_LAYOUT_CSS = """\
+*{box-sizing:border-box}body{margin:0;background:var(--page);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}main{width:min(calc(100% - 32px),var(--content));margin:32px auto 64px;padding:clamp(24px,5vw,48px);background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}h1{margin:0 0 8px;font-size:clamp(30px,5vw,46px);line-height:1.25}h2{margin:0;font-size:22px;line-height:1.35}.muted,.intro,.blurb{color:var(--ink-soft)}.intro{margin:0 0 28px}.project-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.project-card{display:flex;min-height:164px;flex-direction:column;justify-content:space-between;padding:20px;border:1px solid var(--line);border-left:4px solid var(--indigo);border-radius:var(--radius);background:var(--surface-soft);color:inherit;text-decoration:none}.project-card:hover,.project-card:focus-visible{border-color:var(--indigo);box-shadow:0 10px 28px rgba(23,32,51,.08)}.project-card .project-name{font-size:20px;font-weight:700}.project-card .project-kind{font-size:13px;color:var(--indigo-dark);font-weight:650}.project-card p{margin:10px 0 0;color:var(--ink-soft);font-size:14px}.route-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}.route-head h1{font-size:clamp(28px,4vw,38px)}.badge{display:inline-flex;align-items:center;min-height:28px;padding:3px 9px;border:1px solid var(--line);border-radius:999px;background:var(--indigo-soft);color:var(--indigo-dark);font-size:12px;font-weight:650}.back-nav{display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-bottom:22px;color:var(--ink-soft);font-weight:650;text-decoration:none}.back-nav:hover{color:var(--indigo-dark)}.tabs{display:flex;gap:0;margin:28px 0 20px;border-bottom:1px solid var(--line)}.tab{display:flex;align-items:center;justify-content:center;min-height:52px;flex:1;padding:10px 12px;border-bottom:3px solid transparent;color:var(--ink-soft);text-decoration:none;font-weight:650;text-align:center}.tab[aria-selected="true"]{color:var(--indigo-dark);border-bottom-color:var(--indigo)}.tab .count{margin-left:6px;font-size:12px;font-weight:600;opacity:.8}.js .panel{display:none}.js .panel[data-active="true"]{display:block}.catalog-heading{margin:28px 0 14px;font-size:18px}.entries{display:grid;gap:10px}.entry{display:flex;align-items:center;gap:12px;min-height:52px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface-soft);color:inherit;text-decoration:none}.entry:hover,.entry:focus-visible{border-color:var(--indigo);background:var(--indigo-soft)}.entry .num{flex:0 0 auto;min-width:42px;font-variant-numeric:tabular-nums;font-weight:700;color:var(--indigo-dark)}.entry .tag{flex:0 0 auto;padding:2px 8px;border:1px solid var(--line);border-radius:999px;color:var(--ink-soft);font-size:11px;font-weight:650}.entry .title{flex:1;line-height:1.4}.package{margin:18px 0;padding:16px;border:1px solid var(--line);border-left:4px solid var(--indigo);border-radius:var(--radius);background:var(--surface)}.package-head{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:12px}.package-number{color:var(--indigo-dark);font-weight:700;font-variant-numeric:tabular-nums}.package-meta{color:var(--ink-soft);font-size:13px}.package .entries{margin-left:8px}.package .entry{background:var(--surface-soft)}.empty{padding:18px;border:1px dashed var(--line);border-radius:var(--radius);color:var(--ink-soft);text-align:center}footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-soft);font-size:13px}@media(max-width:680px){main{margin:16px auto 40px;padding:24px 18px}.project-grid{grid-template-columns:1fr}.project-card{min-height:128px}.tabs{overflow-x:auto}.tab{min-width:110px}.entry .num{min-width:34px}.package{padding:14px}.package .entries{margin-left:0}}
 """
 
 # Hash + keyboard tab switching shared by the root portal and every project
@@ -287,9 +265,12 @@ def _rewrite_flattened_page(text: str, *, reference: bool) -> str:
         "src='../assets/lesson.js'": "src='assets/lesson.js'",
         'href="../index.html"': 'href="index.html"',
         "href='../index.html'": "href='index.html'",
+        'href="../../../index.html"': 'href="../index.html"',
+        "href='../../../index.html'": "href='../index.html'",
     }
     for source, target in replacements.items():
         text = text.replace(source, target)
+    text = re.sub(r"<body\b", '<body data-portal-home="../index.html"', text, count=1, flags=re.IGNORECASE)
     if reference:
         def rewrite_sibling_reference(match: re.Match[str]) -> str:
             target = match.group(2)
@@ -429,11 +410,17 @@ def sort_pages(pages: list[tuple[str, str]], category: str) -> list[tuple[str, s
     return sorted(pages, key=lambda ht: (ht[0], ht[1]))
 
 
-def _entry_html(href: str, title: str, index: int, tag: str) -> str:
+def _course_label(href: str) -> str:
+    """Return a stable learner-facing number, never a transient list index."""
+    number, suffix, _ = _leading_number(href)
+    return f"{number:02d}{suffix.upper()}" if number < 10 ** 9 else "课"
+
+
+def _entry_html(href: str, title: str, label: str, tag: str) -> str:
     """A single compact, clickable catalog row (>=44px tap target)."""
     return (
         f'<a class="entry" href="{escape(href)}">'
-        f'<span class="num">{escape(str(index))}</span>'
+        f'<span class="num">{escape(label)}</span>'
         f'<span class="tag">{escape(tag)}</span>'
         f'<span class="title">{escape(title)}</span>'
         f'</a>'
@@ -441,17 +428,100 @@ def _entry_html(href: str, title: str, index: int, tag: str) -> str:
 
 
 def _entries_html(items: list[tuple[str, str]], tag: str) -> str:
-    """Render a catalog category list, or an explicit non-empty empty-state."""
     if not items:
-        return '<p class="empty">暂无内容</p>'
-    rows = "".join(_entry_html(h, t, i, tag) for i, (h, t) in enumerate(items, 1))
+        return ""
+    rows = "".join(_entry_html(h, t, _course_label(h), tag) for h, t in items)
     return f'<div class="entries">{rows}</div>'
+
+
+def load_catalog_groups(project_root: Path, lessons: list[tuple[str, str]]) -> list[dict]:
+    """Read optional public-safe micro-lesson package metadata."""
+    path = project_root / "outputs" / "catalog.json"
+    if not path.is_file():
+        return []
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"invalid public catalog manifest: {path}: {exc}") from exc
+    if data.get("schema_version") != 1 or not isinstance(data.get("groups"), list):
+        raise RuntimeError(f"invalid public catalog manifest schema: {path}")
+    available = dict(lessons)
+    groups: list[dict] = []
+    seen: set[str] = set()
+    for group in data["groups"]:
+        if (not isinstance(group, dict) or not all(isinstance(group.get(k), str) and group[k] for k in ("id", "title"))
+                or not re.fullmatch(r"\d{4}", group["id"])):
+            raise RuntimeError(f"invalid public catalog group in {path}")
+        parts = group.get("parts")
+        if not isinstance(parts, list) or not parts:
+            raise RuntimeError(f"invalid public catalog parts for {group['id']}")
+        shown = []
+        for part in parts:
+            if not isinstance(part, dict) or not all(isinstance(part.get(k), str) and part[k] for k in ("id", "title", "href")):
+                raise RuntimeError(f"invalid public catalog part for {group['id']}")
+            href = part["href"]
+            if href in seen:
+                raise RuntimeError(f"duplicate public catalog part: {href}")
+            if href in available:
+                seen.add(href)
+                shown.append({"href": href, "id": part["id"], "title": part["title"]})
+        if shown:
+            groups.append({"id": group["id"], "title": group["title"], "parts": shown, "total": len(parts)})
+    return groups
+
+
+def _lesson_entries_html(items: list[tuple[str, str]], groups: list[dict]) -> str:
+    """Render standalone lessons and optional package groups in learning order."""
+    grouped = {part["href"] for group in groups for part in group["parts"]}
+    blocks = []
+    for href, title in items:
+        if href not in grouped:
+            blocks.append((_leading_number(href), _entry_html(href, title, _course_label(href), "课程")))
+    for group in groups:
+        rows = "".join(_entry_html(part["href"], part["title"], part["id"][-1], "微课") for part in group["parts"])
+        count = f"{len(group['parts'])}/{group['total']} 个微课已上线"
+        html = (
+            '<section class="package">'
+            f'<div class="package-head"><span class="package-number">第 {int(group["id"]):02d} 课</span>'
+            f'<strong>{escape(group["title"])}</strong><span class="package-meta">{count}</span></div>'
+            f'<div class="entries">{rows}</div></section>'
+        )
+        blocks.append((_leading_number(group["id"] + ".html"), html))
+    return "".join(html for _, html in sorted(blocks, key=lambda item: item[0]))
+
+
+def lesson_route_order(items: list[tuple[str, str]], groups: list[dict]) -> list[str]:
+    """Return public lesson hrefs in the same order as the visible route."""
+    grouped = {part["href"] for group in groups for part in group["parts"]}
+    blocks = [(_leading_number(href), [href]) for href, _ in items if href not in grouped]
+    blocks.extend((_leading_number(group["id"] + ".html"), [part["href"] for part in group["parts"]]) for group in groups)
+    return [href for _, hrefs in sorted(blocks, key=lambda item: item[0]) for href in hrefs]
+
+
+def add_public_lesson_navigation(dest: Path, order: list[str]) -> None:
+    """Add previous/next links only to copied public lesson pages."""
+    for index, href in enumerate(order):
+        path = dest / href
+        if not path.is_file():
+            continue
+        links = []
+        if index:
+            links.append(f'<a href="{escape(order[index - 1])}">← 上一节</a>')
+        if index + 1 < len(order):
+            links.append(f'<a href="{escape(order[index + 1])}">继续下一节 →</a>')
+        if not links:
+            continue
+        text = path.read_text(encoding="utf-8")
+        if 'class="course-pagination"' in text:
+            continue
+        text = text.replace("</footer>", f'<nav class="course-pagination" aria-label="课程前后导航">{"".join(links)}</nav></footer>', 1)
+        path.write_text(text, encoding="utf-8")
 
 
 def project_index_html(display_name: str, pipeline: str, slug: str,
                        project_hash: str,
-                       pages: list[tuple[str, str]]) -> str:
-    """Generate a public per-project catalog (课程 / 复习 / 资料), no STATUS data."""
+                       pages: list[tuple[str, str]], catalog_groups: list[dict]) -> str:
+    """Generate a public per-project catalog, no STATUS data."""
     pipeline_label = PIPELINE_LABELS.get(pipeline, pipeline)
     buckets: dict[str, list[tuple[str, str]]] = {c: [] for c in TAB_HASH}
     for href, title in pages:
@@ -459,34 +529,45 @@ def project_index_html(display_name: str, pipeline: str, slug: str,
     for cat in TAB_HASH:
         buckets[cat] = sort_pages(buckets[cat], cat)
 
-    tabs = []
-    panels = []
-    for i, cat in enumerate(TAB_HASH):
-        tab_id = f"tab-{cat}"
-        panel_id = f"panel-{cat}"
-        selected = "true" if i == 0 else "false"
-        active = "true" if i == 0 else "false"
-        count = len(buckets[cat])
-        tabs.append(
-            f'<a class="tab" id="{tab_id}" role="tab" href="#{cat}" '
-            f'data-hash="{cat}" aria-selected="{selected}" '
-            f'aria-controls="{panel_id}">'
-            f'<span>{TAB_LABELS[cat]}</span>'
-            f'<span class="count">{count}</span></a>'
+    visible = [cat for cat in TAB_HASH if buckets[cat]]
+    if len(visible) == 1:
+        cat = visible[0]
+        content = _lesson_entries_html(buckets[cat], catalog_groups) if cat == "lessons" else _entries_html(buckets[cat], TAB_LABELS[cat])
+        tablist = ""
+        body = f'<h2 class="catalog-heading">{TAB_LABELS[cat]}路线</h2>{content}'
+    elif not visible:
+        tablist = ""
+        body = '<p class="empty">尚未发布课程</p>'
+    else:
+        tabs = []
+        panels = []
+        for i, cat in enumerate(visible):
+            tab_id = f"tab-{cat}"
+            panel_id = f"panel-{cat}"
+            selected = "true" if i == 0 else "false"
+            active = "true" if i == 0 else "false"
+            count = len(buckets[cat])
+            tab = (
+                f'<a class="tab" id="{tab_id}" role="tab" href="#{cat}" '
+                f'data-hash="{cat}" aria-selected="{selected}" '
+                f'aria-controls="{panel_id}">'
+                f'<span>{TAB_LABELS[cat]}</span>'
+                f'<span class="count">{count}</span></a>'
+            )
+            tabs.append(tab)
+            content = _lesson_entries_html(buckets[cat], catalog_groups) if cat == "lessons" else _entries_html(buckets[cat], TAB_LABELS[cat])
+            panels.append(
+                f'<div class="panel" id="{panel_id}" role="tabpanel" '
+                f'data-group="catalog" data-active="{active}" '
+                f'aria-labelledby="{tab_id}">'
+                f'{content}</div>'
+            )
+        tablist = (
+            f'<div class="tabs" role="tablist" data-group="catalog" '
+            f'aria-label="{escape(display_name)} 课程目录">'
+            + "".join(tabs) + '</div>'
         )
-        panels.append(
-            f'<div class="panel" id="{panel_id}" role="tabpanel" '
-            f'data-group="catalog" data-active="{active}" '
-            f'aria-labelledby="{tab_id}">'
-            f'{_entries_html(buckets[cat], TAB_LABELS[cat])}</div>'
-        )
-
-    tablist = (
-        f'<div class="tabs" role="tablist" data-group="catalog" '
-        f'aria-label="{escape(display_name)} 课程目录">'
-        + "".join(tabs) + '</div>'
-    )
-    body = "".join(panels)
+        body = "".join(panels)
     badge_cls = "badge cert" if pipeline == "certification" else "badge"
     return (
         '<!doctype html>\n'
@@ -494,9 +575,8 @@ def project_index_html(display_name: str, pipeline: str, slug: str,
         '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n'
         f'<title>{escape(display_name)} · 课程目录</title>\n'
         '<link rel="stylesheet" href="../portal.css"></head>\n'
-        '<body data-tabs-scope><main>\n'
-        f'<a class="btn-back" href="../index.html" aria-label="返回学习门户">\n'
-        '<span aria-hidden="true">←</span><span>返回学习门户</span></a>\n'
+        f'<body data-theme="{PIPELINE_THEME.get(pipeline, "overview")}" data-tabs-scope><main>\n'
+        f'<a class="back-nav" href="../index.html" aria-label="返回学习门户">← 学习门户</a>\n'
         f'<div class="proj-head"><h1>{escape(display_name)}</h1>\n'
         f'<span class="{badge_cls}">{escape(pipeline_label)}</span></div>\n'
         f'<p class="blurb">{escape(PIPELINE_BLURBS.get(pipeline, pipeline_label))}</p>\n'
@@ -510,50 +590,28 @@ def project_index_html(display_name: str, pipeline: str, slug: str,
 
 
 def portal_html(projects: list[tuple[str, str, str, str, str, list[tuple[str, str]]]]) -> str:
-    """Root portal: a project switcher only (no lesson cards on the root page)."""
+    """Root portal: direct project destinations, never an extra tab layer."""
     ordered = sorted(projects, key=lambda p: (PROJECT_ORDER.get(p[0], 100), p[0]))
-    tabs = []
-    panels = []
-    for i, (pid, pipeline, display_name, slug, project_hash, _pages) in enumerate(ordered):
+    cards = []
+    for pid, pipeline, display_name, slug, _project_hash, pages in ordered:
         pipeline_label = PIPELINE_LABELS.get(pipeline, pipeline)
-        badge_cls = "badge cert" if pipeline == "certification" else "badge"
-        tab_id = f"tab-{project_hash}"
-        panel_id = f"panel-{project_hash}"
-        selected = "true" if i == 0 else "false"
-        active = "true" if i == 0 else "false"
         index_link = f"{slug}/index.html"
-        tabs.append(
-            f'<a class="tab" id="{tab_id}" role="tab" href="#{project_hash}" '
-            f'data-hash="{project_hash}" aria-selected="{selected}" '
-            f'aria-controls="{panel_id}"><span>{escape(display_name)}</span></a>'
+        cards.append(
+            f'<a class="project-card" data-theme="{PIPELINE_THEME.get(pipeline, "overview")}" href="{escape(index_link)}">'
+            f'<div><span class="project-kind">{escape(pipeline_label)}</span><div class="project-name">{escape(display_name)}</div>'
+            f'<p>{escape(PIPELINE_BLURBS.get(pipeline, pipeline_label))}</p></div>'
+            f'<span class="project-kind">进入学习路线 · {len(pages)} 项内容</span></a>'
         )
-        panels.append(
-            f'<section class="panel" id="{panel_id}" role="tabpanel" '
-            f'data-group="root" data-active="{active}" '
-            f'aria-labelledby="{tab_id}">'
-            f'<div class="proj-head"><h2>{escape(display_name)}</h2>'
-            f'<span class="{badge_cls}">{escape(pipeline_label)}</span></div>'
-            f'<p class="blurb">{escape(PIPELINE_BLURBS.get(pipeline, pipeline_label))}</p>'
-            f'<a class="btn-back" href="{escape(index_link)}">'
-            f'<span>查看课程目录</span></a>'
-            f'</section>'
-        )
-    tablist = (
-        f'<div class="tabs" role="tablist" data-group="root" aria-label="学习项目">'
-        + "".join(tabs) + '</div>'
-    )
-    body = "".join(panels)
     return (
         '<!doctype html>\n'
         '<html lang="zh-CN">\n'
         '<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n'
         '<title>Fyuu Tutor · 学习门户</title>\n'
         '<link rel="stylesheet" href="portal.css"></head>\n'
-        '<body data-tabs-scope><main>\n'
-        '<h1>Fyuu Tutor</h1>\n'
-        '<p class="intro">选择一个学习项目，开始今天的课程。</p>\n'
-        f'{tablist}\n'
-        f'{body}\n'
+        '<body><main>\n'
+        '<h1>学习门户</h1>\n'
+        '<p class="intro">选择一个学习项目，直接进入它的学习路线。</p>\n'
+        f'<div class="project-grid">{"".join(cards)}</div>\n'
         '<footer>由 Fyuu Tutor Skill 自动生成 · 仅含课件内容，不含私人数据</footer>\n'
         '</main>\n'
         '<script src="portal.js"></script>\n'
@@ -562,8 +620,10 @@ def portal_html(projects: list[tuple[str, str, str, str, str, list[tuple[str, st
 
 
 def write_portal_assets(out_dir: Path) -> None:
-    """Write portal.css and portal.js into the staging directory (portal-only)."""
-    (out_dir / "portal.css").write_text(PORTAL_CSS, encoding="utf-8")
+    """Write portal assets with the same primitive tokens as the lesson UI."""
+    (out_dir / "portal.css").write_text(
+        UI_KIT_TOKENS.read_text(encoding="utf-8") + "\n" + PORTAL_LAYOUT_CSS,
+        encoding="utf-8")
     (out_dir / "portal.js").write_text(PORTAL_JS, encoding="utf-8")
 
 
@@ -713,8 +773,13 @@ def _build_to_dir(staging: Path, workspace: Path, projects_root: Path,
 
         proj_dest = staging / slug
         copied = copy_whitelisted(project_root, proj_dest)
+        lesson_pages = [
+            (href, title) for href, title in copied if classify_page(href, title) == "lessons"
+        ]
+        catalog_groups = load_catalog_groups(project_root, lesson_pages)
+        add_public_lesson_navigation(proj_dest, lesson_route_order(sort_pages(lesson_pages, "lessons"), catalog_groups))
         (proj_dest / "index.html").write_text(
-            project_index_html(display_name, pipeline, slug, project_hash, copied),
+            project_index_html(display_name, pipeline, slug, project_hash, copied, catalog_groups),
             encoding="utf-8")
 
         portal_projects.append((pid, pipeline, display_name, slug, project_hash, copied))

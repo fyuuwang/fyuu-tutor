@@ -3,6 +3,7 @@
 
 import argparse
 from html import escape
+import json
 from pathlib import Path
 import re
 import sys
@@ -64,14 +65,14 @@ def page(title_text, body, language, recommended_label):
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{escape(title_text)}</title>
 <style>
-:root{{--bg:#f5f1e8;--card:#fffdf8;--ink:#27231f;--muted:#746c62;--accent:#aa4a2a;--line:#ded5c8}}
+:root{{--bg:#eff1f3;--card:#fff;--ink:#202634;--muted:#5f6673;--accent:#84765f;--soft:#f4f1eb;--line:#d9dce2}}
 *{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,sans-serif}}
-main{{max-width:920px;margin:auto;padding:42px 20px 80px}}h1{{margin:0 0 8px;font-size:clamp(30px,6vw,52px)}}h2{{margin-top:34px}}
-.muted{{color:var(--muted)}}.status,.card{{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}}
-.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}}.card{{display:block;color:inherit;text-decoration:none}}
+main{{max-width:1080px;margin:32px auto 64px;padding:clamp(24px,5vw,48px);background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 48px rgba(23,32,51,.08)}}h1{{margin:0 0 8px;font-size:clamp(30px,6vw,46px)}}h2{{margin-top:34px}}
+.muted{{color:var(--muted)}}.status,.card{{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}}.status{{background:var(--soft)}}
+.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}}.card{{display:block;color:inherit;text-decoration:none;border-left:3px solid var(--accent)}}
 .card:hover{{border-color:var(--accent);transform:translateY(-1px)}}.tag{{display:inline-block;margin-top:8px;color:var(--accent);font-size:13px}}
 .recommended{{border:2px solid var(--accent)}}.recommended:before{{content:'{escape(recommended_label)}';display:block;color:var(--accent);font-size:13px;font-weight:700}}
-dt{{font-weight:700}}dd{{margin:0 0 8px}}a{{color:var(--accent)}}
+dt{{font-weight:700}}dd{{margin:0 0 8px}}a{{color:var(--accent)}}.package{{grid-column:1/-1;margin:16px 0;padding:16px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;background:var(--card)}}.package-head{{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;margin-bottom:12px}}.package-number{{color:var(--accent);font-weight:700}}.package-meta{{color:var(--muted);font-size:13px}}@media(max-width:520px){{main{{margin:16px auto 40px;padding:24px 18px}}}}
 </style>
 </head>
 <body><main>{body}</main></body>
@@ -100,6 +101,39 @@ def build_project(root, config):
             items.append(f'<a class="{css}" href="{href(outputs, path)}"><strong>{escape(title(path))}</strong><span class="tag">{escape(path.stem)}</span></a>')
         return '<div class="grid">' + "".join(items) + "</div>" if items else f'<p class="muted">{labels["empty"]}</p>'
 
+    def lesson_cards(paths):
+        manifest = outputs / "catalog.json"
+        try:
+            catalog = json.loads(manifest.read_text(encoding="utf-8")) if manifest.is_file() else {"groups": []}
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError):
+            catalog = {"groups": []}
+        by_name = {path.name: path for path in paths}
+        grouped = set()
+        blocks = []
+        for group in catalog.get("groups", []):
+            if not isinstance(group, dict):
+                continue
+            children = []
+            for part in group.get("parts", []):
+                if not isinstance(part, dict):
+                    continue
+                path = by_name.get(part.get("href"))
+                if path:
+                    grouped.add(path)
+                    css = "card recommended" if path == recommended else "card"
+                    part_id = str(part.get("id", path.stem))
+                    label = part_id[2:] if len(part_id) == 5 and part_id[:4].isdigit() else part_id
+                    children.append(f'<a class="{css}" href="{href(outputs, path)}"><strong>{escape(label)} · {escape(part.get("title", title(path)))}</strong></a>')
+            if children:
+                order = lesson_key(Path(group.get("id", "9999") + ".html"))
+                blocks.append((order, f'<section class="package"><div class="package-head"><span class="package-number">第 {int(group["id"]):02d} 课</span><strong>{escape(group.get("title", "课程包"))}</strong><span class="package-meta">{len(children)}/{len(group.get("parts", []))} 个微课已产出</span></div><div class="grid">{"".join(children)}</div></section>'))
+        for path in paths:
+            if path not in grouped:
+                css = "card recommended" if path == recommended else "card"
+                blocks.append((lesson_key(path), f'<a class="{css}" href="{href(outputs, path)}"><strong>{escape(title(path))}</strong><span class="tag">{escape(path.stem)}</span></a>'))
+        rendered = "".join(html for _, html in sorted(blocks, key=lambda item: item[0]))
+        return f'<div class="grid">{rendered}</div>' if rendered else f'<p class="muted">{labels["empty"]}</p>'
+
     body = f'''
 <p><a href="../../../index.html">← {labels['back']}</a></p>
 <h1>{escape(config['display_name'])}</h1><p class="muted">{escape(config['pipeline'])}</p>
@@ -108,9 +142,9 @@ def build_project(root, config):
 <dt>{labels['learning']}</dt><dd>{escape(status_value(status, 'Learning progress', labels['missing']))}</dd>
 <dt>{labels['next']}</dt><dd>{escape(next_step)}</dd>
 </dl></section>
-<h2>{labels['lessons']}</h2>{cards(lessons)}
-<h2>{labels['reviews']}</h2>{cards(reviews)}
-<h2>{labels['reference']}</h2>{cards(references)}
+<h2>{labels['lessons']}</h2>{lesson_cards(lessons)}
+{f"<h2>{labels['reviews']}</h2>{cards(reviews)}" if reviews else ''}
+{f"<h2>{labels['reference']}</h2>{cards(references)}" if references else ''}
 '''
     outputs.mkdir(parents=True, exist_ok=True)
     (outputs / "index.html").write_text(page(f"{config['display_name']} · {labels['entry']}", body, language, labels["recommended"]), encoding="utf-8")

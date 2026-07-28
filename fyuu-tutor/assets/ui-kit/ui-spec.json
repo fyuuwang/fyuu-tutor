@@ -441,6 +441,26 @@
         "certification",
         "language"
       ]
+    },
+    "course-home": {
+      "sections": [
+        "root"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "course-home-label": {
+      "sections": [
+        "root"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
     }
   },
   "composition_patterns": {
