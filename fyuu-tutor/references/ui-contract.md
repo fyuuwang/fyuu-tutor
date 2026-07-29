@@ -29,19 +29,21 @@ A mixed lesson uses the `lesson` format. Only the quiz area switches to practice
 
 Short reference pages omit `section-index`. Pages with three or more chapters may group them into two or three balanced tabs. Each tab link uses a simple local target such as `#process`; that target must appear once as an element `id` and must match the `data-stage` of every chapter in the tab. Every tab needs at least one chapter, and no tab may contain more than three times another tab's reference items.
 
-## Navigation return (course-home / course-back / course-nav)
+## Global return navigation
 
-Every lesson, reference, and practice page carries two shared return entries: `course-home` goes to the workspace learning portal; `course-back` goes to the current project's course route. New templates include them statically; old UI v2 pages are backfilled at load time by `lesson.js`.
+Navigation follows page hierarchy, not format decoration:
 
-In source HTML, `course-home` always points to `../../../index.html` and `course-back` to `../index.html`. The portal builder rewrites only its published copy to the flat public routes; course authors must not add GitHub Pages paths, localized project names, or custom public URLs.
+- The learning portal root has no return dock.
+- A project course-route page has one floating `course-home` entry because it is already the course route.
+- Every lesson, reference, and practice page has a floating `course-return-dock` containing `course-home` and `course-back` exactly once.
 
-On `lesson` pages the home icon, course-route return and 01/02/03 stage bar sit together in a `course-nav`. On mobile both return labels collapse to icons and the three stages split evenly with no horizontal scroll. Neither return entry is a stage or tab.
+`course-home` returns to the learning portal. `course-back` returns to the current project's course route. New templates include the dock statically; `lesson.js` moves legacy top returns into the dock and fills missing entries at load time.
 
-On `reference` pages `course-home` and `course-back` sit before the `section-index`; the link row holds the two or three chapter tabs. Short reference pages without a `section-index` get a `course-nav--simple` bar at the top instead. Return entries are not counted toward the three-tab limit.
+In source HTML, content pages under `outputs/lessons/` or `outputs/reference/` use `../../../../index.html` for `course-home` and `../index.html` for `course-back`. The portal builder rewrites only its published copy and supplies runtime route attributes for legacy pages. Course authors must not add GitHub Pages paths, localized project names, or custom public URLs.
 
-On `practice` pages a `course-nav--simple` bar shows the two return entries; it does not fabricate a 01/02/03 stage bar.
+Top navigation is page-local only: a lesson `course-nav` contains the 01/02/03 stages; a reference `section-index` contains only its two or three chapter tabs; practice pages do not fabricate a stage bar. Do not put global returns inside any of them.
 
-Do not add per-page custom return link classes. `course-home` and `course-back` are the only sanctioned top return entries. The public portal may add bottom previous/next links to its copied pages; source lessons must not hard-code public routes.
+Do not add per-page return classes, styles, or scripts. The public portal may add bottom previous/next links to its copied pages; source lessons must not hard-code public routes.
 
 ## Themes
 
@@ -188,6 +190,7 @@ Run through this list after the validator passes. Every item should be true.
 - No production task without a stable `data-item-id`.
 - No `scene` component in reference pages. Use `chapter-header` for section grouping.
 - No section with 5+ reference-items and zero structured components when the content involves comparisons, definitions, or processes.
+- No `course-home` or `course-back` inside `course-nav` or `section-index`; global returns belong in `course-return-dock`.
 
 ## Adding a new component
 

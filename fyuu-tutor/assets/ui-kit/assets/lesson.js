@@ -421,9 +421,9 @@
 
   function resetQuiz() { answered.clear(); renderQuiz(); }
 
-  // course-nav / course-back are persistent: they must never be hidden when
-  // the 01/02/03 stage switch toggles section visibility.
-  var PERSISTENT = ["lesson-footer", "lesson-steps", "section-index", "course-nav", "course-back", "course-home"];
+  // Page-local navigation must never be hidden by the 01/02/03 stage switch.
+  // Global returns live outside lesson-shell in course-return-dock.
+  var PERSISTENT = ["lesson-footer", "lesson-steps", "section-index", "course-nav"];
 
   function stageGroups() {
     var shell = document.querySelector(".lesson-shell");
@@ -574,21 +574,21 @@ function initAudio() {
   updateProgress();
 })();
 
-// --- course-nav compatibility: backfill old UI v2 pages that predate the
-//     shared course-back return button. New templates ship the structure
-//     statically; this only runs when it is missing. ---
+// --- Global learning navigation compatibility. New templates ship a floating
+//     dock; old UI v2 pages are normalized at load time without content edits. ---
 function ensureCourseNav() {
   var shell = document.querySelector(".lesson-shell");
   if (!shell) return;
   var fmt = (document.body.getAttribute("data-format") || "").toLowerCase();
-  var backHref = "../index.html";
-  var homeHref = document.body.getAttribute("data-portal-home") || "../../../index.html";
+  var backHref = document.body.getAttribute("data-course-route") || "../index.html";
+  var homeHref = document.body.getAttribute("data-portal-home") || "../../../../index.html";
 
   function makeHome() {
     var a = document.createElement("a");
     a.className = "course-home";
     a.setAttribute("href", homeHref);
     a.setAttribute("aria-label", "返回学习门户");
+    a.setAttribute("title", "学习门户");
     var icon = document.createElement("span");
     icon.setAttribute("aria-hidden", "true");
     icon.textContent = "⌂";
@@ -604,7 +604,8 @@ function ensureCourseNav() {
     var a = document.createElement("a");
     a.className = "course-back";
     a.setAttribute("href", backHref);
-    a.setAttribute("aria-label", "返回课程目录");
+    a.setAttribute("aria-label", "返回课程路线");
+    a.setAttribute("title", "课程路线");
     var arrow = document.createElement("span");
     arrow.setAttribute("aria-hidden", "true");
     arrow.textContent = "←";
@@ -616,51 +617,45 @@ function ensureCourseNav() {
     return a;
   }
 
-  var existingBack = document.querySelector(".course-back");
-  if (existingBack) {
-    existingBack.setAttribute("aria-label", "返回课程路线");
-    var existingLabel = existingBack.querySelector(".course-back-label");
-    if (existingLabel) existingLabel.textContent = "课程路线";
-    var existingNav = existingBack.parentElement;
-    if (existingNav && !existingNav.querySelector(".course-home")) {
-      existingNav.insertBefore(makeHome(), existingBack);
-    }
-    return;
+  var dock = document.querySelector(".course-return-dock");
+  if (!dock) {
+    dock = document.createElement("nav");
+    dock.className = "course-return-dock";
+    dock.setAttribute("aria-label", "全局学习导航");
+    shell.insertAdjacentElement("afterend", dock);
   }
+
+  var homes = Array.prototype.slice.call(document.querySelectorAll(".course-home"));
+  var backs = Array.prototype.slice.call(document.querySelectorAll(".course-back"));
+  var home = homes.shift() || makeHome();
+  var back = backs.shift() || makeBack();
+  homes.forEach(function (link) { link.remove(); });
+  backs.forEach(function (link) { link.remove(); });
+  home.setAttribute("href", homeHref);
+  home.setAttribute("aria-label", "返回学习门户");
+  home.setAttribute("title", "学习门户");
+  back.setAttribute("href", backHref);
+  back.setAttribute("aria-label", "返回课程路线");
+  back.setAttribute("title", "课程路线");
+  var backLabel = back.querySelector(".course-back-label");
+  if (backLabel) backLabel.textContent = "课程路线";
+  dock.appendChild(home);
+  dock.appendChild(back);
+
+  document.querySelectorAll(".course-nav--simple").forEach(function (nav) {
+    if (!nav.children.length) nav.remove();
+  });
 
   if (fmt === "lesson") {
     var steps = shell.querySelector(".lesson-steps");
     if (!steps) return;
-    var nav = document.createElement("nav");
-    nav.className = "course-nav";
-    nav.setAttribute("aria-label", "Lesson navigation");
-    shell.insertBefore(nav, steps);
-    nav.appendChild(makeHome());
-    nav.appendChild(makeBack());
-    nav.appendChild(steps);
-  } else if (fmt === "reference") {
-    var idx = shell.querySelector(".section-index");
-    if (idx) {
-      idx.insertBefore(makeBack(), idx.firstChild);
-      idx.insertBefore(makeHome(), idx.firstChild);
-    } else {
-      // Short reference page without section-index: add a simple return bar
-      // at the top so the catalog return is always reachable.
-      var simple = document.createElement("nav");
-      simple.className = "course-nav course-nav--simple";
-      simple.setAttribute("aria-label", "Reference navigation");
-      simple.appendChild(makeHome());
-      simple.appendChild(makeBack());
-      shell.insertBefore(simple, shell.firstChild);
+    var nav = steps.parentElement && steps.parentElement.classList.contains("course-nav") ? steps.parentElement : null;
+    if (!nav) {
+      nav = document.createElement("nav");
+      nav.className = "course-nav";
+      nav.setAttribute("aria-label", "Lesson navigation");
+      shell.insertBefore(nav, steps);
+      nav.appendChild(steps);
     }
-  } else if (fmt === "practice") {
-    var header = shell.querySelector(".lesson-header");
-    if (!header) return;
-    var simple = document.createElement("nav");
-    simple.className = "course-nav course-nav--simple";
-    simple.setAttribute("aria-label", "Practice navigation");
-    simple.appendChild(makeHome());
-    simple.appendChild(makeBack());
-    shell.insertBefore(simple, header);
   }
 }

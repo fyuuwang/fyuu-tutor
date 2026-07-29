@@ -57,7 +57,7 @@ def href(from_dir, target):
     return quote(str(target.relative_to(from_dir)).replace("\\", "/"), safe="/")
 
 
-def page(title_text, body, language, recommended_label):
+def page(title_text, body, language, recommended_label, portal_href=None):
     return f'''<!doctype html>
 <html lang="{escape(language)}">
 <head>
@@ -71,11 +71,11 @@ main{{max-width:1080px;margin:32px auto 64px;padding:clamp(24px,5vw,48px);backgr
 .muted{{color:var(--muted)}}.status,.card{{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}}.status{{background:var(--soft)}}
 .grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}}.card{{display:block;color:inherit;text-decoration:none;border-left:3px solid var(--accent)}}
 .card:hover{{border-color:var(--accent);transform:translateY(-1px)}}.tag{{display:inline-block;margin-top:8px;color:var(--accent);font-size:13px}}
-.recommended{{border:2px solid var(--accent)}}.recommended:before{{content:'{escape(recommended_label)}';display:block;color:var(--accent);font-size:13px;font-weight:700}}
+.recommended{{border:2px solid var(--accent)}}.recommended:before{{content:'{escape(recommended_label)}';display:block;color:var(--accent);font-size:13px;font-weight:700}}.course-return-dock{{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:15;overflow:hidden;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.96);box-shadow:0 12px 32px rgba(23,32,51,.14)}}.course-return-dock a{{display:inline-flex;align-items:center;justify-content:center;min-width:48px;min-height:48px;padding:10px;color:var(--muted);font-size:20px;text-decoration:none}}.course-return-dock a:hover,.course-return-dock a:focus-visible{{background:var(--soft);color:var(--accent)}}.course-return-label{{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}}
 dt{{font-weight:700}}dd{{margin:0 0 8px}}a{{color:var(--accent)}}.package{{grid-column:1/-1;margin:16px 0;padding:16px;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;background:var(--card)}}.package-head{{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;margin-bottom:12px}}.package-number{{color:var(--accent);font-weight:700}}.package-meta{{color:var(--muted);font-size:13px}}@media(max-width:520px){{main{{margin:16px auto 40px;padding:24px 18px}}}}
 </style>
 </head>
-<body><main>{body}</main></body>
+<body><main>{body}</main>{f'<nav class="course-return-dock" aria-label="Global learning navigation"><a href="{escape(portal_href)}" aria-label="{escape(UI["zh-CN"]["back"] if str(language).lower().startswith("zh") else UI["en"]["back"])}" title="{escape(UI["zh-CN"]["shelf"] if str(language).lower().startswith("zh") else UI["en"]["shelf"])}"><span aria-hidden="true">⌂</span><span class="course-return-label">{escape(UI["zh-CN"]["shelf"] if str(language).lower().startswith("zh") else UI["en"]["shelf"])}</span></a></nav>' if portal_href else ''}</body>
 </html>
 '''
 
@@ -135,7 +135,6 @@ def build_project(root, config):
         return f'<div class="grid">{rendered}</div>' if rendered else f'<p class="muted">{labels["empty"]}</p>'
 
     body = f'''
-<p><a href="../../../index.html">← {labels['back']}</a></p>
 <h1>{escape(config['display_name'])}</h1><p class="muted">{escape(config['pipeline'])}</p>
 <section class="status"><dl>
 <dt>{labels['production']}</dt><dd>{escape(status_value(status, 'Production progress', labels['missing']))}</dd>
@@ -147,7 +146,7 @@ def build_project(root, config):
 {f"<h2>{labels['reference']}</h2>{cards(references)}" if references else ''}
 '''
     outputs.mkdir(parents=True, exist_ok=True)
-    (outputs / "index.html").write_text(page(f"{config['display_name']} · {labels['entry']}", body, language, labels["recommended"]), encoding="utf-8")
+    (outputs / "index.html").write_text(page(f"{config['display_name']} · {labels['entry']}", body, language, labels["recommended"], "../../../index.html"), encoding="utf-8")
 
 
 def build_workspace(projects_root):

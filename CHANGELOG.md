@@ -2,6 +2,23 @@
 
 All notable changes are recorded here. Preview releases may contain breaking changes, which must include migration notes.
 
+## [0.5.4] - Global Learning Navigation - 2026-07-29
+
+### Changed
+
+- Lesson, practice, and reference pages now keep their top navigation page-local and place learning-portal and course-route returns in one accessible bottom-right dock.
+- Project course-route pages show only the learning-portal return; the learning portal root shows no self-referential return.
+- Legacy UI v2 pages are normalized by the shared runtime without rewriting course content. Published copies receive explicit portal and course-route paths for runtime-created links.
+
+### Fixed
+
+- Global return links no longer consume space in lesson stage or reference section tabs.
+- Mobile content reserves bottom safe-area space so the fixed dock cannot permanently obscure the final question, controls, or footer.
+
+### Migration
+
+- Run `sync_ui_kit.py --project <project> --upgrade` for installed projects, rebuild local indexes, then rebuild the public portal.
+
 ## [0.5.3] - Hardening Release - 2026-07-27
 
 ### Fixed

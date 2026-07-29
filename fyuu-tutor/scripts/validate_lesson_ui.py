@@ -370,6 +370,28 @@ def validate_file(page: Path, spec: dict, expected_pipeline: str | None = None,
         if stage_order != expected_stages:
             errors.append("lesson data-stage order must be: " + ", ".join(expected_stages))
 
+    # New templates keep global returns in one floating dock. Legacy pages
+    # without a static dock remain valid because lesson.js normalizes them.
+    dock_indices = [i for i, el in enumerate(parser.elements)
+                    if "course-return-dock" in el["classes"]]
+    if len(dock_indices) > 1:
+        errors.append("course-return-dock must appear at most once")
+    if dock_indices:
+        dock_index = dock_indices[0]
+        descendants = [el for el in parser.elements if dock_index in el["ancestors"]]
+        home_count = sum("course-home" in el["classes"] for el in descendants)
+        back_count = sum("course-back" in el["classes"] for el in descendants)
+        if home_count != 1 or back_count != 1:
+            errors.append("course-return-dock must contain exactly one course-home and one course-back")
+        for el in parser.elements:
+            if not ({"course-home", "course-back"} & el["classes"]):
+                continue
+            ancestor_classes = set().union(
+                *(parser.elements[i]["classes"] for i in el["ancestors"])) if el["ancestors"] else set()
+            if {"course-nav", "section-index"} & ancestor_classes:
+                errors.append("global returns must not appear inside course-nav or section-index")
+                break
+
     # scene must not appear in reference pages; use chapter-header instead
     if page_format == "reference" and "scene" in parser.classes:
         errors.append("scene component is forbidden in reference format; use chapter-header for section grouping")
