@@ -109,6 +109,13 @@ Rules:
 - Stem, options, and rationale are plain text. No HTML.
 - The JS renders questions using DOM API and `textContent`.
 
+### Authoring input safely
+
+- Generate a question block with a JSON serializer (for example, Python's `json.dumps(..., ensure_ascii=False)`); do not hand-assemble JSON escapes inside an HTML-writing command.
+- Plain-text question fields must not contain literal `<` or `>` characters. State the comparison in words or use an appropriate Unicode comparison symbol such as `≤` or `≥`; HTML entities and escaped markup are not a formatting workaround because the renderer uses `textContent`.
+- Component placement and pipeline eligibility are defined by `ui-spec.json`. In particular, use `quick-check` as an unscored scene/reference check, and use `production-task` only where the spec permits it.
+- For a certification question, explain the tested principle or source and why the selected answer is the best action. A private certification project may impose stricter distractor-review rules.
+
 
 ## Production tasks and audio
 
