@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PMP26 第 0006 课：预测、敏捷、混合——选择开发方法。从需求稳定性、监管约束、复杂度和交付频率出发选择方法，不把混合当成拼凑。">
+  <title>第 06 课 · 预测、敏捷、混合：选择开发方法</title>
+  <link rel="stylesheet" href="assets/lesson.css">
+</head>
+<body data-portal-home="../index.html" data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="process">
+  <a class="skip-link" href="#lesson-content">跳到正文</a>
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
+  <main class="lesson-shell" id="lesson-content">
+    <nav class="course-nav" aria-label="课程导航">
+      <a class="course-back" href="index.html" aria-label="返回课程目录"><span aria-hidden="true">←</span><span class="course-back-label">课程目录</span></a>
+      <nav class="lesson-steps" aria-label="课程阶段">
+        <a href="#map" aria-current="step"><span class="step-number">01</span><span>看方法地图</span></a>
+        <a href="#case"><span class="step-number">02</span><span>沿案例选择</span></a>
+        <a href="#practice"><span class="step-number">03</span><span>巩固与迁移</span></a>
+      </nav>
+    </nav>
+    <header class="lesson-header">
+      <p class="eyebrow">PMP26 · 第 06 课</p>
+      <h1>预测、敏捷、混合：用四个维度选择开发方法，而不是选阵营</h1>
+      <p class="lesson-deck">核心系统必须留审计痕迹，前端体验需求却仍不明确。有人说全敏捷，有人说全部先规划完。本课不教你哪种方法更先进，而教你从需求稳定性、监管约束、复杂度和关键信息需要出发，选择真正适合的方法——以及为什么混合不是给预测型项目加每日站会。</p>
+      <dl class="lesson-meta">
+        <div><dt>预计时间</dt><dd>最小 15 分钟 / 完整 45 分钟</dd></div>
+        <div><dt>位置</dt><dd>PMP26 · 0006 / 0034 · U01 范围与资源</dd></div>
+        <div><dt>完成后能做什么</dt><dd>从四个维度评估项目特征并推荐预测/敏捷/混合方法，区分裁剪与随意变更、真正混合与伪敏捷</dd></div>
+      </dl>
+    </header>
+    <section class="map-section" id="map" data-stage="map" aria-labelledby="map-title">
+      <p class="eyebrow">看方法地图</p>
+      <h2 id="map-title">方法不是信仰——从四个维度选，不从口号选</h2>
+      <p class="section-intro">选择开发方法和选球鞋不同——不是哪个流行用哪个。ECO Task 1 要求从需求、复杂度、规模和信息需要出发评估，再推荐预测、敏捷或混合方法，最后给出执行策略。本课的地图就是把这四个维度摊开，让你知道每个方法在什么条件下成立。</p>
+      <div class="learning-map" data-component="learning-map" aria-label="方法选择地图">
+        <div class="map-hub"><strong>范围已定</strong><span>下一步：选方法</span></div>
+        <a class="map-node map-node--why" href="#scene-1"><strong>评估</strong><span>需求稳定性、复杂度、规模</span></a>
+        <a class="map-node map-node--govern" href="#scene-2"><strong>预测型</strong><span>需求稳定+高监管</span></a>
+        <a class="map-node map-node--build" href="#scene-3"><strong>敏捷</strong><span>需求不明+需要反馈</span></a>
+        <a class="map-node map-node--owner" href="#scene-4"><strong>混合</strong><span>不同模块不同方法</span></a>
+      </div>
+    </section>
+    <section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
+      <p class="eyebrow">沿案例选择</p>
+      <h2 id="case-title">客户服务平台：同一个项目，两个模块需要完全不同的方法</h2>
+      <p class="section-intro">平台现在有两个明显不同的模块。核心系统要处理审计日志、合规追踪和工单流转——需求明确、监管严格、变更代价高。前端体验要重新设计客户端的投诉入口和自助查询——用户到底想要几个步骤、什么界面，还没人说得清。同一个项目、同一个愿景，但方法不能统一。</p>
+      <article class="scene" id="scene-1" data-component="scene"><div class="scene-number">01</div><div class="scene-body">
+        <h3>先评估，不要先选方法：四个维度逐一过</h3>
+        <p>ECO 第一个要求是评估项目需求、复杂性和规模（E01），然后在评估基础上推荐方法。不是反过来——先决定要做敏捷，再找理由证明它合适。四个维度是：需求在项目期间会不会大幅变化（需求稳定性）、有没有必须遵守的外部规则（监管约束）、各组件之间互相依赖的程度（复杂度）、工作量和团队规模（规模）。</p>
+        <p>对于核心系统：需求稳定（审计留痕、工单流转这些规则已经有了），高监管（合规法务已锁定审计要求），中高复杂度（和现有 CRM、财务系统对接）。对于前端体验：需求不稳定（用户到底要几步、什么界面，还在猜），低监管（前端设计自由度高），中低复杂度（模块独立，不触及其他系统）。</p>
+        <p>ECO 还要求确定关键信息需要（E03）。选择方法前，你需要知道：哪些需求已经锁定、哪些会演变、每次交付的反馈周期多长、谁来做验收决策。这些信息在选方法时就要收集，而不是选了方法之后才发现信息不够。</p>
+        <dl class="boundary-list" data-component="boundary-list">
+          <div class="boundary-row"><dt>需求稳定性</dt><dd>需求会不会在项目期间大幅变化。核心系统稳定，前端体验不确定。</dd></div>
+          <div class="boundary-row"><dt>监管约束</dt><dd>外部规则（法规、合规审计、安全标准）。核心系统高，前端体验低。</dd></div>
+          <div class="boundary-row"><dt>复杂度</dt><dd>组件间依赖程度和系统集成难度。核心系统中高，前端体验较低。</dd></div>
+        </dl>
+        <p class="takeaway" data-component="takeaway">记忆钩子：先问"这个模块的需求在六个月后会变吗"，再选方法。不是先选方法再找理由。</p>
+      </div></article>
+      <article class="scene" id="scene-2" data-component="scene"><div class="scene-number">02</div><div class="scene-body">
+        <h3>预测型：需求稳定+高监管→选它不是因为"传统"，而是因为匹配</h3>
+        <p>核心系统的特征是需求稳定、监管严格、变更代价高。这种情况下，预测型（predictive）方法是匹配的选择——不是因为"老派"或"保守"，而是因为：需求在规划阶段就能相对完整地定义，监管要求把验收条件锁死了，频繁变更的成本（重新过合规审查）远超敏捷迭代的收益。</p>
+        <p>预测型的执行策略：先做详细的范围说明书和 WBS（上一课 0005 的内容），按阶段交付，每个阶段结束时有正式的验收和签字。审计日志模块必须一次性通过合规验证，不能"先上线一个不完整的版本再迭代"——这会被合规直接否掉。</p>
+        <p>敏捷实践指南中明确写了：预测型适用于"需求和范围在项目早期可以明确，并且在项目期间相对稳定"的情境。不是贬低它"落后"，而是因为它的优势——规划和过程控制——恰好是这类项目的需要。</p>
+        <dl class="boundary-list" data-component="boundary-list">
+          <div class="boundary-row"><dt>裁剪 tailoring</dt><dd>根据项目特征选择、调整和组合方法——用预测型的规划机制，但可以加入敏捷的每日站会来改善沟通。裁剪是有意识的调整。</dd></div>
+          <div class="boundary-row"><dt>随意变更</dt><dd>跳过规划、跳过签字、跳过合规审查——不给理由说"我们灵活"。不是裁剪，是逃避。</dd></div>
+        </dl>
+        <p class="takeaway" data-component="takeaway">记忆钩子：预测型不是退步，是需求稳定+高监管下的正确答案。说它"落后"的人，没看项目特征。</p>
+      </div></article>
+      <article class="scene" id="scene-3" data-component="scene"><div class="scene-number">03</div><div class="scene-body">
+        <h3>敏捷/适应型：需求不明+需要短期反馈→选它是因为你需要快速验证</h3>
+        <p>前端体验模块的需求是另一头：没人说得清用户到底要几步操作。需求是不稳定的——随着第一版原型被用户试用，你对"什么才算好用"的认知会变。ECO 要求在这种情况下推荐适应/敏捷方法（E02），因为：短期迭代可以快速暴露"用户实际行为和你猜测之间的差距"，待办事项的优先级排序让高价值功能先上线，反馈循环让每一项决策都被检验而不是被假设。</p>
+        <p>敏捷的执行策略：用 Sprint（固定时间盒）交付可用的功能增量，每个 Sprint 结束时有可演示的原型，用户反馈直接进入下一 Sprint 的待办事项排序。这里不要求一次性签完整的范围确认书——因为范围本身需要用反馈来校准。</p>
+        <p>但敏捷不等于没有范围。不能因为"我们做敏捷"就把所有临时加进来的功能都接受——那叫范围蔓延，不叫迭代。敏捷要求用已对齐的愿景和产品目标做取舍尺。</p>
+        <p class="takeaway" data-component="takeaway">记忆钩子：敏捷是"我不知道全部答案，但我要最快看到真实反馈"的方法。它不是"可以不定义范围"的通行证。</p>
+      </div></article>
+      <article class="scene" id="scene-4" data-component="scene"><div class="scene-number">04</div><div class="scene-body">
+        <h3>混合：不是把两种仪式拼在一起——是按模块独立选择执行策略</h3>
+        <p>平台项目的两个模块用了两种完全不同的方法。这本身就是 ECO 要求的混合（hybrid）——为不同模块独立推荐匹配的方法和执行策略（E02 + E04）。真正的混合不是一个项目里周一开 Sprint 计划、周二写 WBS；而是：核心审计模块用预测型的阶段交付和正式验收，前端体验模块用适应型的迭代和反馈驱动，两者通过同一个整合计划（那是 0007 的内容）协调依赖和里程碑。</p>
+        <p>这里要主动点破一个关键边界：真正混合 vs 伪敏捷。真正混合是按照模块特征选择不同的开发方法，每个模块的方法和执行策略是独立的。伪敏捷是给预测型项目加每日站会，同时仍然要求所有需求在规划阶段完整签署、不允许 Sprint 内变更。后者的"敏捷"只是形式——实质仍是全预测，只是贴了一个敏捷标签。</p>
+        <dl class="boundary-list" data-component="boundary-list">
+          <div class="boundary-row"><dt>真正混合</dt><dd>不同模块按特征独立选择开发方法；每个模块的方法和执行策略匹配其需求稳定性和监管约束。协调靠整合计划。</dd></div>
+          <div class="boundary-row"><dt>伪敏捷</dt><dd>表面加了敏捷仪式（站会、Sprint），但需求仍需全部提前锁定，不允许迭代变更。实质是预测型贴了敏捷标签。</dd></div>
+          <div class="boundary-row"><dt>方法选择 vs 资源承诺</dt><dd>本课选择方法，不承诺资源。具体需要多少人、多久、什么技能——这些留给 0007 的整合计划和资源决策。</dd></div>
+        </dl>
+        <details class="quick-check" data-component="quick-check">
+          <summary>想一想：如果合规审计模块改用敏捷迭代会被怎样拒绝？</summary>
+          <p>合规法务会问：第一个迭代不完整的审计版本上线后，如果出现合规漏洞谁负责？不是每个模块都适合敏捷——监管约束就是一条硬线索。选择方法是匹配项目特征，不是把最流行的方法硬套到所有模块上。</p>
+        </details>
+        <p class="takeaway" data-component="takeaway">记忆钩子：混合是一套执行策略——每个模块独立选方法，靠同一个整合计划协调。伪敏捷是预测型加了个敏捷帽。</p>
+      </div></article>
+    </section>
+
+    <section class="audit-section" data-stage="case" data-component="audit-section" aria-labelledby="audit-title">
+      <p class="eyebrow">范围与来源</p><h2 id="audit-title">本课覆盖与来源审计</h2>
+      <div class="audit-grid">
+        <details class="audit-card"><summary>覆盖边界</summary><div class="audit-content">
+          <table class="coverage-table" data-component="coverage-table">
+            <thead><tr><th>Enabler</th><th>含义</th><th>本课承载</th></tr></thead>
+            <tbody>
+              <tr><td>PRC-T01-E01</td><td>评估需求、复杂性和规模</td><td>场景 01：四个维度评估核心系统 vs 前端体验</td></tr>
+              <tr><td>PRC-T01-E02</td><td>推荐开发方法</td><td>场景 02/03：预测型适用于高监管+需求稳定；敏捷适用于需求不明+需反馈</td></tr>
+              <tr><td>PRC-T01-E03</td><td>确定关键信息需要</td><td>场景 01：选择方法前需收集的信息</td></tr>
+              <tr><td>PRC-T01-E04</td><td>推荐执行策略</td><td>场景 04：混合—不同模块独立选方法</td></tr>
+            </tbody>
+          </table>
+          <p><strong>不在本课</strong>：PRC-T01-E05~E09（整合计划和资源决策）由 0007 首次承载。</p>
+        </div></details>
+        <details class="audit-card"><summary>本地来源</summary><div class="audit-content">
+          <ul><li><code>sources/official/eco-exam-outline-2026.md</code> Task 1。</li><li><code>sources/official/agile-practice-guide.md</code> 生命周期选择。</li><li><code>sources/official/pmbok7.md</code> 开发方法和生命周期绩效域。</li></ul>
+        </div></details>
+        <details class="audit-card"><summary>边界声明</summary><div class="audit-content">
+          <ul><li>不把行业、工具或每日站会当作方法选择的唯一依据。</li><li>五道练习题初始 candidate + course_provided。</li></ul>
+        </div></details>
+      </div>
+    </section>
+
+    <section class="quiz-section" id="practice" data-stage="practice" aria-labelledby="practice-title" data-question-label="练习题">
+      <p class="eyebrow">巩固与迁移</p><h2 id="practice-title">先想清楚，再核对答案</h2>
+      <p class="section-intro">五道题覆盖四个维度评估、方法推荐、关键信息、混合执行策略和 0005 retrieval。</p>
+      <div class="quiz-toolbar"><span id="scoreText">已答 0 / 5 · 正确 0</span><button class="reset-button" id="resetQuiz" type="button">重做</button></div>
+      <div id="quiz"></div>
+    </section>
+    <footer class="lesson-footer"><p>下一步：进入 0007A《建立并维护整合计划》——方法选好之后，用整合计划把不同模块的执行策略协调起来。</p><nav class="course-pagination" aria-label="课程前后导航"><a href="0005-scope-and-requirements.html">← 上一节</a></nav></footer>
+  </main>
+  <script id="lesson-questions" type="application/json">
+[
+  {
+    "id": "LESSON-0006-method-and-lifecycle-selection-Q001",
+    "type": "single_choice",
+    "stem": "在平台项目启动阶段，项目经理需要评估核心系统的需求、复杂性和规模。下列哪项评估最符合 ECO 的方法选择逻辑？",
+    "options": [
+      "直接选择敏捷方法，因为敏捷是当前行业标准。",
+      "先评估需求稳定性（高）、监管约束（高）、复杂度（中高）和系统集成难度，再根据评估结果推荐方法。",
+      "选择预测型方法，因为它是所有大型项目的默认选择。",
+      "先决定使用混合方法，再找证明混合方法优点的理由。"
+    ],
+    "answer": 1,
+    "rationale": "ECO 要求先评估需求、复杂性和规模（E01），再推荐方法（E02）。方法选择的顺序是评估在前、推荐在后。预设方法再去论证它不是合规的选择逻辑；行业标准也不是方法选择的依据。"
+  },
+  {
+    "id": "LESSON-0006-method-and-lifecycle-selection-Q002",
+    "type": "single_choice",
+    "stem": "核心系统需要完整的审计日志和合规验证，需求已由合规法务锁定。前端体验需求尚不明确，用户行为需要原型验证后才清晰。此时最合理的方法推荐是？",
+    "options": [
+      "整个项目采用预测型，因为核心系统的合规要求对整体质量起决定性作用。",
+      "整个项目采用敏捷，因为前端需求是最难预测的部分。",
+      "核心系统采用预测型（需求稳定、监管高），前端体验采用适应型（需求不稳定、需反馈验证）；整体是混合方法。",
+      "两套系统都用混合方法，在核心系统中加入每日站会，在前端体验中加入阶段验收签字。"
+    ],
+    "answer": 2,
+    "rationale": "不同模块有不同的方法线索。核心系统的需求稳定+高监管适用预测型；前端需求不稳定需快速反馈适用敏捷。整体是真正的混合方法——每个模块独立选择匹配的方法。统一用一种方法是忽视了模块间差异；给核心系统加站会也不是真正的混合。"
+  },
+  {
+    "id": "LESSON-0006-method-and-lifecycle-selection-Q003",
+    "type": "single_choice",
+    "stem": "选择开发方法之前，需要收集关键信息。对于前端体验模块，必须收集的信息不包括哪一项？",
+    "options": [
+      "用户对当前投诉入口的典型操作路径。",
+      "每次原型的反馈周期和谁来验收。",
+      "哪些前端需求已被锁定、哪些会演变。",
+      "核心系统的数据库表结构设计文档。"
+    ],
+    "answer": 3,
+    "rationale": "ECO 要求确定关键信息需要（E03）。对前端体验，关键信息是用户操作路径、反馈周期、需求锁定度。核心系统的数据库表结构属于另一个模块的实现细节，不是前端方法选择的关键输入。跨模块的技术约束在整合计划中处理（0007），不在方法选择阶段。"
+  },
+  {
+    "id": "LESSON-0006-method-and-lifecycle-selection-Q004",
+    "type": "single_choice",
+    "stem": "项目经理决定核心系统用预测型、前端体验用敏捷，并在整合计划中协调两者的依赖和里程碑。团队里有人说这是伪敏捷，因为项目还是有预测部分。下列哪种回应最符合 PMI 视角？",
+    "options": [
+      "同意，混合方法本质上就是伪敏捷的一种形式。",
+      "不是伪敏捷：每个模块独立选择了匹配其需求稳定性和监管约束的方法，整合计划是协调机制而非统一方法。伪敏捷是对同一模块贴敏捷标签但实质仍要求全需求提前锁定。",
+      "为了统一团队信心，改为全部预测型以避免混淆。",
+      "改为全部敏捷，因为前端体验的需求量更大。"
+    ],
+    "answer": 1,
+    "rationale": "真正混合的特点是不同模块独立选方法，伪敏捷是对同一模块形式上加敏捷仪式但实质要求全预测。整合计划是协调依赖的工具，不是把方法混合在一起。ECO 的混合不是所有模块用一个方法——是根据模块差异推荐不同执行策略。"
+  },
+  {
+    "id": "LESSON-0006-method-and-lifecycle-selection-Q005",
+    "type": "single_choice",
+    "stem": "回收 0005：前端体验需求不确定时，有人要求在规划阶段就承诺全部功能列表。从 0005 和 0006 的视角，最合理的回应是？",
+    "options": [
+      "同意承诺，因为需求终究会被写进 backlog。",
+      "拒绝：0005 要求范围要有验收条件和对未做事项的声明；0006 要求在需求不确定时选择适应型方法，用后续迭代的反馈来校准范围。全量承诺与前两者的逻辑矛盾。",
+      "改为预测型，把前端功能一次性规划完成。",
+      "让业务方自己先内部对齐需求，项目经理不参与。"
+    ],
+    "answer": 1,
+    "rationale": "0005 的范围边界要求定义什么不做、用什么验收；0006 要求在需求不确定时选择适应型——用短迭代反馈来校准范围边界。一次性全量承诺否定了两者的逻辑。拒绝不等于是逃避决策，而是让反馈取代猜测。"
+  }
+]
+  </script>
+  <script src="assets/lesson.js"></script>
+</body>
+</html>
