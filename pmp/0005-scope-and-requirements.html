@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PMP26 第 0005 课：范围与需求边界。把已对齐的价值和期待转成可核实范围，取得相关方同意，新需求先评估再接受。">
+  <title>第 05 课 · 范围与需求边界</title>
+  <link rel="stylesheet" href="assets/lesson.css">
+</head>
+<body data-portal-home="../index.html" data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="process">
+  <a class="skip-link" href="#lesson-content">跳到正文</a>
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
+  <main class="lesson-shell" id="lesson-content">
+    <nav class="course-nav" aria-label="课程导航">
+      <a class="course-back" href="index.html" aria-label="返回课程目录"><span aria-hidden="true">←</span><span class="course-back-label">课程目录</span></a>
+      <nav class="lesson-steps" aria-label="课程阶段">
+        <a href="#map" aria-current="step"><span class="step-number">01</span><span>看范围地图</span></a>
+        <a href="#case"><span class="step-number">02</span><span>沿案例定义</span></a>
+        <a href="#practice"><span class="step-number">03</span><span>巩固与迁移</span></a>
+      </nav>
+    </nav>
+    <header class="lesson-header">
+      <p class="eyebrow">PMP26 · 第 05 课 · 课程包 0005 范围与需求边界</p>
+      <h1>范围与需求边界：把"改善体验"翻译成可核实边界，是新功能还是新麻烦</h1>
+      <p class="lesson-deck">前四课把价值、愿景、相关方和期待全部对齐了。现在业务负责人说，"那太好了，把会员营销、客服聊天、数据看板全加进第一版吧。" 本课讲怎么把"改善体验"翻译成可核实的范围与需求，让相关方对当前范围达成一致，并在新功能进来时先评估再接受。</p>
+      <dl class="lesson-meta">
+        <div><dt>预计时间</dt><dd>最小 10 分钟 / 完整 45 分钟</dd></div>
+        <div><dt>位置</dt><dd>PMP26 · 0005 · U01 项目启动 · process 主题</dd></div>
+        <div><dt>完成后能做什么</dt><dd>把愿景和期待转成可核实需求与验收条件，用 WBS 或 backlog 分解范围，获得相关方同意，评估新需求的影响再决策</dd></div>
+      </dl>
+    </header>
+    <section class="map-section" id="map" data-stage="map" aria-labelledby="map-title">
+      <p class="eyebrow">看范围地图</p>
+      <h2 id="map-title">从价值到边界：把"改善体验"翻译成可核实的范围</h2>
+      <p class="section-intro">0004A/0004B 讲完了怎么对齐和管理期待。现在需要把这些期待转成具体的范围边界——什么东西做、什么东西不做、做到什么程度才算完成。本课的判断循环是：把价值转成需求与验收条件 -> 分解范围（WBS/backlog）-> 获得相关方同意 -> 新需求来了先评估再决定。</p>
+      <div class="learning-map" data-component="learning-map" aria-label="范围与需求边界">
+        <div class="map-hub"><strong>期待已对齐</strong><span>接下来：定义范围边界</span></div>
+        <a class="map-node map-node--why" href="#scene-1"><strong>转需求验收</strong><span>把"改善体验"提炼成可核实需求</span></a>
+        <a class="map-node map-node--govern" href="#scene-2"><strong>分解边界</strong><span>范围说明/WBS vs 主题/史诗/用户故事</span></a>
+        <a class="map-node map-node--build" href="#scene-3"><strong>相关方同意</strong><span>获得一致同意，明确下次回顾时间</span></a>
+        <a class="map-node map-node--owner" href="#scene-4"><strong>评估新需求</strong><span>先评估价值/时间/预算/资源，再走路径</span></a>
+      </div>
+    </section>
+    <section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
+      <p class="eyebrow">沿案例定义</p>
+      <h2 id="case-title">客户服务平台：愿景对齐了，接下来要划边界</h2>
+      <p class="section-intro">愿景句"让客户每次互动更快处理、可追溯"已经对齐。愿景句本身不是范围。现在要把"更快处理"翻译成具体的功能需求、验收条件和边界。同时，业务负责人的"全加进第一版"也要先评估再响应。</p>
+      <article class="scene" id="scene-1" data-component="scene"><div class="scene-number">01</div><div class="scene-body">
+        <h3>从"改善体验"到可核实需求：拆出具体的需求、验收条件、不做事项</h3>
+        <p>业务负责人（来自0004A的分类——高影响高关切的决策相关方）兴高采烈地说："愿景都对齐了，那第一版做成什么样？我建议把会员营销、客服聊天、数据看板全放进第一版。" 他的三个业务目标是：客服团队能在平台上给客户画像、业务线能看满意度趋势、合作方可以看到客户历史互动。</p>
+        <p>作为项目经理，你要做的第一件事不是答应或拒绝，而是帮他把这些业务目标翻译成可核实的范围条目。客服画像——具体需求是"支持客服在对话界面查看客户最近三次互动记录"，验收条件是"从点击客户头像到历史记录加载完成不超过2秒"。满意度趋势——"业务线可按周/月查看满意度评分变化"，验收条件是"数据来自实际对话评分而非报告手工录入"。这些才算可核实的范围条目。</p>
+        <p>不只是定义"做"，还要定义"当前不做"。愿景句超出第一版能力的部分，明确写进"第一版不做"清单：定制化报表生成、AI自动应答、移动端推送。不写清楚，这些"未承诺但合理"的期待会变成下一个抱怨源。</p>
+        <dl class="boundary-list" data-component="boundary-list">
+          <div class="boundary-row"><dt>可核实需求 verifiable requirement</dt><dd>有明确的验收条件和完成标准，完成与否可以用数据或观察客观判断。如"从点击客户头像到历史记录加载完成不超过2秒"。</dd></div>
+          <div class="boundary-row"><dt>业务目标 business goal</dt><dd>项目要实现的业务价值主张，本身不可以直接当作功能执行。如"改善客户体验"是目标，"加载时间不超过2秒"才是可核实需求。</dd></div>
+          <div class="boundary-row"><dt>产品范围 product scope</dt><dd>项目产出物（产品/服务/成果）具备的特性与功能。范例：平台支持客服在对话界面查看客户最近三次互动记录。</dd></div>
+          <div class="boundary-row"><dt>项目范围 project scope</dt><dd>为交付产品范围所需完成的工作。范例：开发客服历史API、对话界面、与现有CRM的集成测试。</dd></div>
+        </dl>
+        <p class="takeaway" data-component="takeaway">记忆钩子：愿景句说的"干什么"，范围说的是"具体做什么、做到什么程度、哪些暂不做"。不拆到验收条件，所谓对齐的期待其实谁也不知道要做什么。</p>
+      </div></article>
+      <article class="scene" id="scene-2" data-component="scene"><div class="scene-number">02</div><div class="scene-body">
+        <h3>分解范围：预测型用范围说明书和WBS，敏捷用主题—史诗—用户故事</h3>
+        <p>需求条目清楚了，现在需要分解：项目包含哪些可交付物，每个可交付物下面有什么组件。这个平台项目可以按两个维度分解：客服模块（工单分流、客户历史、对话记录）、数据分析模块（满意度报告、趋势展示）。</p>
+        <p>如果团队选择预测型方法（基于已对齐的愿景+范围稳定），范围说明书定义边界（"做什么、不做什么、每项的可核实交付标准"），WBS将客服模块分解为"工单分配逻辑—客服界面—历史记录API"。每个WBS包对应一个可交付、可核实的组件。</p>
+        <p>如果团队选择敏捷方法（需求在迭代中逐步明确），路线图和主题—史诗—用户故事代替WBS：主题"客服对话体验" -> 史诗"客服界面中的客户历史展示" -> 用户故事"作为客服，我想在对话中查看客户最近三次互动的摘要，以便快速了解客户背景"。两者的共同点：都需要分解到"可核实、可交付"的最小单元。预测型靠WBS词典定义完成标准，敏捷靠DoD（完成的定义）牵引每个用户故事。</p>
+        <dl class="boundary-list" data-component="boundary-list">
+          <div class="boundary-row"><dt>WBS（工作分解结构）</dt><dd>预测型方法的可交付物导向分解，一次分解足够细即可。每个元素是"可交付的工作产品"（a deliverable），不是活动或任务。典型三层：项目→可交付物→工作包。</dd></div>
+          <div class="boundary-row"><dt>用户故事 user story</dt><dd>敏捷方法的价值导向分解，逐步细化。格式"作为<角色>，我想<功能>，以便<价值>"。层次：主题→史诗→用户故事→任务。不是一次性分解完，而是为即将到来的迭代细化。</dd></div>
+          <div class="boundary-row"><dt>分解层级 vs 任务分派</dt><dd>WBS和用户故事都是分解到"知道怎么做"为止，而不是直接分派到人。分解的目的：所有工作都被识别和估算，没有遗漏。分派到人是资源管理的下一步。</dd></div>
+        </dl>
+        <p class="takeaway" data-component="takeaway">记忆钩子：WBS和用户故事都在做同样的事：把一个不明确的"做一个平台"分解成能知道"什么时候做好了"的小块。只不过预测型一次分解完，敏捷一次分解一层。</p>
+      </div></article>
+      <article class="scene" id="scene-3" data-component="scene"><div class="scene-number">03</div><div class="scene-body">
+        <h3>获得相关方对当前范围的一致同意，避免把沉默当批准</h3>
+        <p>范围分解完毕，你需要让所有关键相关方（来自0003的分类——客服主管、门店负责人、合规经理、业务负责人）对当前范围做一次正式的同意确认。这不是0004A讲的"期待对齐"，而是对具体范围条目的一对一明确确认。</p>
+        <p>客服主管在上一次沉默（0004B的偏离信号）被一对一对话修复后，重新表现出参与，但他的参与不自动等于"同意范围"。你需要主动问：客服模块的工单分配逻辑在这个版本里覆盖哪些渠道（仅在线，还是包含电话和邮件入口），边界清楚了，他才能给你正式同意。</p>
+        <p>最关键的一条规则：**相关方不回复不等于同意**。如果客服主管对范围邮件不回复，这不叫"已获得同意"。你需要设定期限并跟进，确保每个关键相关方至少做出一次可记录的确认（邮件回复/会议记录签字/对话确认）。同时约定下一次范围回顾的时间——不是改来改去，而是约定"第一次迭代/阶段交付后，我们再回看当前范围是否需要调整"。</p>
+        <dl class="boundary-list" data-component="boundary-list">
+          <div class="boundary-row"><dt>对齐期待（0004A）</dt><dd>项目初期，让相关方对"什么是成功、什么最重要、各自要什么"形成共同理解。是开放式的讨论，不指定具体范围条目。</dd></div>
+          <div class="boundary-row"><dt>同意范围 scope agreement</dt><dd>范围定义完成后，让相关方对"项目包含哪些可交付物、每项完成条件、当前不做哪些"给出明确可记录的确认。没回复不是同意，约好时间当面确认才算。</dd></div>
+          <div class="boundary-row"><dt>正式同意 vs 后续调整</dt><dd>同意的当下不是永久冻结——约定下一次范围回顾时间（如第一次迭代交付后），到那时再评估是否需要调整，而不是随时口头来、随时加。</dd></div>
+        </dl>
+        <p class="takeaway" data-component="takeaway">记忆钩子：最危险的口头禅是"他没说不行，那就是可以"。没确认=没同意。把沉默当成批准，后续的抱怨你只能自己扛。</p>
+      </div></article>
+      <article class="scene" id="scene-4" data-component="scene"><div class="scene-number">04</div><div class="scene-body">
+        <h3>新需求来了：先影响评估，再决定是否走变更</h3>
+        <p>第一版范围刚确认完，业务负责人就提出了新功能要求："客户历史里再加一个交互时间线功能，把客户所有的客服对话、订单变化、投诉历史按时间串起来。" 这时你要做的不是立刻接受或拒绝，而是先做一个结构化的影响评估：这个功能增加了多少开发人天？对第一版交付时间的影响是什么？需要哪些外部依赖？有没有不在当前范围但可以切入的现有功能？</p>
+        <p>评估后有两种可能路径：一是这个功能很小且有明确价值，可以在不影响当前承诺范围的前提下纳入（比如替换另一个当前优先级较低的功能）；二是它显著增加了范围，需要走正式的变更控制流程，让变更控制委员会（CCB）或同等授权方评估对预算、时间表和资源的影响后做决定。</p>
+        <p>不编造变更控制委员会的复杂规则。重点是：每一个新功能请求都在进入范围之前经过一次影响评估，而不是口头答应再回去挤时间。</p>
+        <dl class="boundary-list" data-component="boundary-list">
+          <div class="boundary-row"><dt>范围蔓延 scope creep</dt><dd>未经正式评估或变更控制的新增需求逐步扩大项目范围，常在"快速加个小功能"的口头承诺中积累。每加一个不评估的小功能，都在压缩交付预算。</dd></div>
+          <div class="boundary-row"><dt>影响评估 impact assessment</dt><dd>每个新需求进来后先做的事：评估它对时间、预算、资源和已有承诺的影响。影响小且价值明确→可协商替换低优项；影响大→走变更控制。</dd></div>
+          <div class="boundary-row"><dt>变更控制 vs 灵活调整</dt><dd>即使在敏捷项目中，"灵活"也不是无条件加需求。用户故事替换意味着移除同等规模的已有故事；未经替换直接加史诗是伪敏捷式的范围蔓延。</dd></div>
+        </dl>
+        <p class="takeaway" data-component="takeaway">记忆钩子：新功能进来时，先问的是"这个改变什么"而不是"能不能做"。不先评估影响就接需求，每接一个都在压缩你的交付能力。</p>
+      </div></article>
+    </section>
+
+    <section class="audit-section" data-stage="case" data-component="audit-section" aria-labelledby="audit-title">
+      <p class="eyebrow">范围与来源</p><h2 id="audit-title">本课覆盖与来源审计</h2>
+      <div class="audit-grid">
+        <details class="audit-card"><summary>覆盖边界</summary><div class="audit-content">
+          <table class="coverage-table" data-component="coverage-table">
+            <thead><tr><th>Enabler</th><th>含义</th><th>本课承载</th></tr></thead>
+            <tbody>
+              <tr><td>PRC-T02-E01</td><td>Define and document project scope and requirements</td><td>场景 01：把"改善体验"转成可核实需求与验收条件</td></tr>
+              <tr><td>PRC-T02-E02</td><td>Obtain stakeholder agreement on scope</td><td>场景 03：获得相关方对当前范围的一致同意</td></tr>
+              <tr><td>PRC-T02-E03</td><td>Decompose scope into deliverables and work</td><td>场景 02：用 WBS 或 backlog 分解范围</td></tr>
+            </tbody>
+          </table>
+          <p><strong>不在本课</strong>：范围变更的深层机制（CCB组成、变更日志、变更控制流程细节）留给后续变更课程。范围不是价值本身，也不是商业论证。</p>
+        </div></details>
+        <details class="audit-card"><summary>本地来源</summary><div class="audit-content">
+          <ul><li><code>sources/official/eco-exam-outline-2026.md</code> Process / Task 2: Develop and manage project scope。</li><li><code>sources/official/pmbok7.md</code> 规划绩效域和交付绩效域中范围、需求、可交付物和完成条件。</li><li><code>curriculum/chapters/01-value-and-initiation.md</code> 价值—范围—资源—方法决策链。</li></ul>
+        </div></details>
+        <details class="audit-card"><summary>边界声明</summary><div class="audit-content">
+          <ul><li>五道练习题初始 candidate + course_provided。</li><li>不把敏捷写成"不需要范围"或"无需相关方同意"。</li><li>0004 retrieval 只回收已对齐的期待，不重复 T05/T06 首次教学。</li></ul>
+        </div></details>
+      </div>
+    </section>
+
+    <section class="quiz-section" id="practice" data-stage="practice" aria-labelledby="practice-title" data-question-label="练习题">
+      <p class="eyebrow">巩固与迁移</p><h2 id="practice-title">先想清楚，再核对答案</h2>
+      <p class="section-intro">五道题检查范围定义、相关方同意、分解目的、范围蔓延识别和回收 0004 对比。均为 course_provided。</p>
+      <div class="quiz-toolbar"><span id="scoreText">已答 0 / 5 · 正确 0</span><button class="reset-button" id="resetQuiz" type="button">重做</button></div>
+      <div id="quiz"></div>
+    </section>
+    <footer class="lesson-footer"><p>下一步：场景 02 的 WBS/backlog 对比为 0006（方法选择）铺垫方法依赖。</p><nav class="course-pagination" aria-label="课程前后导航"><a href="0004b-maintain-customer-expectations.html">← 上一节</a></nav></footer>
+  </main>
+  <script id="lesson-questions" type="application/json">
+[
+  {
+    "id": "LESSON-0005-scope-and-requirements-Q001",
+    "type": "single_choice",
+    "stem": "业务负责人说「我要一个能改善客户体验的平台」。作为项目经理，你最先应该做什么？",
+    "options": [
+      "立刻开始做需求调研，把所有功能列出来。",
+      "帮他翻译成可核实需求与验收条件，比如「客服在对话界面查看客户最近三次互动的数据，加载不超过2秒」。",
+      "把「改善客户体验」直接当作范围写入项目章程。",
+      "先问预算，再决定做不做。"
+    ],
+    "answer": 1,
+    "rationale": "PMBOK中，范围从需求来，需求必须可核实。「改善客户体验」是业务目标或价值主张，不是可核实需求。项目经理的第一个工作是将价值主张翻译成具有明确验收条件的范围条目。选项0提前定义功能但未确认需求基础；选项2把目标当作范围；选项3跳过范围定义直接谈预算，都是常见的范围管理误区。"
+  },
+  {
+    "id": "LESSON-0005-scope-and-requirements-Q002",
+    "type": "single_choice",
+    "stem": "客服模块的「客户历史」功能，验收条件写成「客服能查看客户互动数据」。这个验收条件有什么问题？",
+    "options": [
+      "没有问题，验收条件本来就应该简洁。",
+      "验收条件应该包含可核实标准，比如「从点击到加载不超过2秒，显示最近三次互动的概要信息」。",
+      "验收条件应该由开发团队写，项目经理不需要参与。",
+      "验收条件应该在系统测试阶段才定义，现在定义太早了。"
+    ],
+    "answer": 1,
+    "rationale": "可核实需求的验收条件必须能客观判断「完成没完成」。「能查看」不可核实——什么算能查看？PMBOK中验收条件(acceptance criteria)必须包含可观察、可衡量、可测试的标准。选项0接受模糊描述；选项2把验收条件推给开发团队单独负责；选项3推迟到测试阶段才定义，都违背项目范围管理的基本实践。"
+  },
+  {
+    "id": "LESSON-0005-scope-and-requirements-Q003",
+    "type": "single_choice",
+    "stem": "范围定义并分解完成后，客服主管没有回复范围确认邮件。项目经理的做法哪种最合适？",
+    "options": [
+      "默认他同意，因为没有收到反对意见。",
+      "主动约他15分钟一对一，展示当前范围条目并请他明确确认哪些同意、哪些有疑问。",
+      "把范围确认邮件抄送给他的上级，让上级代为确认。",
+      "先把范围写上，等他提出异议再改。"
+    ],
+    "answer": 1,
+    "rationale": "没回复不等于同意。ECO要求获得相关方对范围的一致同意(PRC-T02-E02)，同意必须是明确可记录的。客服主管有过沉默信号的前例，更需要一对一确认。选项0把沉默当批准是范围蔓延的常见诱因；选项2越过当事人直接找上级，损害信任且不能代表本人同意；选项4先做后改在项目管理中会造成返工和冲突。"
+  },
+  {
+    "id": "LESSON-0005-scope-and-requirements-Q004",
+    "type": "single_choice",
+    "stem": "下列哪个选项最准确地描述了WBS(工作分解结构)和用户故事的共同目的？",
+    "options": [
+      "二者都是用来分派任务给团队成员的。",
+      "二者都把不明确的「项目范围」分解成可核实、可交付的最小工作单元。",
+      "WBS是预测型专用，用户故事是敏捷专用，两者没有任何共同点。",
+      "二者都是用来估算项目总成本的工具。"
+    ],
+    "answer": 1,
+    "rationale": "WBS和用户故事的根本目的相同：把范围从概念层级分解到可核实、可交付的粒度(PMBOK 7规划/交付绩效域)。WBS以可交付物为导向一次分解，用户故事以价值为导向逐步细化——路径不同，目的相同。选项0混淆了「分解」与「分派」；选项2否认共同目的；选项4把范围分解工具窄化为成本估算工具。"
+  },
+  {
+    "id": "LESSON-0005-scope-and-requirements-Q005",
+    "type": "single_choice",
+    "stem": "第一版范围已获相关方确认。业务负责人又提出「在第一版中加入客户交互时间线功能」。项目经理最合适的下一步是什么？",
+    "options": [
+      "口头答应，开发团队应该能挤时间做出来。",
+      "直接拒绝，告诉他第一版范围已经锁定不能改。",
+      "先做一个结构化的影响评估：评估对时间、预算、资源和已有承诺的影响，再决定是否替换低优项或走变更控制。",
+      "先把功能加进第一版，等交付时间滞后时再和业务负责人沟通。"
+    ],
+    "answer": 2,
+    "rationale": "PMI的范围管理最佳实践是：每个新需求先做影响评估，再决定路径。既不是全盘接受(选项0导致范围蔓延)，也不是全盘拒绝(选项1忽视真实业务需求)。选项2先评估再决策；评估结果可以是在不影响承诺范围的前提下替换低优项目(敏捷风格)，也可以走正式变更控制(预测型或混合风格)。选项3先把功能加进去再事后沟通，是典型的反向范围蔓延。"
+  }
+]
+  </script>
+  <script src="assets/lesson.js"></script>
+</body>
+</html>
