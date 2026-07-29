@@ -975,6 +975,70 @@ pretest_questions = 0
             self.assertTrue((out / "portal.css").is_file())
             self.assertTrue((out / "portal.js").is_file())
 
+    def test_ui_templates_keep_global_returns_out_of_top_navigation(self):
+        """All content formats use one two-link dock; top bars stay page-local."""
+        templates = ROOT / "assets" / "ui-kit" / "templates"
+        for name in ("lesson", "practice", "reference"):
+            text = (templates / f"{name}.html").read_text(encoding="utf-8")
+            self.assertEqual(text.count('class="course-return-dock"'), 1, name)
+            self.assertEqual(text.count('class="course-home"'), 1, name)
+            self.assertEqual(text.count('class="course-back"'), 1, name)
+        lesson = (templates / "lesson.html").read_text(encoding="utf-8")
+        top = lesson[lesson.index('<nav class="course-nav"'):lesson.index('</nav>\n    </nav>')]
+        self.assertNotIn('course-home', top)
+        self.assertNotIn('course-back', top)
+        reference = (templates / "reference.html").read_text(encoding="utf-8")
+        index = reference[reference.index('<nav class="section-index"'):reference.index('</nav>\n    <header')]
+        self.assertNotIn('course-home', index)
+        self.assertNotIn('course-back', index)
+
+    def test_local_indexes_apply_navigation_by_page_depth(self):
+        """The workspace shelf has no return; a project route has portal only."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "Exam Prep", "capability",
+                 [("lessons/0001.html", "Lesson")]),
+            ])
+            project = ws / "projects" / "pmp-certification"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_index.py"), "--project", str(project)],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            route = (project / "outputs" / "index.html").read_text(encoding="utf-8")
+            shelf = (ws / "index.html").read_text(encoding="utf-8")
+            self.assertEqual(route.count('class="course-return-dock"'), 1)
+            self.assertIn('href="../../../index.html"', route)
+            self.assertNotIn('course-back', route)
+            self.assertNotIn('<nav class="course-return-dock"', shelf)
+
+    def test_public_portal_navigation_depth_and_runtime_routes(self):
+        """Root has no dock, project route has home, content pages get 2-link runtime paths."""
+        import tempfile
+        scripts = Path(__file__).resolve().parent
+        with tempfile.TemporaryDirectory() as temp:
+            ws = self._portal_multi(temp, [
+                ("pmp-certification", "Exam Prep", "capability",
+                 [("lessons/0001.html", "Lesson")]),
+            ])
+            out = Path(temp) / "portal"
+            result = subprocess.run(
+                [sys.executable, str(scripts / "build_portal.py"),
+                 "--workspace", str(ws), "--out", str(out),
+                 "--project", "pmp-certification"],
+                capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            root = (out / "index.html").read_text(encoding="utf-8")
+            route = (out / "pmp" / "index.html").read_text(encoding="utf-8")
+            lesson = (out / "pmp" / "0001.html").read_text(encoding="utf-8")
+            self.assertNotIn('course-return-dock', root)
+            self.assertEqual(route.count('class="course-return-dock"'), 1)
+            self.assertIn('class="course-home"', route)
+            self.assertNotIn('class="course-back"', route)
+            self.assertIn('data-portal-home="../index.html"', lesson)
+            self.assertIn('data-course-route="index.html"', lesson)
+
     def test_portal_project_catalog_buckets_and_counts(self):
         """Project catalog splits 课程 / 复习 / 资料 with accurate counts."""
         import tempfile

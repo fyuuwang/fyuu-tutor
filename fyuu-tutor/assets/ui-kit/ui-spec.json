@@ -432,6 +432,16 @@
         "language"
       ]
     },
+    "course-return-dock": {
+      "sections": [
+        "root"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
     "course-back": {
       "sections": [
         "root"
@@ -453,6 +463,16 @@
       ]
     },
     "course-home-label": {
+      "sections": [
+        "root"
+      ],
+      "pipelines": [
+        "capability",
+        "certification",
+        "language"
+      ]
+    },
+    "course-back-label": {
       "sections": [
         "root"
       ],

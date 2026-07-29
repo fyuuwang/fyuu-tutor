@@ -1,6 +1,6 @@
 # Fyuu Tutor
 
-[中文说明](README.zh-CN.md) · Current release: **v0.5.3 - Hardening Release**
+[中文说明](README.zh-CN.md) · Current release: **v0.5.4 - Global Learning Navigation**
 
 <p align="center">
   <img src="./assets/readme/hero.svg" width="100%" alt="Fyuu Tutor turns materials, question banks, or learning goals into an adaptive course that continues from the learner's response">
@@ -209,7 +209,7 @@ Other tutoring projects informed product research, but their code and prompts we
 
 ## Project status
 
-Fyuu Tutor is currently a `v0.5.3` public preview.
+Fyuu Tutor is currently a `v0.5.4` public preview.
 
 It has been used in three long-running learning projects, but it still needs testing with more learners, source types, and learning goals. Any breaking preview change will include migration notes.
 

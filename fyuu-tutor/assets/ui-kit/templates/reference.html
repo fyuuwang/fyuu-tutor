@@ -15,14 +15,6 @@
          Each simple #target must exist once as an id and match every section data-stage in that tab.
          Keep tab content within a 3x item ratio. Delete this nav and data-stage attrs for short pages. -->
     <nav class="section-index" aria-label="Section navigation">
-      <a class="course-home" href="../../../index.html" aria-label="返回学习门户">
-        <span aria-hidden="true">⌂</span>
-        <span class="course-home-label">学习门户</span>
-      </a>
-      <a class="course-back" href="../index.html" aria-label="返回课程目录">
-        <span aria-hidden="true">←</span>
-        <span class="course-back-label">课程路线</span>
-      </a>
       <div class="section-index-links">
         <a href="#domain-a" class="section-index-link">01 · [Domain A]</a>
         <a href="#domain-b" class="section-index-link">02 · [Domain B]</a>
@@ -100,6 +92,14 @@
     </section>
     <footer class="lesson-footer"><p>__NEXT_STEP__</p></footer>
   </main>
+  <nav class="course-return-dock" data-component="course-return-dock" aria-label="Global learning navigation">
+    <a class="course-home" href="../../../../index.html" aria-label="返回学习门户" title="学习门户">
+      <span aria-hidden="true">⌂</span><span class="course-home-label">学习门户</span>
+    </a>
+    <a class="course-back" href="../index.html" aria-label="返回课程路线" title="课程路线">
+      <span aria-hidden="true">←</span><span class="course-back-label">课程路线</span>
+    </a>
+  </nav>
   <script src="../assets/lesson.js"></script>
 </body>
 </html>
