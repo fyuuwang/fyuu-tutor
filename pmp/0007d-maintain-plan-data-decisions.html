@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PMP26 第 0007D 课：计划维护与数据决策。偏差调日期，变更走评估。">
+  <title>第 07D 课 · 计划维护与数据决策</title>
+  <link rel="stylesheet" href="assets/lesson.css">
+</head>
+<body data-portal-home="../index.html" data-course-route="index.html" data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="process">
+  <a class="skip-link" href="#lesson-content">跳到正文</a>
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
+  <main class="lesson-shell" id="lesson-content">
+    <nav class="course-nav" aria-label="课程导航">
+      <a class="course-back" href="index.html" aria-label="返回课程目录"><span aria-hidden="true">←</span><span class="course-back-label">课程目录</span></a>
+      <nav class="lesson-steps" aria-label="课程阶段">
+        <a href="#map" aria-current="step"><span class="step-number">01</span><span>看GPS</span></a>
+        <a href="#case"><span class="step-number">02</span><span>沿案例更新</span></a>
+        <a href="#practice"><span class="step-number">03</span><span>练一练</span></a>
+      </nav>
+    </nav>
+    <header class="lesson-header">
+      <p class="eyebrow">PMP26 · 第 07D 课 · 课程包 0007</p>
+      <h1>计划维护与数据决策：偏差调日期，变更走评估</h1>
+      <p class="lesson-deck">真实数据进来时计划怎么更新？GPS 遇到小堵车只调到达时间，遇到封路才重新规划全程。计划维护同理——偏差调日期，变更走评估。两者不能混。</p>
+      <dl class="lesson-meta">
+        <div><dt>预计时间</dt><dd>最小 10 分钟 / 完整 20 分钟</dd></div>
+        <div><dt>位置</dt><dd>PMP26 · 0007D · U01 范围与资源</dd></div>
+        <div><dt>完成后能做什么</dt><dd>区分偏差调整和变更评估，用数据决定应对方式</dd></div>
+      </dl>
+    </header>
+    <section class="map-section" id="map" data-stage="map" aria-labelledby="map-title">
+      <p class="eyebrow">看GPS</p>
+      <h2 id="map-title">GPS 重新规划：小偏差调时间，大变化才改路线</h2>
+      <p class="section-intro">你开车时导航遇到堵车，它会怎么做？小堵（多花10分钟）只调到达时间，不改路线。大变化（前方封路）才重新规划全程。计划维护也是这样——不是每次反馈都改方向。</p>
+      <div class="learning-map" data-component="learning-map" aria-label="计划维护地图">
+        <div class="map-hub"><strong>真实数据进来</strong><span>怎么更新计划</span></div>
+        <a class="map-node map-node--why" href="#scene-1"><strong>偏差</strong><span>调日期，不改结构</span></a>
+        <a class="map-node map-node--govern" href="#scene-2"><strong>变更</strong><span>先评估再决定</span></a>
+        <a class="map-node map-node--build" href="#scene-3"><strong>数据决策</strong><span>看数据判断类型</span></a>
+      </div>
+    </section>
+    <section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
+      <p class="eyebrow">沿案例更新</p>
+      <h2 id="case-title">客户服务平台：第三个月，两个变化同时来</h2>
+      <p class="section-intro">项目进行到第三个月。两个变化同时发生。张明没有把它们放在一起处理，而是分到两边——因为它们是两种完全不同的事。</p>
+      <article class="scene" id="scene-1" data-component="scene"><div class="scene-number">01</div><div class="scene-body">
+        <h3>偏差：调日期，不改结构</h3>
+        <p>第一个变化：核心系统数据迁移方案评审后发现遗留数据库比预期更复杂，开发估算从 3 个月涨到 4 个月。这是进度偏差——方向没变，只是花的时间比预期多。像 GPS 遇到堵车：路还是对的，只是慢了。应对方式是调整里程碑日期，把前端 Sprint 5（看板）提前来填补等待。</p>
+        <p class="takeaway" data-component="takeaway">记忆钩子：偏差 = 方向没变只是慢了。调里程碑日期，不改计划结构。像堵车只调到达时间。</p>
+      </div></article>
+      <article class="scene" id="scene-2" data-component="scene"><div class="scene-number">02</div><div class="scene-body">
+        <h3>变更：先评估再决定</h3>
+        <p>第二个变化：前端 Sprint 2 结束时客户调研显示，客户最想要的功能不是历史详情，而是实时工单状态推送。这不是进度偏差——是需求方向的变化。像 GPS 遇到封路：原来的路走不通了，要重新评估走哪条路。</p>
+        <p>应对方式不是直接改，而是先评估：实时推送需要多少工作量？对当前 Sprint 的影响？如果加进来，是否影响接口交付顺序？评估完再决定改不改。变更必须走完整的影响分析，不能凭感觉直接加。</p>
+        <dl class="boundary-list" data-component="boundary-list">
+          <div class="boundary-row"><dt>偏差调整</dt><dd>方向没变，时间多了/少了。调里程碑日期，不改计划结构。走快速路径。</dd></div>
+          <div class="boundary-row"><dt>变更评估</dt><dd>需求或方向变了。先分析影响，再决定改不改。走完整评估流程。</dd></div>
+        </dl>
+        <p class="takeaway" data-component="takeaway">记忆钩子：变更 = 原来的路走不通了。先评估影响再决定，不能直接改。混在一起会让计划既不准又不可预测。</p>
+      </div></article>
+      <article class="scene" id="scene-3" data-component="scene"><div class="scene-number">03</div><div class="scene-body">
+        <h3>数据决策：用数据判断是偏差还是变更</h3>
+        <p>怎么判断一个反馈是偏差还是变更？看数据。ECO 要求收集并分析数据来做决策（E09）。交付时间是否在上升——是稳定上升（可能需要重新评估方法）还是偶发波动（偏差）？等待资源的任务积压量是否在增长？关键路径上的任务是否真的偏了？</p>
+        <p>张明把两条更新路径写进整合计划的状态日志：偏差调整记录为受控偏移，变更评估记录为待评估变更。下一次计划更新时，同步更新依赖检查和持续价值假设（那是 0007C 的内容）。</p>
+        <details class="quick-check" data-component="quick-check">
+          <summary>想一想：如果客户调研显示"想要实时推送"，你直接加到 Sprint 3 不评估，会怎样？</summary>
+          <p>你可能忽略了它对接口交付的影响——实时推送可能需要核心系统改接口，影响其他 Sprint。不评估直接改就是随意变更，让计划不可预测。</p>
+        </details>
+        <p class="takeaway" data-component="takeaway">记忆钩子：偏差用数据确认"只是慢了"，变更用数据确认"方向要改"。搞错类型，应对方式就错。</p>
+      </div></article>
+    </section>
+    <section class="audit-section" data-stage="case" data-component="audit-section" aria-labelledby="audit-title">
+      <p class="eyebrow">范围与来源</p><h2 id="audit-title">本课覆盖</h2>
+      <div class="audit-grid">
+        <details class="audit-card"><summary>覆盖边界</summary><div class="audit-content">
+          <table class="coverage-table" data-component="coverage-table">
+            <thead><tr><th>Enabler</th><th>含义</th><th>本课承载</th></tr></thead>
+            <tbody>
+              <tr><td>PRC-T01-E08</td><td>维护整合项目管理计划</td><td>偏差调整 vs 变更评估，受控维护</td></tr>
+              <tr><td>PRC-T01-E09</td><td>收集分析数据做明智决策</td><td>用数据判断反馈类型，不靠直觉</td></tr>
+            </tbody>
+          </table>
+          <p><strong>不在本课</strong>：计划创建（0007A）、估算（0007B）、依赖检查（0007C）、资源（0007E）。</p>
+        </div></details>
+        <details class="audit-card"><summary>本地来源</summary><div class="audit-content"><ul><li><code>sources/official/eco-exam-outline-2026.md</code> Task 1 E08/E09。</li><li><code>sources/official/pmbok7.md</code> 测量绩效域。</li></ul></div></details>
+      </div>
+    </section>
+    <section class="quiz-section" id="practice" data-stage="practice" aria-labelledby="practice-title" data-question-label="练习题">
+      <p class="eyebrow">练一练</p><h2 id="practice-title">先想清楚，再核对答案</h2>
+      <p class="section-intro">四道题检查你对偏差 vs 变更和数据决策的理解。均为 course_provided。</p>
+      <div class="quiz-toolbar"><span id="scoreText">已答 0 / 4 · 正确 0</span><button class="reset-button" id="resetQuiz" type="button">重做</button></div>
+      <div id="quiz"></div>
+    </section>
+    <footer class="lesson-footer"><p>下一步：进入 0007E《资源需求与可用性》——缺口出现时先加人还是先看数据？</p><nav class="course-pagination" aria-label="课程前后导航"><a href="0007c-check-dependencies-gaps-value.html">← 上一节</a><a href="0007e-resource-needs-and-availability.html">继续下一节 →</a></nav></footer>
+  </main>
+  <script id="lesson-questions" type="application/json">
+[
+  {
+    "id": "LESSON-0007d-maintain-plan-data-decisions-Q001",
+    "type": "single_choice",
+    "stem": "核心系统数据迁移比预期多花1个月。业务问要不要改计划。这属于偏差还是变更？最合适的应对是什么？",
+    "options": [
+      "变更——立刻重新评估整个计划。",
+      "偏差——方向没变只是时间多了。调里程碑日期，把前端Sprint5提前填补等待。走快速路径。",
+      "不需要处理——等迁移完再看。",
+      "应该放弃预测型改用敏捷。"
+    ],
+    "answer": 1,
+    "rationale": "数据迁移复杂度导致多花1个月是进度偏差——方向（交付审计功能）没变，只是时间多了。应对是调里程碑日期、调整其他Sprint顺序填补等待。不需要重新评估整个计划结构。"
+  },
+  {
+    "id": "LESSON-0007d-maintain-plan-data-decisions-Q002",
+    "type": "single_choice",
+    "stem": "客户调研显示最想要的功能是实时推送而非历史详情。项目经理直接把它加到Sprint3不评估。主要问题是什么？",
+    "options": [
+      "没有问题，敏捷就是随时响应客户。",
+      "没有先评估影响——实时推送可能需要核心系统改接口，影响其他Sprint的交付顺序。直接加是随意变更。",
+      "应该等到项目结束再说。",
+      "应该拒绝所有客户反馈。"
+    ],
+    "answer": 1,
+    "rationale": "这是需求方向的变化（变更），不是进度偏差。变更必须先评估影响再决定改不改。直接加不评估就是随意变更——可能破坏接口交付顺序，让计划不可预测。敏捷不等于不评估就接受所有需求。"
+  },
+  {
+    "id": "LESSON-0007d-maintain-plan-data-decisions-Q003",
+    "type": "single_choice",
+    "stem": "偏差调整和变更评估的核心区别是什么？",
+    "options": [
+      "偏差调整比变更评估更复杂。",
+      "偏差调整只改里程碑日期（走快速路径）；变更评估要先分析影响再决定改不改（走完整流程）。",
+      "两者是一回事。",
+      "变更评估不需要数据。"
+    ],
+    "answer": 1,
+    "rationale": "偏差是方向不变时间变了——调日期即可。变更是方向变了——要先评估影响、分析工作量和对其他部分的影响，再决定改不改。混用会让计划既不准又不可预测。"
+  },
+  {
+    "id": "LESSON-0007d-maintain-plan-data-decisions-Q004",
+    "type": "single_choice",
+    "stem": "回收0007C：计划更新后，为什么还要同步更新依赖检查和持续价值假设？",
+    "options": [
+      "因为文档要求。",
+      "因为偏差和变更都可能改变依赖条件和价值假设——数据迁移慢了可能影响接口依赖，需求变了可能影响价值假设。不更新就等于用过时的检查管新的现实。",
+      "不需要更新——依赖和价值是开工时定的。",
+      "只有变更才需要更新依赖。"
+    ],
+    "answer": 1,
+    "rationale": "0007C的持续检查要求每个里程碑前复查。偏差和变更都改变了现实——数据迁移延期改变了接口依赖的时间窗，需求变化改变了价值假设。不更新依赖和价值检查就等于让0007C的检查失效。"
+  }
+]
+  </script>
+  <script src="assets/lesson.js"></script>
+</body>
+</html>

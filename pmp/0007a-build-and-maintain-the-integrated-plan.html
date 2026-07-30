@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PMP26 第 0007A 课：建立并维护整合计划。把已选方法落实为整合计划，用估算、依赖检查和受控迭代维护计划">
-  <title>第 07A 课 · 建立并维护整合计划</title>
+  <meta name="description" content="PMP26 第 0007A 课：把两套节奏放到一张时间轴上。整合计划不是贴计划，是标交汇点。">
+  <title>第 07A 课 · 把两套节奏放到一张时间轴上</title>
   <link rel="stylesheet" href="assets/lesson.css">
 </head>
 <body data-portal-home="../index.html" data-course-route="index.html" data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="process">
@@ -14,220 +14,139 @@
     <nav class="course-nav" aria-label="课程导航">
       <a class="course-back" href="index.html" aria-label="返回课程目录"><span aria-hidden="true">←</span><span class="course-back-label">课程目录</span></a>
       <nav class="lesson-steps" aria-label="课程阶段">
-        <a href="#map" aria-current="step"><span class="step-number">01</span><span>看计划地图</span></a>
-        <a href="#case"><span class="step-number">02</span><span>沿案例编排</span></a>
-        <a href="#practice"><span class="step-number">03</span><span>巩固与迁移</span></a>
+        <a href="#map" aria-current="step"><span class="step-number">01</span><span>看时刻表</span></a>
+        <a href="#case"><span class="step-number">02</span><span>沿案例对齐</span></a>
+        <a href="#practice"><span class="step-number">03</span><span>练一练</span></a>
       </nav>
     </nav>
     <header class="lesson-header">
-      <p class="eyebrow">PMP26 · 第 07A 课 · 课程包 0007 整合计划与资源</p>
-      <h1>建立并维护整合计划：两份节奏，一张蓝图</h1>
-      <p class="lesson-deck">0006 选了方法——核心系统用预测型阶段交付，前端体验用敏捷 Sprint。现在不是各做各的计划，而是把两者的里程碑、依赖、估算和反馈数据整合成一份计划，让它持续演进而非立项时冻结。</p>
+      <p class="eyebrow">PMP26 · 第 07A 课 · 课程包 0007</p>
+      <h1>把两套节奏放到一张时间轴上</h1>
+      <p class="lesson-deck">上一课你给核心系统选了预测型、前端选了敏捷。现在业务问"先做什么"。答案不是"先做完核心再做前端"——而是一张整合计划把两条线的交汇点标出来。本课只讲一件事：整合计划怎么把不同节奏对齐。</p>
       <dl class="lesson-meta">
-        <div><dt>预计时间</dt><dd>最小 15 分钟 / 完整 25 分钟</dd></div>
-        <div><dt>位置</dt><dd>PMP26 · 0007A · U01 项目启动 · process 主题</dd></div>
-        <div><dt>完成后能做什么</dt><dd>把已选方法落实为整合计划，估算工作量并理解估算不是承诺，检查依赖/缺口/持续价值，根据反馈受控维护计划</dd></div>
+        <div><dt>预计时间</dt><dd>最小 10 分钟 / 完整 20 分钟</dd></div>
+        <div><dt>位置</dt><dd>PMP26 · 0007A · U01 范围与资源</dd></div>
+        <div><dt>完成后能做什么</dt><dd>说出整合计划和"贴两份计划"的区别，识别两条线的交汇点</dd></div>
       </dl>
     </header>
     <section class="map-section" id="map" data-stage="map" aria-labelledby="map-title">
-      <p class="eyebrow">看计划地图</p>
-      <h2 id="map-title">方法已定：把两套节奏织进一张计划</h2>
-      <p class="section-intro">预测型用阶段里程碑定义关键交付点，敏捷用 Sprint 节奏产生可工作的增量。0006 选完方法后，下一步是整合这两套节奏——把核心系统的阶段交付和前端 Sprint 组织成一份统一的计划，同时依赖检查、估算和持续价值复查都在同一张蓝图上。</p>
-      <div class="learning-map" data-component="learning-map" aria-label="建立并维护整合计划">
-        <div class="map-hub"><strong>方法已定</strong><span>核心系统·预测型 前端体验·敏捷</span></div>
-        <a class="map-node map-node--why" href="#scene-1"><strong>创建整合计划</strong><span>把两套节奏组织成一份计划</span></a>
-        <a class="map-node map-node--build" href="#scene-2"><strong>估算工作量</strong><span>估算不是承诺，是决策输入</span></a>
-        <a class="map-node map-node--govern" href="#scene-3"><strong>检查依赖/缺口/价值</strong><span>审计数据何时可用？端到端流程何时通？</span></a>
-        <a class="map-node map-node--owner" href="#scene-4"><strong>受控维护</strong><span>用真实反馈数据更新，不靠立项时冻结</span></a>
+      <p class="eyebrow">看时刻表</p>
+      <h2 id="map-title">两张火车时刻表，交汇站要对齐</h2>
+      <p class="section-intro">想象一条慢车线和一条快车线。慢车（预测型）站少但每站停很久——需求冻结、设计、开发、测试、上线。快车（敏捷）站多但每站停得短——Splash、Sprint1、Sprint2……整合计划就是找到两条线交汇的车站：在那些站，慢车的乘客可以换到快车。</p>
+      <div class="learning-map" data-component="learning-map" aria-label="两套节奏对齐地图">
+        <div class="map-hub"><strong>方法已选好</strong><span>核心预测 + 前端敏捷</span></div>
+        <a class="map-node map-node--why" href="#scene-1"><strong>两条线</strong><span>各自的时间线</span></a>
+        <a class="map-node map-node--govern" href="#scene-2"><strong>交汇站</strong><span>在哪里对齐</span></a>
+        <a class="map-node map-node--build" href="#scene-3"><strong>不是串行</strong><span>交叠跑</span></a>
       </div>
     </section>
     <section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
-      <p class="eyebrow">沿案例编排</p>
-      <h2 id="case-title">客户服务平台：两份节奏，一张蓝图</h2>
-      <p class="section-intro">0006 决定了核心系统用预测型阶段交付（需求冻结→设计→开发→测试→上线），前端体验用敏捷 Sprint（每两周一个可运行的增量）。业务负责人问了一个好问题："那我们现在到底先做什么？"答案不是"先做核心再做前端"，而是一份整合计划把两者的交叉依赖算进去。</p>
+      <p class="eyebrow">沿案例对齐</p>
+      <h2 id="case-title">客户服务平台：先做完核心再做前端？不行</h2>
+      <p class="section-intro">张明站在白板前。左边画了核心系统的阶段，右边画了前端的 Sprint。业务负责人说"那就先做完核心再开始前端"。</p>
       <article class="scene" id="scene-1" data-component="scene"><div class="scene-number">01</div><div class="scene-body">
-        <h3>整合计划：把两套不同节奏放到同一张时间轴上</h3>
-        <p>项目经理张明站在白板前，左边是预测型阶段：核心系统的需求冻结 → 设计评审 → 开发 → 集成测试 → 用户验收测试 → 上线。右边是敏捷 Sprint：前端 Splash（建立框架和 CI/CD）→ Sprint 1·工单列表 → Sprint 2·工单详情和历史 → Sprint 3·客户画像 → Sprint 4·满意度趋势 → Sprint 5·数据看板 MVP。</p>
-        <p>业务负责人说："那就按顺序来，先做完核心系统再开始前端。"张明摇了摇头。"核心系统第三阶段——集成测试——需要前端的工单列表和详情页来配合验收。如果等核心全部做完再启动前端，集成测试要等三个月才能开始。"</p>
-        <p>他画了一条时间线：核心系统的第一阶段（需求 + 设计）和前端 Splash 可以并行跑。核心开发阶段后期，前端 Sprint 1–2 刚好产出工单列表——这正是集成测试需要的。两张计划不是串行的，是交叠的。</p>
-        <p><strong>整合计划不是把两份计划贴在一起，而是把依赖点标出来，让两个团队在正确的时间点上对齐。</strong>核心系统的集成测试入口依赖前端的工单列表 Sprint 2 交付物；前端 Sprint 4 的满意度趋势依赖核心系统的客户数据库接口。这两条依赖写进整合计划的里程碑检查点。</p>
-<aside class="boundary-list" data-component="boundary-list">
-    <h4>边界对照：整合计划 vs 单独的功能计划/模块计划</h4>
-    <p>PMI 视角下，整合计划不是把各团队的计划贴在一起，而是识别依赖点、做跨计划的取舍决策。一份整合计划和多份独立计划有三个根本区别：</p>
-    <ul>
-        <li><strong>依赖管理方式不同</strong>：多份独立计划各自管各自的里程碑，一个团队的延期对另一个团队的影响要到集成时才发现。整合计划在依赖点上设检查闸门——例如核心系统集成测试需要通过前端 Sprint 2 的交付物。</li>
-        <li><strong>冲突时的裁决权不同</strong>：独立计划无法回答"两个团队都需要同一个测试环境，谁先用"。整合计划有明确的资源冲突裁决规则。</li>
-        <li><strong>信息频率不同</strong>：独立计划各自汇报进度，业务负责人要拼图才能看全景。整合计划用统一的里程碑和检查点让所有人对"当前状态"达成一致。</li>
-    </ul>
-    <p>这不是说不能有详细的功能计划。整合计划是顶层坐标，详细计划是底层拆解——但依赖和冲突只能在一份计划里发现和解决。</p>
-</aside>
-        <p class="takeaway" data-component="takeaway">记忆钩子：整合计划不是贴计划，是标依赖。两套节奏不是串行做，是在接口点对齐。</p>
+        <h3>两条线各自的时间线</h3>
+        <p>左边这条线（核心系统）走的是预测型：需求冻结 -> 设计评审 -> 开发 -> 集成测试 -> 用户验收 -> 上线。每一步走完才进下一步，像慢车一样每个站停很久。</p>
+        <p>右边这条线（前端体验）走的是敏捷：Splash（搭框架）-> Sprint 1 工单列表 -> Sprint 2 工单详情 -> Sprint 3 客户画像 -> Sprint 4 满意度 -> Sprint 5 看板。每两周一个站，站多但停得短。</p>
+        <p class="takeaway" data-component="takeaway">记忆钩子：两条线一条慢一条快，节奏完全不同。不能要求它们同时到站。</p>
       </div></article>
       <article class="scene" id="scene-2" data-component="scene"><div class="scene-number">02</div><div class="scene-body">
-        <h3>估算工作量：数字不是承诺，是决策输入</h3>
-        <p>业务负责人说："那给我们一个时间表吧——第一版什么时候能上线？"核心团队说核心系统大概需要 6 个月，前端团队说 MVP 大约 4 个月。"那加起来 10 个月？"业务负责人皱眉。</p>
-        <p>张明解释："不是加法。核心系统和前端是并行跑不是串行跑，但集成测试需要前端的交付物才能开始。我们分三段估算——第一段：需求+设计+前端 Splash（2 个月）；第二段：核心开发+前端 Sprint 1–3（并行，3 个月）；第三段：集成测试+用户验收（1 个月）。合理场景下第一版大约 6 个月。"</p>
-        <p><strong>估算的目的是暴露不确定性区域，不是给一个精确到周的承诺。</strong>张明在旁边标注了置信区间：核心系统开发估算 3–5 个月，取决于遗留数据迁移的复杂度；前端 Sprint 1–3 相对确定（2.5–3.5 个月）。"我们先用合理值排计划，同时标记高不确定的估算锚点——数据迁移方案评审后我们就能把估算缩窄。"</p>
-        <p>业务负责人明白了："所以这 6 个月不是最终答案，而是一个决策数字——如果合规要求第二年 Q1 必须上线可追溯功能，我们现在知道时间够不够。"</p>
-<aside class="boundary-list" data-component="boundary-list">
-    <h4>边界对照：估算工作量 vs 承诺截止日期</h4>
-    <p>估算和承诺是两个不同的管理动作，混用是项目计划不准确的常见原因。</p>
-    <ul>
-        <li><strong>估算（Estimate）</strong>：基于当前已知信息对工作量的预测，天然带有置信区间和新信息后可缩窄的不确定性。估算的用途是决策——判断时间够不够、预算够不够、方法合不合理。</li>
-        <li><strong>承诺（Commitment）</strong>：在估算基础上考虑风险储备、资源可用性和组织约束后，告诉相关方"什么时候能交付什么"。承诺需要预留缓冲，也意味着如果缓冲不够要用变更流程处理。</li>
-        <li><strong>混用的后果</strong>：相关方听到"6 个月"就当作截止日期；团队有不确定性也不愿意说，怕被看作"估计不准"。正确的做法是给出合理估算 + 不确定性标记（如 3-5 个月），再讨论缓冲策略。</li>
-    </ul>
-</aside>
-        <p class="takeaway" data-component="takeaway">记忆钩子：估算暴露不确定性，承诺预留缓冲。把"6个月"当死线会让团队隐瞒不确定性。</p>
+        <h3>交汇站：在哪里对齐</h3>
+        <p>张明摇头："核心的集成测试需要前端的工单列表。如果等核心全做完再启动前端，集成测试要等三个月才能开始。"</p>
+        <p>他画了两个交汇点：第一个——核心系统进入开发后期时，前端 Sprint 2 刚好产出工单列表，集成测试可以马上用。第二个——核心系统的客户数据库接口交付后，前端 Sprint 4 的满意度趋势才能开始。这两个点就是两条线的交汇站。</p>
+        <dl class="boundary-list" data-component="boundary-list">
+          <div class="boundary-row"><dt>整合计划</dt><dd>标出交汇点和依赖，让两个团队在正确的时间对齐。</dd></div>
+          <div class="boundary-row"><dt>贴两份计划</dt><dd>各做各的时间表，拼在一起——交汇点要到集成时才发现。</dd></div>
+        </dl>
+        <p class="takeaway" data-component="takeaway">记忆钩子：整合计划不是贴计划，是标交汇站。交汇站是"一条线的产出正好是另一条线的输入"的时点。</p>
       </div></article>
       <article class="scene" id="scene-3" data-component="scene"><div class="scene-number">03</div><div class="scene-body">
-        <h3>检查依赖、缺口和持续价值：审计数据什么时候才能给前端用？</h3>
-        <p>合规负责人（来自 0003 的高影响间接相关方）在规划会上问了一个关键问题："审计数据模块什么时候开发完？前端 Sprint 4 的满意度趋势需要客户数据接口。"</p>
-        <p>张明翻了整合计划：核心系统的客户数据库接口在第三阶段（开发中后期）交付。"前端 Sprint 3 结束时依赖这个接口才能开始 Sprint 4 的满意度趋势开发。如果接口晚了，前端团队就要切换任务。"</p>
-        <p>第二层检查：端到端流程什么时候第一次打通？"工单从门店→系统记录→客服处理→后端审计归档→前端展示给客户——这条完整链路，需要核心系统的集成测试（客户数据入库）+ 前端 Sprint 3（历史详情展示）同时完成。最早能看到端到端流程是第 5 个月中。"</p>
-        <p>他走到白板一侧，写了第三个检查点："按 0001 的价值链复查——第一期上线的功能真的创造价值了吗？"工单列表上线后客户可以查进度了（早期价值），但完整的"投诉率下降"需要端到端流程通畅 + 满意度可测量（第 5 个月后才可衡量）。<strong>持续价值检查不是一次性的，每完成一个里程碑都应该问：按现在的方向，价值的假设还成立吗？</strong></p>
-<aside class="boundary-list" data-component="boundary-list">
-    <h4>边界对照：持续依赖检查 vs 开工时做一次风险分析</h4>
-    <p>很多项目只在启动时做一次依赖分析和价值确认，然后按计划推进。但在 PMI 视角下，依赖和价值的假设会随外部信息变化而变化。</p>
-    <ul>
-        <li><strong>单次检查的问题</strong>：开工时分析了"审计数据接口有依赖风险"，但三个月后依赖风险已经变了——也许接口早交付了，也许另一个团队的需求变了，也许合规要求升级了。用一个原始的依赖分析管全程等于没管。</li>
-        <li><strong>持续检查的节奏</strong>：依赖检查应该绑定到整合计划的里程碑检查点——不是每两周全量复查，而是每个关键交付前都确认"依赖条件是否仍然成立"。缺口同理：端到端流程不通是因为接口没做好，还是因为需求变了？</li>
-        <li><strong>持续价值复查的区别</strong>：价值假设是项目开始时的最佳推测。市场、客户偏好、竞争环境在项目周期内会变。持续价值复查不是重复"那个价值假设对不对"，而是主动问"在现实反馈面前，它还对不对"。</li>
-    </ul>
-</aside>
-        <p class="takeaway" data-component="takeaway">记忆钩子：依赖缺口检查不是一次开工的事——审计接口三个月后可能已经就绪，也可能另一个需求让它变更重要。</p>
+        <h3>不是串行：交叠跑</h3>
+        <p>张明把两条线画成交叠的：核心系统的第一阶段（需求+设计）和前端 Splash 可以同时跑。核心开发后期，前端 Sprint 1-2 刚好出工单列表。这就是整合计划的价值——它不是让一条线等另一条线，而是让两条线在交汇站碰头。</p>
+        <details class="quick-check" data-component="quick-check">
+          <summary>想一想：如果两条线完全串行（先核心后前端），代价是什么？</summary>
+          <p>集成测试要等三个月才能开始——因为集成测试需要前端的工单列表，而前端还没开始做。串行意味着最关键的验证（端到端能不能通）被推迟到最后。</p>
+        </details>
+        <p class="takeaway" data-component="takeaway">记忆钩子：交叠跑不是同时开工所有事，而是在交汇站对齐。两张时刻表并行，但在关键站碰头。</p>
       </div></article>
-      <article class="scene" id="scene-4" data-component="scene"><div class="scene-number">04</div><div class="scene-body">
-        <h3>受控维护：真实数据进来时，计划怎么更新</h3>
-        <p>项目进行到第三个月。两个变化同时发生：第一，核心系统数据迁移方案评审后发现遗留数据库比预期更复杂，开发估算从 3 个月涨到 4 个月。第二，前端 Sprint 2 结束时客户调研显示，客户最想要的功能不是历史详情，而是实时工单状态推送。</p>
-        <p>业务负责人急了："那我们根据这些反馈改计划吗？"张明没有直接回答，而是把两份反馈分开放到白板两边。</p>
-        <p>左边——进度偏差（核心系统数据迁移比预期多花 1 个月）：这是可预见的偏差，不需要改变计划结构，只需要调整里程碑日期并让前端团队把 Sprint 5（数据看板 MVP）提前——因为前端会有一个 Sprint 的空闲等待接口。</p>
-        <p>右边——需求优先级的真实反馈（实时推送 > 历史详情）：这需要走变更评估——新的实时推送需要多少工作量？对当前 Sprint 的影响？如果加进 Sprint 3，是否影响接口的交付顺序？需要核心系统团队配合调整客户数据库接口的范围？</p>
-        <p>业务负责人问："那不是说计划就定不下来了？"张明说："<strong>计划不是定下来的，是管理出来的。</strong>进度偏差按受控方式调整里程碑；需求变更先评估再决策。这样计划在变化中仍可预测。"</p>
-        <p>他把两条更新路径写进整合计划的状态日志：偏差调整（受控偏移）和变更评估（先分析影响再决定改不改）。下一次计划更新时，同步更新依赖检查和持续价值假设。</p>
-<aside class="boundary-list" data-component="boundary-list">
-    <h4>边界对照：受控计划维护 vs 计划冻结 vs 随意变更</h4>
-    <p>计划维护的 PMI 方式是介于两个极端之间的受控更新——既不是立项后不准改，也不是每次反馈都改。</p>
-    <ul>
-        <li><strong>计划冻结（Freeze）</strong>：立项时确定的基线，变更要走变更流程。它的假设是外部环境不变化、或变化幅度不大。在稳定的预测型项目中合适，但在敏捷/混合项目中工作负载会压裂基线。</li>
-        <li><strong>随意变更（Uncontrolled change）</strong>：每次反馈都改计划——"客户想要实时推送？好，加到 Sprint 3。"这种模式的问题是无法预测交付时间，每改一次就重新出时间表。</li>
-        <li><strong>受控维护</strong>：区分偏差调整（里程碑偏移、估算精确化）和范围/需求变更（新增功能、修改已有需求）。偏差调整可以走快速路径更新里程碑日期；变更必须走完整的变更评估：影响分析→决策→更新基线→通知相关方。</li>
-    </ul>
-</aside>
-        <p class="takeaway" data-component="takeaway">记忆钩子：偏差调整更新日期，需求变更先评估再决策。混在一起就会让计划既不准又不可预测。</p>
-      </div></article>
-      <aside class="takeaway" data-component="takeaway">
-        <h3>判断要点</h3>
-        <ol>
-          <li>方法选完后，先把两套节奏的依赖点标出来再做拆解计划——依赖决定顺序，不是方法论决定顺序。</li>
-          <li>估算暴露不确定性，不发布精确承诺。置信区间和后续评审比单一数字有用。</li>
-          <li>依赖缺口和持续价值不是一次开工检查——里程碑达成时都要复查"价值假设还成立吗"。</li>
-          <li>计划维护是受控调整，不是随意变。进度偏差和需求变更走不同的更新路径。</li>
-        </ol>
-      </aside>
     </section>
-    <section class="audit-section" id="audit" data-stage="case" data-component="audit-section" aria-labelledby="audit-title">
-      <p class="eyebrow">来源与覆盖核查</p>
-      <h2 id="audit-title">0007A 本课覆盖</h2>
-      <div class="coverage-table" data-component="coverage-table">
-        <table>
-          <caption>0007A 整合计划：ECO 覆盖与正式来源</caption>
-          <thead>
-            <tr><th>ECO Enabler</th><th>场景节点</th><th>正式来源</th><th>边界</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>PRC-T01-E05</strong><br>创建整合项目管理计划</td>
-              <td>Scene 01<br>把预测型阶段和敏捷 Sprint 组织成整合计划</td>
-              <td>ECO 2026 Task 1 Enabler 5；PMBOK 7 规划绩效域 §整合计划</td>
-              <td>整合计划 vs 多份独立计划；本章不做范围/进度/成本的详细拆解</td>
-            </tr>
-            <tr>
-              <td><strong>PRC-T01-E06</strong><br>估算工作量和资源需求</td>
-              <td>Scene 02<br>分三段估算核心+前端的工作量，标注置信区间</td>
-              <td>ECO 2026 Task 1 Enabler 6；PMBOK 7 规划绩效域 §估算</td>
-              <td>估算 vs 承诺；本章不做详细资源管理（见 0007B）</td>
-            </tr>
-            <tr>
-              <td><strong>PRC-T01-E07</strong><br>评估计划中的依赖、缺口和持续价值</td>
-              <td>Scene 03<br>审计数据接口依赖、端到端流程缺口、价值链复查</td>
-              <td>ECO 2026 Task 1 Enabler 7；PMBOK 7 规划绩效域 §依赖与价值</td>
-              <td>依赖检查 vs 单次开工会议；本章不做风险管理（见 U05）</td>
-            </tr>
-            <tr>
-              <td><strong>PRC-T01-E08</strong><br>维护整合项目管理计划</td>
-              <td>Scene 04<br>偏差调整 vs 变更评估，两种更新路径</td>
-              <td>ECO 2026 Task 1 Enabler 8；PMBOK 7 项目工作绩效域 §计划维护</td>
-              <td>受控维护 vs 计划冻结/随意变</td>
-            </tr>
-          </tbody>
-        </table>
+    <section class="audit-section" data-stage="case" data-component="audit-section" aria-labelledby="audit-title">
+      <p class="eyebrow">范围与来源</p><h2 id="audit-title">本课覆盖</h2>
+      <div class="audit-grid">
+        <details class="audit-card"><summary>覆盖边界</summary><div class="audit-content">
+          <table class="coverage-table" data-component="coverage-table">
+            <thead><tr><th>Enabler</th><th>含义</th><th>本课承载</th></tr></thead>
+            <tbody><tr><td>PRC-T01-E05</td><td>创建整合项目管理计划</td><td>把两套节奏放到一张时间轴上，标交汇点</td></tr></tbody>
+          </table>
+          <p><strong>不在本课</strong>：估算（0007B）、依赖检查（0007C）、维护（0007D）、资源（0007E）。</p>
+        </div></details>
+        <details class="audit-card"><summary>本地来源</summary><div class="audit-content"><ul><li><code>sources/official/eco-exam-outline-2026.md</code> Task 1 E05。</li><li><code>sources/official/pmbok7.md</code> 规划绩效域。</li></ul></div></details>
       </div>
-      <p><strong>边界声明：</strong>本课只覆盖整合计划的创建、估算、检查依赖缺口和维护。详细的资源管理（资源日历、可用性缺口、产品/项目/工具权衡）在 0007B。风险管理（风险登记册、风险应对、机会和威胁）在 U05 阶段。</p>
     </section>
     <section class="quiz-section" id="practice" data-stage="practice" aria-labelledby="practice-title" data-question-label="练习题">
-      <p class="eyebrow">巩固与迁移</p>
-      <h2 id="practice-title">情境判断：现在怎么做计划</h2>
-      <p class="section-intro">0007A 把整合计划拆成四个判断——创建计划、估算、检查依赖缺口、受控维护。每道题都是一个你会在实际项目中遇到的真实选择。</p>
+      <p class="eyebrow">练一练</p><h2 id="practice-title">先想清楚，再核对答案</h2>
+      <p class="section-intro">三道题检查你对整合计划的理解。均为 course_provided。</p>
       <div class="quiz-toolbar"><span id="scoreText">已答 0 / 4 · 正确 0</span><button class="reset-button" id="resetQuiz" type="button">重做</button></div>
       <div id="quiz"></div>
     </section>
+    <footer class="lesson-footer"><p>下一步：进入 0007B《估算工作量》——计划排好后，怎么给业务一个有用的数字。</p><nav class="course-pagination" aria-label="课程前后导航"><a href="0006-method-and-lifecycle-selection.html">← 上一节</a><a href="0007b-estimating-effort.html">继续下一节 →</a></nav></footer>
   </main>
   <script id="lesson-questions" type="application/json">
 [
   {
-    "id": "LESSON-0007A-Q001",
+    "id": "LESSON-0007a-build-and-maintain-the-integrated-plan-Q001",
     "type": "single_choice",
-    "stem": "项目经理正在创建整合计划。团队中有两个小组：一个做后端 API（预测型，6 个月），一个做前端界面（敏捷，3 个月双周 Sprint）。业务负责人要求\"按时一起上线\"。项目经理应该怎么做？",
+    "stem": "业务负责人说先做完核心系统再开始前端体验。从整合计划的角度，这个方案的主要问题是什么？",
     "options": [
-      "先做后端计划，前端按后端里程碑来对齐 Sprint 时间。",
-      "把两个计划贴在一起，标注它们的开始和结束日期即可。",
-      "按依赖点确定并行和串行的边界，创建一份整合计划同时包含两套节奏。",
-      "分别管理两套计划，最后集成阶段再统一协调。"
-    ],
-    "answer": 2,
-    "rationale": "整合计划不是把两份计划贴在一起（选项 B），也不是先做完一个再做另一个（选项 A）。关键是把两套节奏的依赖点标出来——哪些可以并行、哪些必须串行、依赖关系是什么——然后创建一份整合计划同时协调两者。分头管理（选项 D）到集成阶段才发现依赖冲突，是最常见的时间延误来源。"
-  },
-  {
-    "id": "LESSON-0007A-Q002",
-    "type": "single_choice",
-    "stem": "估算时核心团队说后端 API 开发需要 3-5 个月，前端团队说 Sprint 1-3 大约 2.5-3.5 个月。业务负责人说：\"那就写 6 个月，年底上线。\"项目经理应该怎么做？",
-    "options": [
-      "同意 6 个月，把团队的估算加总作为承诺交付日期。",
-      "保留原始估算（3-5 个月和 2.5-3.5 个月），向负责人解释估算不是承诺，不确定性需要标注和后续缩窄。",
-      "用后端上限 5 + 前端上限 3.5 = 8.5 个月作为承诺。",
-      "告诉负责人无法承诺任何日期，项目结束后才知道。"
+      "没有问题，串行最简单。",
+      "核心系统的集成测试需要前端的工单列表，等核心全做完才开始前端，集成测试要等三个月。",
+      "应该先做前端再做核心。",
+      "应该全部用敏捷方法避免这个问题。"
     ],
     "answer": 1,
-    "rationale": "估算的目的是暴露不确定性，不是提供精确承诺（选项 A 和 C 都犯了混用估算和承诺的错误）。正确做法是保留原始估算及其置信区间，向相关方说明估算的含义——它是决策输入，不是交付保证，后续评审可以缩窄不确定性。完全不承诺（选项 D）也不对——估算依然可以给出合理期望范围。"
+    "rationale": "整合计划的价值是标出交汇点。核心系统集成测试依赖前端 Sprint 2 的工单列表——这是交汇站。串行会让最关键的端到端验证推迟到最后才暴露问题。"
   },
   {
-    "id": "LESSON-0007A-Q003",
+    "id": "LESSON-0007a-build-and-maintain-the-integrated-plan-Q002",
     "type": "single_choice",
-    "stem": "项目进行了两个月。后端 API 按计划推进，前端团队已完成 Sprint 1。合规部门提出新的数据审计要求，需要修改后端的一个数据字段设计。项目经理应该怎么做？",
+    "stem": "关于整合计划和把两份计划贴在一起的区别，下列哪种说法最准确？",
     "options": [
-      "告诉合规部门需求已冻结，不接受变更。",
-      "评估变更对后端开发进度的影响，以及对前端依赖该字段的 Sprint 的影响，再决定是否调整计划。",
-      "直接加到后端的待办清单，同步更新前端 Sprint 的依赖。",
-      "在项目结束时统一处理所有遗留修改。"
+      "两者是一回事，只是叫法不同。",
+      "整合计划标出交汇点和依赖；贴计划只是并列两份时间表，交汇点要到集成时才发现。",
+      "整合计划比贴计划更详细。",
+      "贴计划比整合计划更灵活。"
     ],
     "answer": 1,
-    "rationale": "受控维护的关键是区分偏差调整和变更。合规的新要求属于需求变更（选项 A 的\"冻结不变\"过于刚性、不是 PMI 方式）。正确路径是先评估影响——修改数据字段会影响后端开发时间吗？前端依赖该字段的 Sprint 需要调整吗？评估后再决定改不改、何时改。直接加（选项 C）是随意变更；留到最后（选项 D）是最糟选项——越晚改影响越大。"
+    "rationale": "整合计划的核心动作是识别交汇点——一条线的产出正好是另一条线的输入的时点。贴计划不做这件事，依赖要到集成阶段才暴露，那时调整代价最大。"
   },
   {
-    "id": "LESSON-0007A-Q004",
+    "id": "LESSON-0007a-build-and-maintain-the-integrated-plan-Q003",
     "type": "single_choice",
-    "stem": "整合计划的依赖检查中，项目经理发现：后端接口比预期晚 2 周，前端 Sprint 4（满意度趋势）依赖该接口。项目经理应优先做什么？",
+    "stem": "回收 0006：核心系统选了预测型，前端体验选了敏捷。整合计划把两者编排为交叠跑。这和 0006 说的混合方法是什么关系？",
     "options": [
-      "让后端团队加班赶回来，保证依赖不崩。",
-      "把前端 Sprint 4 改为等待状态，直到后端接口就绪。",
-      "评估后端延期的实际影响：前端可以提前做什么？如果接口晚 2 周，前端 Sprint 4 是否能切到另一个不依赖该接口的工作？",
-      "直接修改计划，把后端延期天数加到总计划里。"
+      "整合计划就是混合方法的另一个名字。",
+      "0006 选择每个模块用什么方法；0007A 把不同方法的两条线在一张时间轴上对齐。选择和对齐是两件事。",
+      "整合计划和混合方法无关。",
+      "混合方法不需要整合计划。"
     ],
-    "answer": 2,
-    "rationale": "依赖延迟时首先要评估影响，而不是直接加班（选项 A）或让前端空转（选项 B）。评估问题包括：后端延迟 2 周是否会影响前端 Sprint 4 的时间窗口？前端是否有可以提前做的、不依赖该接口的任务？方案可能是让前端在 Sprint 3 结束时提前做 Sprint 5 的部分工作。直接改总计划而不分析影响（选项 D）会丢失决策信息。"
+    "answer": 1,
+    "rationale": "0006 回答每个模块用什么方法（预测/敏捷/混合）；0007A 回答选了不同方法的模块之间怎么协调。选择方法和对齐节奏是两个独立的判断循环。"
+  },
+  {
+    "id": "LESSON-0007a-build-and-maintain-the-integrated-plan-Q004",
+    "type": "single_choice",
+    "stem": "回收 0005：范围边界和整合计划的交汇点有什么关系？",
+    "options": [
+      "没有关系，范围和计划是独立的。",
+      "整合计划的交汇点正是范围边界的落地处——交汇点标明了哪个模块的产出在什么时间成为另一个模块的输入，这正是范围之间依赖的具体体现。",
+      "范围边界应该在整合计划做完之后才定。",
+      "整合计划可以替代范围定义。"
+    ],
+    "answer": 1,
+    "rationale": "0005 定义了范围边界（做什么不做什么）；0007A 的交汇点是这些范围之间依赖的具体体现——核心系统的审计接口（0005 定义的范围）在什么时间成为前端 Sprint 4 的输入（交汇点）。两者是范围定义和范围协调的关系。"
   }
 ]
-</script>
+  </script>
   <script src="assets/lesson.js"></script>
 </body>
+</html>

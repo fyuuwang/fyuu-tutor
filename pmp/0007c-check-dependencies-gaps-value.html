@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PMP26 第 0007C 课：检查依赖、缺口和持续价值。每个里程碑前确认依赖还成立。">
+  <title>第 07C 课 · 检查依赖、缺口和持续价值</title>
+  <link rel="stylesheet" href="assets/lesson.css">
+</head>
+<body data-portal-home="../index.html" data-course-route="index.html" data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="process">
+  <a class="skip-link" href="#lesson-content">跳到正文</a>
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
+  <main class="lesson-shell" id="lesson-content">
+    <nav class="course-nav" aria-label="课程导航">
+      <a class="course-back" href="index.html" aria-label="返回课程目录"><span aria-hidden="true">←</span><span class="course-back-label">课程目录</span></a>
+      <nav class="lesson-steps" aria-label="课程阶段">
+        <a href="#map" aria-current="step"><span class="step-number">01</span><span>看路口</span></a>
+        <a href="#case"><span class="step-number">02</span><span>沿案例复查</span></a>
+        <a href="#practice"><span class="step-number">03</span><span>练一练</span></a>
+      </nav>
+    </nav>
+    <header class="lesson-header">
+      <p class="eyebrow">PMP26 · 第 07C 课 · 课程包 0007</p>
+      <h1>检查依赖、缺口和持续价值：每个路口都要重新确认</h1>
+      <p class="lesson-deck">出发时设了导航，但每个路口都要重新看——前面的路还通吗？有没有临时封路？依赖检查不是开工时做一次的风险分析，而是每个关键交付前的复查。</p>
+      <dl class="lesson-meta">
+        <div><dt>预计时间</dt><dd>最小 10 分钟 / 完整 20 分钟</dd></div>
+        <div><dt>位置</dt><dd>PMP26 · 0007C · U01 范围与资源</dd></div>
+        <div><dt>完成后能做什么</dt><dd>区分持续检查和一次性分析，每个里程碑前复查依赖、缺口和价值假设</dd></div>
+      </dl>
+    </header>
+    <section class="map-section" id="map" data-stage="map" aria-labelledby="map-title">
+      <p class="eyebrow">看路口</p>
+      <h2 id="map-title">GPS 到每个路口都重新确认路线</h2>
+      <p class="section-intro">想象你开车用导航。出发时设了路线，但导航不会只算一次——每个路口它都重新检查：前面还通吗？堵不堵？要不要绕？依赖检查也一样：开工时分析了一次，但每个里程碑前都要重新确认。</p>
+      <div class="learning-map" data-component="learning-map" aria-label="依赖检查地图">
+        <div class="map-hub"><strong>计划已排好</strong><span>每个里程碑前复查</span></div>
+        <a class="map-node map-node--why" href="#scene-1"><strong>依赖</strong><span>外部条件还成立吗</span></a>
+        <a class="map-node map-node--govern" href="#scene-2"><strong>缺口</strong><span>端到端哪里断</span></a>
+        <a class="map-node map-node--build" href="#scene-3"><strong>价值</strong><span>假设还对吗</span></a>
+      </div>
+    </section>
+    <section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
+      <p class="eyebrow">沿案例复查</p>
+      <h2 id="case-title">客户服务平台：审计接口什么时候能用？</h2>
+      <p class="section-intro">合规负责人在规划会上问了一个关键问题："审计数据模块什么时候开发完？前端 Sprint 4 的满意度趋势需要客户数据接口。"</p>
+      <article class="scene" id="scene-1" data-component="scene"><div class="scene-number">01</div><div class="scene-body">
+        <h3>依赖：外部条件还成立吗</h3>
+        <p>张明查了整合计划：核心系统的客户数据库接口在第三阶段（开发中后期）交付。前端 Sprint 3 结束时依赖这个接口才能开始 Sprint 4。</p>
+        <p>这个依赖在开工时就标过了。但现在是第二个月末——接口团队有没有延期？有没有新的优先级插队？这就是持续检查：不是假设开工时的依赖分析永远成立，而是每个关键交付前重新确认。</p>
+        <p class="takeaway" data-component="takeaway">记忆钩子：依赖会变。开工时说"接口第三阶段交付"，三个月后可能已经延期了，也可能另一个需求让它更重要了。每个里程碑前重新确认。</p>
+      </div></article>
+      <article class="scene" id="scene-2" data-component="scene"><div class="scene-number">02</div><div class="scene-body">
+        <h3>缺口：端到端哪里断</h3>
+        <p>第二个检查：端到端流程什么时候第一次打通？工单从门店 -> 系统记录 -> 客服处理 -> 后端审计归档 -> 前端展示——这条完整链路需要核心系统的集成测试（客户数据入库）加前端 Sprint 3（历史详情展示）同时完成。</p>
+        <p>最早能看到端到端流程是第 5 个月中。在此之前，每一个环节单独看都没问题，但串起来可能断在某处。缺口检查就是找这条链路哪里还没接上。</p>
+        <dl class="boundary-list" data-component="boundary-list">
+          <div class="boundary-row"><dt>持续检查</dt><dd>每个里程碑前复查依赖、缺口和价值。假设会变，要主动确认。</dd></div>
+          <div class="boundary-row"><dt>一次性分析</dt><dd>开工时做一次风险分析，然后按计划推进。三个月后的现实已经变了。</dd></div>
+        </dl>
+        <p class="takeaway" data-component="takeaway">记忆钩子：缺口是"链路哪里断"。每个模块单独看都对，但串起来可能在某个接口处断开。</p>
+      </div></article>
+      <article class="scene" id="scene-3" data-component="scene"><div class="scene-number">03</div><div class="scene-body">
+        <h3>价值：假设还对吗</h3>
+        <p>第三个检查回到 0001 的价值链：第一期上线的功能真的创造价值了吗？工单列表上线后客户可以查进度了（早期价值），但完整的"投诉率下降"需要端到端流程通畅加满意度可测量（第 5 个月后才可衡量）。</p>
+        <p>价值假设是项目开始时的最佳推测。市场、客户偏好、竞争环境在项目周期内会变。持续价值复查不是重复"那个价值假设对不对"，而是主动问"在现实反馈面前，它还对不对"。</p>
+        <details class="quick-check" data-component="quick-check">
+          <summary>想一想：如果开工时假设客户最在意"步骤少"，但两个月后调研发现客户更在意"能不能实时查进度"，怎么做？</summary>
+          <p>价值假设变了。不是假装没变按原计划做，而是回到整合计划调整优先级——实时查进度可能要提前。这就是持续价值检查的意义。</p>
+        </details>
+        <p class="takeaway" data-component="takeaway">记忆钩子：价值检查问的不是"原来对不对"，而是"在现实反馈面前还成立吗"。</p>
+      </div></article>
+    </section>
+    <section class="audit-section" data-stage="case" data-component="audit-section" aria-labelledby="audit-title">
+      <p class="eyebrow">范围与来源</p><h2 id="audit-title">本课覆盖</h2>
+      <div class="audit-grid">
+        <details class="audit-card"><summary>覆盖边界</summary><div class="audit-content">
+          <table class="coverage-table" data-component="coverage-table">
+            <thead><tr><th>Enabler</th><th>含义</th><th>本课承载</th></tr></thead>
+            <tbody><tr><td>PRC-T01-E07</td><td>评估依赖、缺口和持续业务价值</td><td>三层复查：依赖/缺口/价值，每个里程碑前</td></tr></tbody>
+          </table>
+          <p><strong>不在本课</strong>：计划创建（0007A）、估算（0007B）、维护（0007D）、资源（0007E）。</p>
+        </div></details>
+        <details class="audit-card"><summary>本地来源</summary><div class="audit-content"><ul><li><code>sources/official/eco-exam-outline-2026.md</code> Task 1 E07。</li><li><code>sources/official/pmbok7.md</code> 规划绩效域。</li></ul></div></details>
+      </div>
+    </section>
+    <section class="quiz-section" id="practice" data-stage="practice" aria-labelledby="practice-title" data-question-label="练习题">
+      <p class="eyebrow">练一练</p><h2 id="practice-title">先想清楚，再核对答案</h2>
+      <p class="section-intro">三道题检查你对持续检查的理解。均为 course_provided。</p>
+      <div class="quiz-toolbar"><span id="scoreText">已答 0 / 4 · 正确 0</span><button class="reset-button" id="resetQuiz" type="button">重做</button></div>
+      <div id="quiz"></div>
+    </section>
+    <footer class="lesson-footer"><p>下一步：进入 0007D《计划维护与数据决策》——真实数据进来时，计划怎么更新？</p><nav class="course-pagination" aria-label="课程前后导航"><a href="0007b-estimating-effort.html">← 上一节</a><a href="0007d-maintain-plan-data-decisions.html">继续下一节 →</a></nav></footer>
+  </main>
+  <script id="lesson-questions" type="application/json">
+[
+  {
+    "id": "LESSON-0007c-check-dependencies-gaps-value-Q001",
+    "type": "single_choice",
+    "stem": "开工时分析了依赖风险，三个月后项目经理按原计划推进。从持续检查的角度，主要问题是什么？",
+    "options": [
+      "没有问题，计划已经做好了。",
+      "依赖风险三个月后可能已经变了——接口可能延期了，另一个需求可能改变了优先级。开工时的分析不能管全程。",
+      "应该每周全部重新分析一次。",
+      "应该放弃计划，完全灵活应对。"
+    ],
+    "answer": 1,
+    "rationale": "持续检查的核心是假设会变。开工时的依赖分析是当时的最佳判断，三个月后现实已经变了。正确做法是每个里程碑前复查依赖是否仍然成立，而不是假设一次性分析永远有效。"
+  },
+  {
+    "id": "LESSON-0007c-check-dependencies-gaps-value-Q002",
+    "type": "single_choice",
+    "stem": "端到端流程从门店到前端展示需要经过五个环节。目前每个环节单独看都没问题。这说明了什么？",
+    "options": [
+      "流程没问题，可以上线。",
+      "可能存在缺口：每个环节单独对，但串起来可能在某个接口处断开。需要检查链路完整性。",
+      "应该等所有环节都完美再检查。",
+      "缺口只在最后一个环节才出现。"
+    ],
+    "answer": 1,
+    "rationale": "缺口检查就是找链路哪里断。每个模块单独测试通过不代表端到端能通——两个模块之间的接口可能有问题。持续检查要求在每个里程碑前确认整条链路的状态。"
+  },
+  {
+    "id": "LESSON-0007c-check-dependencies-gaps-value-Q003",
+    "type": "single_choice",
+    "stem": "回收 0001：项目开始时假设客户最在意步骤少。两个月后调研发现客户更在意实时查进度。持续价值检查应该怎么做？",
+    "options": [
+      "按原假设继续，调研只是个别意见。",
+      "回到整合计划调整优先级——实时查进度可能要提前。价值假设在现实反馈面前可能已经变了。",
+      "放弃整个项目重新立项。",
+      "等更多数据再决定，暂时不改。"
+    ],
+    "answer": 1,
+    "rationale": "持续价值检查不是重复原来的假设，而是在现实反馈面前主动问它还成立吗。调研显示客户优先级变了，就应该回到计划调整——这正是0001价值链里说的交付后复查价值。"
+  },
+  {
+    "id": "LESSON-0007c-check-dependencies-gaps-value-Q004",
+    "type": "single_choice",
+    "stem": "持续依赖检查和一次性风险分析的核心区别是什么？",
+    "options": [
+      "持续检查更详细，一次性分析更粗略。",
+      "持续检查假设条件会变、每个里程碑前重新确认；一次性分析假设开工时的判断管全程。",
+      "两者没有实质区别。",
+      "一次性分析比持续检查更节省时间。"
+    ],
+    "answer": 1,
+    "rationale": "核心区别在于对变化的假设。持续检查假设外部条件（接口进度、优先级、需求）会变，所以每个里程碑前重新确认。一次性分析假设开工时的判断在项目全程成立——但三个月后现实已经变了。这不是详细度的问题，是对变化的应对方式不同。"
+  }
+]
+  </script>
+  <script src="assets/lesson.js"></script>
+</body>
+</html>

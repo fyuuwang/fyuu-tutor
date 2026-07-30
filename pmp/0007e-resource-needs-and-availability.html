@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PMP26 第 0007E 课：资源需求与可用性。先看缺口类型再决定应对方式，不是直接加人。">
+  <title>第 07E 课 · 资源需求与可用性</title>
+  <link rel="stylesheet" href="assets/lesson.css">
+</head>
+<body data-portal-home="../index.html" data-course-route="index.html" data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="process">
+  <a class="skip-link" href="#lesson-content">跳到正文</a>
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
+  <main class="lesson-shell" id="lesson-content">
+    <nav class="course-nav" aria-label="课程导航">
+      <a class="course-back" href="index.html" aria-label="返回课程目录"><span aria-hidden="true">←</span><span class="course-back-label">课程目录</span></a>
+      <nav class="lesson-steps" aria-label="课程阶段">
+        <a href="#map" aria-current="step"><span class="step-number">01</span><span>看点菜</span></a>
+        <a href="#case"><span class="step-number">02</span><span>沿案例权衡</span></a>
+        <a href="#practice"><span class="step-number">03</span><span>练一练</span></a>
+      </nav>
+    </nav>
+    <header class="lesson-header">
+      <p class="eyebrow">PMP26 · 第 07E 课 · 课程包 0007</p>
+      <h1>资源需求与可用性：先看缺口类型，不是直接加人</h1>
+      <p class="lesson-deck">核心系统缺审计开发经验，前端 UI 被其他项目占用。先加人？先看数据？本课讲怎么按技能定义资源、按缺口类型选应对方式——技能缺口培训或外包，时间窗缺口调顺序，容量缺口才加人。</p>
+      <dl class="lesson-meta">
+        <div><dt>预计时间</dt><dd>最小 10 分钟 / 完整 20 分钟</dd></div>
+        <div><dt>位置</dt><dd>PMP26 · 0007E · U01 范围与资源</dd></div>
+        <div><dt>完成后能做什么</dt><dd>区分三种缺口类型，用数据决定应对方式，把资源决策写回计划</dd></div>
+      </dl>
+    </header>
+    <section class="map-section" id="map" data-stage="map" aria-labelledby="map-title">
+      <p class="eyebrow">看点菜</p>
+      <h2 id="map-title">按需点菜 vs 厨房有几个人手</h2>
+      <p class="section-intro">开餐厅不是先雇人再看做什么菜。先看菜单需要什么技能（炒菜、面点、甜品），再看厨房现在有谁、谁有空。缺的是技能就培训或外包，缺的是时间窗就调排班，缺的是人手才招人。项目资源也一样。</p>
+      <div class="learning-map" data-component="learning-map" aria-label="资源决策地图">
+        <div class="map-hub"><strong>缺口出现</strong><span>先看类型</span></div>
+        <a class="map-node map-node--why" href="#scene-1"><strong>技能缺口</strong><span>培训或外包</span></a>
+        <a class="map-node map-node--govern" href="#scene-2"><strong>时间窗缺口</strong><span>调顺序</span></a>
+        <a class="map-node map-node--build" href="#scene-3"><strong>容量缺口</strong><span>才考虑加人</span></a>
+      </div>
+    </section>
+    <section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
+      <p class="eyebrow">沿案例权衡</p>
+      <h2 id="case-title">客户服务平台：两个缺口，两种应对</h2>
+      <p class="section-intro">整合计划（0007A）排好了。现在一个关键约束浮现：核心系统缺审计开发经验，前端 UI 被其他项目占用到三周后。</p>
+      <article class="scene" id="scene-1" data-component="scene"><div class="scene-number">01</div><div class="scene-body">
+        <h3>技能缺口：培训或外包，不是加人</h3>
+        <p>核心系统需要熟悉审计合规流转逻辑的开发技能。团队内部有开发，但没有审计经验。这是技能缺口——不是人不够，是现有的人缺这项技能。应对方式：培训内部开发人员（两周学习审计要求），或者外包给有经验的外部团队。</p>
+        <p class="takeaway" data-component="takeaway">记忆钩子：技能缺口 = 人有但技能没有。培训或外包，不是加人——加一个也没审计经验的人没用。</p>
+      </div></article>
+      <article class="scene" id="scene-2" data-component="scene"><div class="scene-number">02</div><div class="scene-body">
+        <h3>时间窗缺口：调顺序，不是等</h3>
+        <p>前端 UI 设计师被另一个项目占用到三周后才释放。技能在内部存在——只是在这个时间段不可用。这是时间窗缺口。应对方式：前两个 Sprint 先做不依赖 UI 的后端逻辑，三周后 UI 释放了再接入前端迭代。</p>
+        <p class="takeaway" data-component="takeaway">记忆钩子：时间窗缺口 = 技能有但时间不对。调 Sprint 顺序，不是干等——等三周不调顺序会让前两周空转。</p>
+      </div></article>
+      <article class="scene" id="scene-3" data-component="scene"><div class="scene-number">03</div><div class="scene-body">
+        <h3>容量缺口：用数据确认，才考虑加人</h3>
+        <p>那什么时候才该加人？当数据显示工作量确实超出现有人员的处理能力——交付时间持续上升、负荷率长期超过 90%、等待队列不断增长。这就是容量缺口。但确认容量缺口必须看数据，不能靠感觉。如果负荷率还在 70% 以下但交付时间在上升，问题可能不是人不够，而是分配不均——调任务分配比加人更有效。</p>
+        <dl class="boundary-list" data-component="boundary-list">
+          <div class="boundary-row"><dt>技能缺口</dt><dd>人有但技能没有。培训或外包。加一个没技能的人没用。</dd></div>
+          <div class="boundary-row"><dt>时间窗缺口</dt><dd>技能有但时间不对。调顺序。干等会空转。</dd></div>
+          <div class="boundary-row"><dt>容量缺口</dt><dd>工作量确实超能力。用数据确认。才考虑加人。</dd></div>
+        </dl>
+        <details class="quick-check" data-component="quick-check">
+          <summary>想一想：资源决策做完后，为什么必须写回整合计划？</summary>
+          <p>资源决策改变了时间线——培训延长了核心系统第一阶段、Sprint 顺序调整改变了前端依赖。不写回整合计划，下一次资源评估没有当前数据，相关方看到的是过时的计划。</p>
+        </details>
+        <p class="takeaway" data-component="takeaway">记忆钩子：资源决策的终点不是"选完了"，是更新整合计划。不回写就留下下一次决策的盲点。</p>
+      </div></article>
+    </section>
+    <section class="audit-section" data-stage="case" data-component="audit-section" aria-labelledby="audit-title">
+      <p class="eyebrow">范围与来源</p><h2 id="audit-title">本课覆盖</h2>
+      <div class="audit-grid">
+        <details class="audit-card"><summary>覆盖边界</summary><div class="audit-content">
+          <table class="coverage-table" data-component="coverage-table">
+            <thead><tr><th>Enabler</th><th>含义</th><th>本课承载</th></tr></thead>
+            <tbody>
+              <tr><td>PRC-T04-E01</td><td>按需求定义和规划资源</td><td>按技能需求定义，不按头衔</td></tr>
+              <tr><td>PRC-T04-E02</td><td>管理和优化资源需求与可用性</td><td>三种缺口分类，用数据决定应对方式</td></tr>
+            </tbody>
+          </table>
+          <p><strong>不在本课</strong>：计划创建（0007A）、估算（0007B）、依赖检查（0007C）、维护（0007D）。</p>
+        </div></details>
+        <details class="audit-card"><summary>本地来源</summary><div class="audit-content"><ul><li><code>sources/official/eco-exam-outline-2026.md</code> Task 4 E01/E02。</li><li><code>sources/official/pmbok7.md</code> 规划绩效域。</li></ul></div></details>
+      </div>
+    </section>
+    <section class="quiz-section" id="practice" data-stage="practice" aria-labelledby="practice-title" data-question-label="练习题">
+      <p class="eyebrow">练一练</p><h2 id="practice-title">先想清楚，再核对答案</h2>
+      <p class="section-intro">三道题检查你对缺口类型和资源决策的理解。均为 course_provided。</p>
+      <div class="quiz-toolbar"><span id="scoreText">已答 0 / 4 · 正确 0</span><button class="reset-button" id="resetQuiz" type="button">重做</button></div>
+      <div id="quiz"></div>
+    </section>
+    <footer class="lesson-footer"><p>W01 全部完成：0000 到 0007E，11 个课程包、16 个微课。进入 W02，第一课是 0008《冲突：先理解再处理》。</p><nav class="course-pagination" aria-label="课程前后导航"><a href="0007d-maintain-plan-data-decisions.html">← 上一节</a></nav></footer>
+  </main>
+  <script id="lesson-questions" type="application/json">
+[
+  {
+    "id": "LESSON-0007e-resource-needs-and-availability-Q001",
+    "type": "single_choice",
+    "stem": "核心系统需要审计合规开发经验，团队内部没有。这属于哪种缺口？最合适的应对是什么？",
+    "options": [
+      "容量缺口——立刻招人。",
+      "技能缺口——培训现有开发人员或外包给有经验的团队。",
+      "时间窗缺口——等以后再说。",
+      "不是缺口——审计要求可以暂缓。"
+    ],
+    "answer": 1,
+    "rationale": "团队有开发人员但缺审计经验，这是技能缺口。加一个也没审计经验的人没用。应对是培训现有人员或外包。容量缺口是工作量超出能力，才考虑加人。"
+  },
+  {
+    "id": "LESSON-0007e-resource-needs-and-availability-Q002",
+    "type": "single_choice",
+    "stem": "前端UI设计师被另一个项目占用到三周后才释放。这属于哪种缺口？最合适的应对是什么？",
+    "options": [
+      "技能缺口——培训新设计师。",
+      "时间窗缺口——前两个Sprint先做不依赖UI的后端工作，三周后接入。",
+      "容量缺口——立刻招人。",
+      "不需要应对，等三周就行。"
+    ],
+    "answer": 1,
+    "rationale": "设计师技能在内部存在，只是在需要的时间段不可用。这是时间窗缺口。应对是调Sprint顺序而非招聘——资源已存在，只是可用性需要协调。干等不调顺序会让前两周空转。"
+  },
+  {
+    "id": "LESSON-0007e-resource-needs-and-availability-Q003",
+    "type": "single_choice",
+    "stem": "数据显示交付时间在上升，但关键开发人员的负荷率还在70%以下。此时最合理的判断是？",
+    "options": [
+      "不需要调整，负荷率还没到100%。",
+      "瓶颈可能在分配不均而非总量不足。调任务分配或优先级，加人不能解决分配问题。",
+      "立刻加人，因为交付时间在恶化。",
+      "等负荷率超过90%再行动。"
+    ],
+    "answer": 1,
+    "rationale": "负荷率70%以下但交付时间上升，说明瓶颈可能在分配不均而非资源总量。加人不能解决分配问题，反而增加协调成本。数据驱动决策要求先判断瓶颈类型再选应对方式。"
+  },
+  {
+    "id": "LESSON-0007e-resource-needs-and-availability-Q004",
+    "type": "single_choice",
+    "stem": "回收 0007A：资源决策完成后必须写回整合计划。如果只更新本地资源表不写回整合计划，后果是什么？",
+    "options": [
+      "没有后果，资源表就够了。",
+      "整合计划中的依赖和里程碑会过时——培训延长了核心系统阶段、Sprint 顺序调整改变了前端依赖，不写回整合计划，相关方看到的是过时的时间线。",
+      "只需要通知业务负责人即可。",
+      "资源决策不需要和计划关联。"
+    ],
+    "answer": 1,
+    "rationale": "0007A 的整合计划是协调依赖的顶层坐标。资源决策改变了时间线（培训延长、顺序调整），不写回整合计划意味着依赖检查（0007C）和价值复查用的是过时数据。资源决策的终点是更新整合计划，不只是填一张资源表。"
+  }
+]
+  </script>
+  <script src="assets/lesson.js"></script>
+</body>
+</html>
