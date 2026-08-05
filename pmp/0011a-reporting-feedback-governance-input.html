@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>0011A · 把报告变成治理输入并闭合反馈</title>
+  <link rel="stylesheet" href="assets/lesson.css">
+</head>
+<body data-portal-home="../index.html" data-course-route="index.html" data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="people">
+  <main class="lesson-shell" id="lesson-content">
+    <header class="lesson-header">
+      <p class="eyebrow">PMP 2026 · People · 0011A</p>
+      <h1>把报告变成治理输入并闭合反馈</h1>
+      <p class="lesson-deck">报告不是状态装饰，而是让正确受众依据同一组事实作出决定、留下责任并改变下一轮行动的接口。</p>
+      <nav class="course-nav" aria-label="课程导航">
+        <nav class="lesson-steps" aria-label="课程阶段">
+          <a href="#map" data-stage="map">01 先看地图</a>
+          <a href="#case" data-stage="case">02 沿案例判断</a>
+          <a href="#practice" data-stage="practice">03 练一练</a>
+        </nav>
+      </nav>
+    </header>
+
+    <section class="map-section" id="map" data-stage="map" aria-labelledby="map-title">
+      <p class="eyebrow">Map · 全貌</p>
+      <h2 id="map-title">报告要求 → 对齐事实 → 治理输入 → 决定与行动 → 反馈回写</h2>
+      <div class="learning-map" data-component="learning-map" aria-label="报告到治理反馈的判断地图">
+        <a class="map-node map-node--why" href="#reporting-requirements"><strong>确认不同受众要支持的决定或行动及其报告时点</strong></a>
+        <a class="map-node map-node--govern" href="#aligned-report"><strong>固定共同事实底座，再按受众选择粒度</strong></a>
+        <a class="map-node map-node--build" href="#governance-input"><strong>把报告送入评审、决定、记录和责任跟踪</strong></a>
+        <a class="map-node map-node--owner" href="#feedback-loop"><strong>登记反馈、回应和复查点，更新下一轮报告</strong></a>
+      </div>
+      <p class="section-intro">云桥接口变更进入上线窗口后，林岚要让发起人、客服、技术和云桥依据同一组可追溯事实作出下一步决定。</p>
+    </section>
+
+    <section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
+      <p class="eyebrow">Case · 云桥上线窗口</p>
+      <h2 id="case-title">沿着一条报告—治理—反馈闭环判断</h2>
+
+      <article class="scene" id="reporting-requirements" data-component="scene">
+        <h3>先确认报告要求，再决定格式</h3>
+        <p>云桥接口变更进入上线窗口后，林岚先建立受众要求表，而不是复制上一期周报。发起人要在周五前决定继续上线、延期还是先做受控试验，因此需要承诺状态、关键偏差、影响和待决定事项；客服需要当天可执行的例外处理，因此需要受影响用户类型、处理动作、生效时间和反馈入口；技术需要异步复核，因此需要接口版本、失败信号、风险趋势、证据链接和未验证假设；云桥需要知道交付字段、回应责任和截止时间。</p>
+        <p>每一类要求至少说明受众、要支持的决定或行动、所需事实、粒度、时点、格式或渠道以及反馈方式。报告要求会随受众和决定变化，沿用旧模板只能证明格式被复制，不能证明报告仍支持当前决定。</p>
+        <ul class="boundary-list" data-component="boundary-list">
+          <li>要求确认不是模板复制：先问受众要据此做什么决定或行动。</li>
+          <li>格式是表达选择，不是报告目的；字段必须能回到事实和反馈入口。</li>
+        </ul>
+        <details class="quick-check" data-component="quick-check">
+          <summary>快速检查：四类受众各需要什么？</summary>
+          <p>发起人看承诺与影响，客服看当天例外与动作，技术看趋势与证据，云桥看待决字段、责任和时限。</p>
+        </details>
+        <p class="takeaway" data-component="takeaway">记忆钩子：先确认“谁要做什么决定”，再决定“报告写成什么样”。</p>
+      </article>
+
+      <article class="scene" id="aligned-report" data-component="scene">
+        <h3>用同一组事实对齐不同期望</h3>
+        <p>林岚把交付状态、用户影响、风险趋势、证据链接和待决事项作为共同事实底座，再按受众压缩呈现。发起人的摘要可以突出承诺、影响和需要的决定；客服行动卡可以突出今天的例外和处理步骤；技术记录可以保留字段、日志、假设和复核路径；云桥清单可以突出待回应事项、负责人和时限。</p>
+        <div class="worked-example" data-component="worked-example">
+          <p><strong>同一事实，多层视图：</strong>“待确认字段阻塞接口测试”在发起人视图中是承诺影响，在客服视图中是例外处理，在技术视图中是失败信号与日志，在云桥视图中是字段、回应责任和截止时间；事实本身仍可追溯。</p>
+        </div>
+        <ul class="boundary-list" data-component="boundary-list">
+          <li>对齐期望不是粉饰数字：不能删掉会改变决定的坏消息。</li>
+          <li>分层不是编造不同数字；所有视图都回到同一事实底座。</li>
+        </ul>
+        <details class="quick-check" data-component="quick-check">
+          <summary>快速检查：分层后还能追溯吗？</summary>
+          <p>如果受众无法从承诺、影响、趋势、证据和待决事项回到同一事实，报告就是不同版本的故事，而不是对齐。</p>
+        </details>
+        <p class="takeaway" data-component="takeaway">记忆钩子：一底座，多视图；视图可以不同，证据不能不同。</p>
+      </article>
+
+      <article class="scene" id="governance-input" data-component="scene">
+        <h3>把报告送入评审、决定和责任跟踪</h3>
+        <p>报告发出并不等于治理完成。林岚把路径写成可追踪的链条：报告提交到约定的评审入口，评审者核对事实和影响，拥有相应权限的角色作出决定，决定被记录为可回看的事项，责任人和完成时限被分配，下一次报告再检查行动结果。</p>
+        <div class="decision-path" data-component="decision-path" aria-label="报告治理路径">
+          <ol>
+            <li>报告提交</li>
+            <li>评审核对</li>
+            <li>有权角色决定</li>
+            <li>记录决定与责任</li>
+            <li>下一轮报告复查行动</li>
+          </ol>
+        </div>
+        <ul class="boundary-list" data-component="boundary-list">
+          <li>治理输入不是个人批准：林岚准备证据和选项，但不能把发送动作写成批准。</li>
+          <li>团队可在授权范围内处理；超出权限或容差才沿治理路径提交更高层级。</li>
+        </ul>
+        <details class="quick-check" data-component="quick-check">
+          <summary>快速检查：决定权在哪里？</summary>
+          <p>页面必须同时出现评审入口、决定角色、记录位置、责任人和时限；缺一项，报告仍停在邮箱。</p>
+        </details>
+        <p class="takeaway" data-component="takeaway">判断钩子：把“我发出报告”与“有权角色作出决定”分开写，治理边界就清楚了。</p>
+      </article>
+
+      <article class="scene" id="feedback-loop" data-component="scene">
+        <h3>让反馈回到下一轮状态信息</h3>
+        <p>状态页发布后，陈悦发现某类客服例外仍会误导一线，周牧补充了新的失败证据，云桥回应了一个待决字段。林岚为每条反馈保留来源、反馈事实、影响、回应动作、责任人、截止时间和复查点；回应完成后，事实、决定和行动被更新回共享状态，并在下一轮报告中说明变化。</p>
+        <p>这样形成“受众行动—反馈事实—治理回应—状态更新—再次观察”的回路。只开一次意见收集会、把评论留在个人聊天里，或把页面标记为已发布就结束，都不能证明反馈已经闭合。</p>
+        <ul class="boundary-list" data-component="boundary-list">
+          <li>反馈闭环不是一次收集意见：必须看见谁反馈了什么、谁回应了什么、结果是否改变以及何时再检查。</li>
+          <li>历史事实保持可追溯；变化写入下一轮，而不是回溯改写旧状态。</li>
+        </ul>
+        <details class="quick-check" data-component="quick-check">
+          <summary>快速检查：反馈是否改变了下一轮？</summary>
+          <p>核对来源、事实、影响、回应动作、责任人、截止时间和复查点是否都能在下一轮报告中找到。</p>
+        </details>
+        <p class="takeaway" data-component="takeaway">记忆钩子：反馈不回写，报告就会很快脱离现场。</p>
+      </article>
+
+      <article class="scene" id="integrated-loop" data-component="scene">
+        <h3>把四个判断压缩成一张工作卡</h3>
+        <p>遇到新的云桥变更时，林岚按四步工作卡执行：第一，逐类确认受众要支持的决定或行动及其报告时点；第二，固定共同事实底座，再为不同受众选择适当粒度；第三，标明评审入口、决定角色、记录位置、责任人和时限；第四，登记反馈来源、回应和复查点，并把结果带入下一轮报告。</p>
+        <div class="decision-path" data-component="decision-path" aria-label="四步工作卡">
+          <ol>
+            <li>确认报告要求</li>
+            <li>对齐共同事实</li>
+            <li>接入治理路径</li>
+            <li>回写反馈并复查</li>
+          </ol>
+        </div>
+        <details class="quick-check" data-component="quick-check">
+          <summary>独立产出前检查四步工作卡</summary>
+          <p>每一步都要有事实、角色、动作和复查点；没有要求确认、共同事实、治理入口或反馈回写，就会留下可见断点。</p>
+        </details>
+        <details class="production-task" data-component="quick-check" data-item-id="PROD-0011A-REPORT-GOV-FEEDBACK-MAP">
+          <summary>独立产出：报告—治理—反馈闭环卡</summary>
+          <div class="production-task-body">
+            <p class="production-prompt">基于云桥接口变更场景，制作一张可交付的报告—治理—反馈闭环卡。先列出发起人、客服、技术和云桥四类受众的报告要求，再以同一组事实形成分层信息，标注治理入口、决定记录、责任人和反馈复查点。</p>
+            <textarea aria-label="报告—治理—反馈闭环卡"></textarea>
+            <ul>
+              <li>四类受众各有明确的内容、频率或时点、格式或渠道及反馈入口，不能以复制上一期模板代替确认。</li>
+              <li>所有分层信息指向同一组可追溯事实，至少包含交付状态、用户影响、风险趋势和待决事项，不能删改会影响决定的坏消息。</li>
+              <li>路径明确经过评审、决定、记录和责任跟踪，不能把项目经理个人批准写成治理决定。</li>
+              <li>每条反馈都有来源、回应动作、责任人、截止时间和下一次复查点，并能回写下一轮报告。</li>
+              <li>产出只覆盖 0011A 的报告、治理输入和反馈回路。</li>
+            </ul>
+          </div>
+        </details>
+        <p class="takeaway" data-component="takeaway">带走：好报告不是信息最多，而是让正确受众依据可追溯事实作出决定，并让决定和反馈改变下一轮行动。</p>
+      </article>
+    </section>
+
+    <section class="audit-section" data-stage="case" data-component="audit-section" aria-labelledby="audit-title">
+      <p class="eyebrow">Audit · 覆盖与来源</p>
+      <h2 id="audit-title">0011A Enabler 覆盖</h2>
+      <details class="audit-card">
+        <summary>逐 Enabler 覆盖与正式来源</summary>
+        <div class="audit-content">
+          <table class="coverage-table" data-component="coverage-table">
+            <thead><tr><th>Enabler</th><th>场景与学习者产出</th><th>来源定位</th></tr></thead>
+            <tbody>
+              <tr><td>PPL-T08-E03</td><td>确认发起人、客服、技术和云桥的报告要求；产出受众要求表。</td><td>ECO-2026-JULY-PEOPLE-T08 · sources/official/eco-exam-outline-2026.md · DOMAIN I People / Task 8，lines 303-326；PMBOK7-GOVERNANCE-SYSTEM · sources/official/pmbok7.md · §2.2 信息流；§2.3 组织治理系统</td></tr>
+              <tr><td>PPL-T08-E04</td><td>用同一组交付状态、用户影响、风险趋势、证据和待决事项分层呈现；产出共同事实与分层视图。</td><td>ECO-2026-JULY-PEOPLE-T08 · sources/official/eco-exam-outline-2026.md · DOMAIN I People / Task 8，lines 303-326；PMBOK7-GOVERNANCE-SYSTEM · sources/official/pmbok7.md · §2.2 信息流</td></tr>
+              <tr><td>PPL-T08-E05</td><td>沿评审、决定、记录、责任跟踪路径送入治理；产出评审—决定—责任路径。</td><td>ECO-2026-JULY-PEOPLE-T08 · sources/official/eco-exam-outline-2026.md · DOMAIN I People / Task 8，lines 303-326；PMBOK7-GOVERNANCE-SYSTEM · sources/official/pmbok7.md · §2.3 组织治理系统</td></tr>
+              <tr><td>PPL-T08-E06</td><td>记录反馈来源、回应、责任、时限和复查点并更新下一轮；产出反馈回写字段。</td><td>ECO-2026-JULY-PEOPLE-T08 · sources/official/eco-exam-outline-2026.md · DOMAIN I People / Task 8，lines 303-326；PMBOK7-GOVERNANCE-SYSTEM · sources/official/pmbok7.md · §2.2 信息流；§2.3 组织治理系统</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+
+    <section class="quiz-section" id="practice" data-stage="practice" aria-labelledby="practice-title" data-question-label="练习题">
+      <p class="eyebrow">Practice · 课后练习</p>
+      <h2 id="practice-title">用四个判断检查报告闭环</h2>
+      <div class="quiz-toolbar"><span id="scoreText">已答 0 / 4 · 正确 0</span><button class="reset-button" id="resetQuiz" type="button">重做</button></div>
+      <div id="quiz"></div>
+    </section>
+  </main>
+
+  <nav class="course-return-dock" data-component="course-return-dock" aria-label="全局学习导航">
+    <a class="course-home" data-component="course-home" href="../index.html">⌂ 学习门户</a>
+    <a class="course-back" data-component="course-back" href="index.html">← 课程路线</a>
+  </nav>
+
+  <script id="lesson-questions" type="application/json">
+[
+  {"id":"LESSON-0011a-reporting-feedback-governance-input-Q001","type":"single_choice","stem":"云桥项目要为同一周报同时服务发起人、客服、技术和供应方。发起人要看承诺，客服要看当日例外，技术要看风险趋势，供应方要看待决字段。编制本轮报告的第一步最合适是什么？","options":["先分别确认四类受众的决策或使用要求，再确定每层信息","沿用上一版模板，所有人先看同一组摘要","由项目经理单独决定哪些信息对所有人都重要","先把所有原始数据堆进报告，再让受众自行筛选"],"answer":0,"rationale":"正确判断：四类受众的关注点不同，先确认他们要据此做什么决定，才能决定同一事实如何分层呈现；这一步不是复制模板。选项二不佳：直接复制模板可能沿袭与当前受众无关的字段，无法确认报告真正要支持的判断。选项三不佳：受众需求是治理和报告设计的输入，不应被项目经理个人的假设替代。选项四不佳：堆放原始数据把解释和筛选负担转给受众，也没有建立有目的的信息层次。来源定位：ECO July 2026 People Task 8 lines 303-326；PMBOK7 §2.2/§2.3。"},
+  {"id":"LESSON-0011a-reporting-feedback-governance-input-Q002","type":"single_choice","stem":"云桥项目的接口测试被一个待确认字段阻塞。技术团队需要风险趋势，供应方需要待决字段，发起人需要承诺影响。报告应如何处理这一事实？","options":["为每类受众另造一套互不相同的数字","保留可追溯的底层事实，再按受众需要展示风险趋势、承诺影响和待决字段","只展示已解决事项，避免不同受众产生误解","用一个平均值替代阻塞详情，让报告更简洁"],"answer":1,"rationale":"正确判断：底层事实保持一致且可追溯，再按受众需要分层表达，既满足不同需求，也避免用不同数字或删减风险来粉饰。选项一不佳：为不同受众编造互不一致的数字会破坏同一事实的追溯关系。选项三不佳：隐藏未解决阻塞会使受众无法判断承诺和风险，属于遗漏而非有效分层。选项四不佳：平均值会丢失待决字段和具体影响，不能支持责任跟踪或治理判断。来源定位：ECO July 2026 People Task 8 lines 303-326；PMBOK7 §2.2/§2.3。"},
+  {"id":"LESSON-0011a-reporting-feedback-governance-input-Q003","type":"single_choice","stem":"云桥周报显示当日例外已超过事先约定的容差，并可能影响对外承诺。下一步最合适的做法是什么？","options":["项目经理直接在周报中批准补救方案并通知所有人","把问题发到群里征求意见，但不指定责任人","把证据送入既定评审或有权角色，由其决定，并记录决定、责任人和跟踪日期","先把例外改写成普通波动，下一轮再观察"],"answer":2,"rationale":"正确判断：超过容差且影响承诺时，应把可追溯证据送入既定评审或有权角色；决定、责任和后续跟踪都要留下记录。选项一不佳：项目经理个人批准会把治理输入误当成个人授权，绕过既定决策角色。选项二不佳：开放征求意见没有保证有权决定，也没有形成可跟踪的责任安排。选项四不佳：改变问题分类来避免升级会掩盖事实，破坏报告和治理的可信度。来源定位：ECO July 2026 People Task 8 lines 303-326；PMBOK7 §2.2/§2.3。"},
+  {"id":"LESSON-0011a-reporting-feedback-governance-input-Q004","type":"single_choice","stem":"云桥项目回收反馈时，发起人认为承诺栏缺少信心等级，客服认为例外栏缺少处理状态。下一轮报告应如何更新？","options":["只采纳发起人的意见，删除客服的例外字段","一次性收集意见后冻结模板，不再调整","回溯修改旧周报，使其看起来已经包含这些字段","记录反馈和变更理由，更新下一轮报告结构或字段，同时保留事实追溯"],"answer":3,"rationale":"正确判断：反馈应进入下一轮报告迭代；记录反馈、变更理由和事实追溯，才能形成持续闭环而不是一次意见收集。选项一不佳：忽略客服的使用需求会使报告仍无法支持当日例外的责任跟踪。选项二不佳：反馈闭环要求根据实际使用更新下一轮，不能把一次收集当成永久定稿。选项三不佳：回溯改写旧报告会混淆历史状态，损害原始事实和变更的可追溯性。来源定位：ECO July 2026 People Task 8 lines 303-326；PMBOK7 §2.2/§2.3。"}
+]
+  </script>
+  <script src="assets/lesson.js"></script>
+</body>
+</html>
