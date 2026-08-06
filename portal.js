@@ -6,7 +6,7 @@
   root.classList.add('js');
   function groups(scope) {
     return Array.prototype.slice.call(
-      scope.querySelectorAll('[role="tablist"]'));
+      scope.querySelectorAll('[role="tablist"]:not([data-navigation="weekly"])'));
   }
   function tabsOf(list) {
     return Array.prototype.slice.call(
@@ -74,6 +74,7 @@
     if (!active || active.getAttribute('role') !== 'tab') return;
     var list = active.closest('[role="tablist"]');
     if (!list) return;
+    if (list.getAttribute('data-navigation') === 'weekly') return;
     var tabs = tabsOf(list);
     var i = tabs.indexOf(active);
     if (i < 0) return;
@@ -84,5 +85,81 @@
     select(list, target);
     target.focus();
     e.preventDefault();
+  });
+})();
++(function () {
+  var root = document.documentElement;
+  root.classList.add('js');
+  var key = 'fyuu-tutor:pmp-certification:week';
+  function tabs(list) { return Array.prototype.slice.call(list.querySelectorAll('[role="tab"]')); }
+  function panel(list, tab) {
+    var id = tab.getAttribute('aria-controls');
+    return id ? document.getElementById(id) : null;
+  }
+  function pick(list, tab, persist) {
+    tabs(list).forEach(function (item) {
+      var on = item === tab;
+      item.setAttribute('aria-selected', on ? 'true' : 'false');
+      item.setAttribute('tabindex', on ? '0' : '-1');
+      var target = panel(list, item);
+      if (target) target.setAttribute('data-active', on ? 'true' : 'false');
+    });
+    if (persist) {
+      var hash = tab.getAttribute('data-hash');
+      if (hash) window.location.hash = hash;
+      try { window.localStorage.setItem(key, tab.getAttribute('data-hash') || ''); } catch (error) {}
+    }
+  }
+  function byHash(list, value) {
+    value = (value || '').replace(/^#/, '').toLowerCase();
+    return tabs(list).find(function (tab) { return tab.getAttribute('data-hash') === value; });
+  }
+  function initial(list) {
+    var all = tabs(list);
+    if (!all.length) return;
+    var rawHash = (window.location.hash || '').replace(/^#/, '');
+    var target = rawHash ? byHash(list, rawHash) : null;
+    if (rawHash && !target) target = all[all.length - 1];
+    if (!rawHash) {
+      var stored = '';
+      try { stored = window.localStorage.getItem(key) || ''; } catch (error) {}
+      target = byHash(list, stored) || all[all.length - 1];
+    }
+    pick(list, target, false);
+  }
+  function init() {
+    document.querySelectorAll('[role="tablist"][data-navigation="weekly"]').forEach(function (list) {
+      tabs(list).forEach(function (tab) {
+        tab.addEventListener('click', function (event) {
+          event.preventDefault();
+          pick(list, tab, true);
+        });
+      });
+      initial(list);
+    });
+  }
+  document.addEventListener('DOMContentLoaded', init);
+  window.addEventListener('hashchange', function () {
+    document.querySelectorAll('[role="tablist"][data-navigation="weekly"]').forEach(function (list) {
+      var all = tabs(list);
+      var target = byHash(list, window.location.hash);
+      pick(list, target || all[all.length - 1], false);
+    });
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    var active = document.activeElement;
+    if (!active || active.getAttribute('role') !== 'tab') return;
+    var list = active.closest('[role="tablist"][data-navigation="weekly"]');
+    if (!list) return;
+    var all = tabs(list), index = all.indexOf(active), next = index;
+    if (event.key === 'ArrowRight') next = (index + 1) % all.length;
+    else if (event.key === 'ArrowLeft') next = (index - 1 + all.length) % all.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = all.length - 1;
+    else return;
+    event.preventDefault();
+    pick(list, all[next], true);
+    all[next].focus();
   });
 })();
