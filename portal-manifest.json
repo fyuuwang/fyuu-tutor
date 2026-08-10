@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "deployment_id": "20260810T023612Z-a0f45350282b",
+  "published_at": "2026-08-10T02:36:12.511366Z",
+  "system_commit": "999ee819bf034825f63c0ec2ebe927975aef0f98",
+  "config_sha256": "6347ebf90b2042a0fdd0a667fe85914d34145b5925d3e764c47a0d36e639e2ea",
+  "root_files": {
+    "index.html": "6aa5ea9af46e43cb7d9334a63385e184d879f9d74c4dcc93cd7e19b3c446279e",
+    "portal.css": "55d9438f46c21b7b17b1e65a432c66263356bfaa04f3d0f15509b7f0cd6cbb82",
+    "portal.js": "f9c4a90cff7ca4869354bfa29c75427078d64688e324927adaa3080b9e128d13"
+  },
+  "projects": {
+    "pmp-certification": {
+      "slug": "pmp",
+      "display_name": "PMP备考",
+      "pipeline": "certification",
+      "page_count": 24,
+      "files": {
+        "0000-start-and-diagnostic.html": "19fde4044df4cfacdd1096c3c79139b24fa79d82ecd10338df28034a7e1afe97",
+        "0001-value-outcome-benefit.html": "5c8bbcd4d026ed98035f9e08bdc1f3fe799f9fc4a2c64c52ba275e7e0dbbc1e7",
+        "0002a-build-a-shared-vision.html": "b12578bfd968aaf8baae3729a3b2a33add8c1493f20b7f0d06d859c65305964b",
+        "0002b-diagnose-and-renew-the-vision.html": "a7fca17c2ee46692638234eb32d723199549983ab2f8a539b8e58c1be0c3bd5d",
+        "0003-engage-stakeholders.html": "0a50bf5a3441f10f71be3b04d734bd52f01a91f80c30487e76915c9466d061ca",
+        "0004a-align-stakeholder-expectations.html": "8281d86bfed2078c04458b4ca1e95113e69d060d4363b885a2ab28874a5e10cf",
+        "0004b-maintain-customer-expectations.html": "53ea8ef4d67dbe321e31adb4d0c50c8ccacde7b893929f45801a1415074dd146",
+        "0005-scope-and-requirements.html": "59910b895b35bd377a9c8307834743b6703ce9ec909db0fcda3a2b7ce25ebe7b",
+        "0006-method-and-lifecycle-selection.html": "473a7f09cffc3d5e73275b201c3211a2748b2d331f8ad8f4706b28f94fec5ba4",
+        "0007a-build-and-maintain-the-integrated-plan.html": "66b640662d993f964635b16a76ffb1cedffccbe4a78996cd4fc66d3216df0d03",
+        "0007b-estimating-effort.html": "75f2596cbf1eee31f78d7d53cc4698d6b011db34ceb2fa2dc837fca1511cbbcc",
+        "0007c-check-dependencies-gaps-value.html": "090a95d7fb1442eb460b8a919a3ae1b7df82b9267acb9481ba727471613434c9",
+        "0007d-maintain-plan-data-decisions.html": "4591e6f452241ce4735e0b7e03113ed53c90db4e1601e2cff17c2df51d2bf921",
+        "0007e-resource-needs-and-availability.html": "224f9c77490406cb37377479a693da1c89a62affba8e5dee431587159c3e46e3",
+        "0008a-conflict-sources-and-ground-rules.html": "80e303a728b72371dffadf1069da5dc86ae16b38455a5f18ac23261d99bbcce5",
+        "0008b-ground-rule-repair-and-resolution.html": "4a3c63fc029e2df262ca476b081c5927121dcb9255baaad1a679cbae8b018974",
+        "0009a-roles-empowerment-problem-solving.html": "efcfc0068d9a1489c69c3e76092878924ebab6fd9c2800906b616c9feb89b26b",
+        "0009b-team-voice-leadership-diversity.html": "297402033555a26c672442dd052454b01aac945886f0814a6ef061b47daf40da",
+        "0010a-critical-knowledge-transfer.html": "58136f441e829029cfc1d98e7676628936f76dd474c8afe3b026ae56fb93e905",
+        "0010b-communication-strategy-transparency.html": "9e38b6ae7e60d49554f2c0facb0487d27ecd953495eb2a8ac35075bcd7a138f1",
+        "0011a-reporting-feedback-governance-input.html": "c0d65015fb1d71a6be11048961d4d652cc4c715fc4fc0d981015b9d5b88f1928",
+        "0011b-governance-structure-metrics-thresholds.html": "bb30662fb482cad168328f07c1912af4b7986faaf64c14e3c693bf4adc1fc28f",
+        "0012a-procurement-plan-vendor-contract.html": "6b084e7ae8af89fa7710a4f91568de7ac8bc83ebac9038cae029900dcec46816",
+        "0012b-procurement-plan-execution-objectives.html": "aabf9d4b4800228ae3800501f4e1067530f38b5ba9f702c4e4ea86b907b24e77",
+        "assets/components.css": "c72b64c189a62af09a32d9438c4f9636cc26ceefcc0ccf5b867c8ba6c5664423",
+        "assets/foundation.css": "739d0932983425ebbae559e33348637ee3b694cff6d2843edd70c2f07da4cd25",
+        "assets/lesson.css": "0459f311558a8bd5434e4059b072b3d2810fd8387b365675909a3dcc7c5570bb",
+        "assets/lesson.js": "4e23be7bfe3266cd5ddd27682aa487a7f4b5c1cc6c3583fc7519bebbad605f38",
+        "assets/tokens.css": "ab5365b38603c8dbb13149c96547c1e04ee6dcfbd36cedfe5aa8a84a58f4a476",
+        "index.html": "2c1dc78aecaa511835937cd8ec848c92cc367364313453508bee282d19765efc"
+      }
+    },
+    "business-cantonese": {
+      "slug": "cantonese",
+      "display_name": "粤语学习",
+      "pipeline": "language",
+      "page_count": 18,
+      "files": {
+        "0001-core-particles-first-contact.html": "9c2f43596f0e376792cefa761ab67f1453404aa9f3f13420c11bd0b0a0bde86d",
+        "0002-easily-confused-words.html": "89e7d1b76d75a664222f02a67a23bc20acd3992304d0d838bbae3502846b4832",
+        "0003-scenario-business-intro.html": "5c2753ac2741da3e04c8042d73a0d3083e9bfd835118572fefb29d05a8ebe6ed",
+        "0004-particle-b-slang-deepen.html": "9de419d2ec974dcbf43463b922946c1cdec183a714f77e159a3d62e0173f1ef9",
+        "0005-products-intro-slang-rest.html": "73246615e6a15bd46c0eb370295af5fd42fa9f52868b2fd3bbf2b6d1aa6245d5",
+        "0006-slang-full-review.html": "aeec0b75a3862c1f97270638cdf9d57cc642601ae667dfc4800fe00732e5ac47",
+        "0007-listening-comprehension.html": "2bb613d405461a8b90e9cff65d9c0f19610562ecf29678188b408e37faa5ee1d",
+        "0008-scenario-adaptability.html": "ca30d9f56c7a27b13b461cfa8467373b2896246d1ec0e919f5335b861311068a",
+        "0009-vocab-oral-01.html": "88230d1dfb46e2357d1bdab73db922ac26877090ce55d0c3131816f1bbce08c8",
+        "0010-vocab-oral-02.html": "395996260aa99363364ea015a34108aa6c70305ef18c6fd8d69e4bd44bf5e4d9",
+        "0011-vocab-oral-03.html": "244e2f89ceefa8a6ba648d7d21645587ac0abf9f4bba5d1c3e55249a92ef0ecc",
+        "0012-textbook-exam.html": "06b3734e15cbb31af5c7969f948e41a593d9fd9e5b9c73b0611f8f0bf8610fe8",
+        "0013-full-mock-exam.html": "4957ae709d0e7a1ced679eb5151423237ca5ba667ce688b0d91cdedbdaf3bb9f",
+        "0014-rolling-review.html": "a4a8d38bb703608e4d72a5d19d48add203a1cfcca9f6200586735553c040f4d8",
+        "0015-final-review-a.html": "963c9ac03b3e643e9428679979afcbac1a3d7d929a00176c8166ab87a3d9ecc2",
+        "0016-final-review-b.html": "9bd5689eac8728ea98f3794c0140900932f8717f2bf2774e4f275e444af5e4c1",
+        "assets/components.css": "c72b64c189a62af09a32d9438c4f9636cc26ceefcc0ccf5b867c8ba6c5664423",
+        "assets/foundation.css": "739d0932983425ebbae559e33348637ee3b694cff6d2843edd70c2f07da4cd25",
+        "assets/lesson.css": "0459f311558a8bd5434e4059b072b3d2810fd8387b365675909a3dcc7c5570bb",
+        "assets/lesson.js": "4e23be7bfe3266cd5ddd27682aa487a7f4b5c1cc6c3583fc7519bebbad605f38",
+        "assets/tokens.css": "ab5365b38603c8dbb13149c96547c1e04ee6dcfbd36cedfe5aa8a84a58f4a476",
+        "index.html": "996d6143e3b9e74b2f857d20fc59922bc37135fc060f760121eccb5d5e871b1b",
+        "ref-01-same-char-diff-meaning.html": "54dad0a652901de881e95d27d8bbffd7894c6255205023ba88710c87dfff0fb9",
+        "review-0001-0007.html": "e8dd9f6a7fa6289008b4f396118e73d550ea08bdccde8cbda8ab001fb6bd65fa"
+      }
+    },
+    "ai-systems-designer": {
+      "slug": "ai",
+      "display_name": "AI学习",
+      "pipeline": "capability",
+      "page_count": 6,
+      "files": {
+        "0001-two-mindsets-grill-me.html": "4d5cbd048a58cd21995065ec9d210158fbb9f2b74e05b40c7e53cd027566c7dc",
+        "assets/components.css": "c72b64c189a62af09a32d9438c4f9636cc26ceefcc0ccf5b867c8ba6c5664423",
+        "assets/foundation.css": "739d0932983425ebbae559e33348637ee3b694cff6d2843edd70c2f07da4cd25",
+        "assets/lesson.css": "0459f311558a8bd5434e4059b072b3d2810fd8387b365675909a3dcc7c5570bb",
+        "assets/lesson.js": "4e23be7bfe3266cd5ddd27682aa487a7f4b5c1cc6c3583fc7519bebbad605f38",
+        "assets/tokens.css": "ab5365b38603c8dbb13149c96547c1e04ee6dcfbd36cedfe5aa8a84a58f4a476",
+        "index.html": "eea0dcc1248f32ff1270a7256fc873b1156d53bc2aa6f54380d727d4ffb8f7ec",
+        "ref-capability-map.html": "fb055027b019adc78b6bf3af59616972d518f74f1ea994b322d1deeb74836791",
+        "ref-detail-05-trigger-idempotent.html": "4147fc8b961a06d1c27fc9229f0b933ae4431c063715f3ccf53421af350e0185",
+        "ref-index.html": "e0fb081f5da2ba63ab3e8c235dca0889f2f1f0fc240fd08fa2043a37a8cfa104",
+        "ref-qcalls-cheatsheet.html": "ed019e4df3ee1a4d94ce0844e789b8b03c9087e20fa9fb35180849f8327b92f3",
+        "ref-skill-folder-guide.html": "58b82eb230c8448fb435df70f65c20c44fb0509014b036ef6e7db009c26ee932"
+      }
+    }
+  },
+  "changed_paths": [
+    "portal-manifest.json"
+  ],
+  "deleted_paths": []
+}
