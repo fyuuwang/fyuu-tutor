@@ -1,201 +1,237 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PMP26 第 0008A 课：从冲突信号找到来源和背景，再用共同原则共建基本规则。">
-  <title>第 08A 课 · 先找到冲突机制，再一起定规则</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>0008A · 找到冲突机制并建立共同规则</title>
   <link rel="stylesheet" href="assets/lesson.css">
 </head>
 <body data-portal-home="../index.html" data-course-route="index.html" data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="people">
-  <a class="skip-link" href="#lesson-content">跳到正文</a>
   <div class="reading-progress" aria-hidden="true"><span></span></div>
   <main class="lesson-shell" id="lesson-content">
     <nav class="course-nav" aria-label="课程导航">
       <nav class="lesson-steps" aria-label="课程阶段">
         <a href="#map" aria-current="step"><span class="step-number">01</span><span>先看地图</span></a>
-        <a href="#case"><span class="step-number">02</span><span>沿案例判断</span></a>
+        <a href="#case"><span class="step-number">02</span><span>沿判断讲解</span></a>
         <a href="#practice"><span class="step-number">03</span><span>练一练</span></a>
       </nav>
     </nav>
     <header class="lesson-header">
-      <p class="eyebrow">PMP26 · 第 08A 课 · 课程包 0008</p>
-      <h1>先找到冲突机制，再一起定规则</h1>
-      <p class="lesson-deck">接口日期争执出现时，林岚先不把周牧归类成“不配合”。她沿着一条判断循环，把冲突信号放回来源和背景，再说明共同原则，最后和四方一起定出能观察、能复核的基本规则。本课覆盖冲突处理的前半段。</p>
-      <dl class="lesson-meta">
-        <div><dt>预计时间</dt><dd>最小 10 分钟 / 完整 20 分钟</dd></div>
-        <div><dt>位置</dt><dd>PMP26 · 0008A · U02 人与团队</dd></div>
-        <div><dt>完成后能做什么</dt><dd>从冲突信号拆出来源和背景，讲清共同原则并共建基本规则</dd></div>
-      </dl>
+      <p class="eyebrow">PMP 2026 · People · PPL-T02 · 0008A</p>
+      <h1>找到冲突机制并建立共同规则</h1>
+      <p class="lesson-deck">接口争执出现时，先把来源和背景放回现场，再说明共同原则，与参与者共同建立可观察、可复核的基本规则。</p>
     </header>
+
     <section class="map-section" id="map" data-stage="map" aria-labelledby="map-title">
-      <p class="eyebrow">先看地图</p>
-      <h2 id="map-title">冲突不是标签，是一条可判断的路径</h2>
-      <p class="section-intro">先问“发生了什么”，再问“为什么现在发生”，然后让参与者知道怎样一起工作。地图从信号走到规则，不把任何人先变成问题。</p>
-      <div class="learning-map" data-component="learning-map" aria-label="从冲突信号到共同规则的判断地图">
-        <div class="map-hub"><strong>先理解，再处理</strong><span>把冲突放回现场</span></div>
-        <a class="map-node map-node--why" href="#scene-1"><strong>找来源</strong><span>哪一种机制在拉扯？</span></a>
-        <a class="map-node map-node--govern" href="#scene-2"><strong>放回背景</strong><span>时点和约束改变什么？</span></a>
-        <a class="map-node map-node--build" href="#scene-3"><strong>讲原则</strong><span>怎样让对话继续？</span></a>
-        <a class="map-node map-node--owner" href="#scene-4"><strong>共建规则</strong><span>怎样一起复核？</span></a>
+      <p class="eyebrow">Map · 全貌</p>
+      <h2 id="map-title">本课围绕「冲突管理基础」展开</h2>
+      <div class="learning-map" data-component="learning-map" aria-label="冲突管理基础">
+        <div class="map-hub"><strong>冲突管理基础</strong><span>把来源、背景、管理原则和共同基本规则放在同一张知识图中，解释冲突如何被理解和管理。</span></div>
+        <a class="map-node map-node--why" href="#scene-01-sources"><strong>冲突来源</strong><span>先把可观察的拉扯拆成目标、资源、角色或信息机制，再判断哪一种来源需要澄清。</span></a>
+        <a class="map-node map-node--govern" href="#scene-02-context"><strong>冲突背景</strong><span>同一句话放到不同的时点、权力和交付压力里会变味，补齐这些约束才能分析背景。</span></a>
+        <a class="map-node map-node--owner" href="#scene-03-principles-rules"><strong>管理原则</strong><span>先用尊重、透明和对事不对人的工作方式降低误判，再把它说成冲突管理原则。</span></a>
+        <a class="map-node map-node--build" href="#scene-03-principles-rules"><strong>共同基本规则</strong><span>把发言、证据、异议回应和记录约定成大家能观察和复核的共同基本规则。</span></a>
       </div>
     </section>
+
     <section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
-      <p class="eyebrow">沿案例判断</p>
-      <h2 id="case-title">云桥接口延期：先把“谁的问题”拆开</h2>
-      <p class="section-intro">客户服务平台准备接入供应商云桥的工单接口。业务林岚要在本周看到端到端演示，技术周牧说接口日期不能定，客服陈悦担心一线培训被压缩。四个人都在同一张项目桌旁。</p>
-      <article class="scene" id="scene-1" data-component="scene">
+      <p class="eyebrow">Explanation · 判断循环</p>
+      <h2 id="case-title">先理解发生了什么，再把冲突转成可复核的协作方式</h2>
+
+      <article class="scene" id="scene-01-sources" data-component="scene">
         <div class="scene-number">01</div>
         <div class="scene-body">
-          <h3>看见冲突信号，不急着看人</h3>
-          <p>周牧把接口日期从周五改成下周三，林岚脱口而出：“技术又不配合。”林岚停下来，把可观察事实写在白板上：日期改变、测试环境还缺一项权限、业务演示有时间承诺。接着她分别检查目标冲突、资源不足、角色不清和信息失真，而不是猜周牧的性格。</p>
-          <dl class="boundary-list" data-component="boundary-list">
-            <div class="boundary-row"><dt>冲突来源分析</dt><dd>寻找能被事实支持的目标、资源、角色或信息机制，下一步因此可以被验证。</dd></div>
-            <div class="boundary-row"><dt>人身归因</dt><dd>把困难归到某个人身上，无法说明缺什么信息，也不能直接改善接口工作。</dd></div>
-          </dl>
-          <p class="takeaway" data-component="takeaway">记忆钩子：先记录发生了什么，再判断哪一种机制在拉扯；“难合作”不是来源证据。</p>
+          <h3>先找来源，不先给人下结论</h3>
+          <p>跨部门客户服务平台改造进入接口评审。业务负责人要本周演示，技术负责人说日期不能定，客服代表担心培训窗口，供应商代表说测试数据还没齐。项目经理先记录日期、承诺、权限和缺口，再把争执拆成目标冲突、资源不足、角色不清或信息失真。记录触发事实，分别核对目标冲突、资源不足、角色不清和信息失真，并标出仍未知的证据。先弄清卡在哪里，再贴上正式术语：冲突来源（conflict sources）是能被事实核对、能改变下一步行动的机制。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li><strong>来源分析：</strong>可观察的目标、资源、角色或信息机制，能指向澄清动作。</li>
+            <li><strong>人身归因：</strong>把困难归到性格或态度，没有证据也不能决定下一步。</li>
+            <li><strong>边界：</strong>来源分析能改变下一步行动；把困难归到性格或态度不能替代证据。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>即时复核：先保留哪些事实？</summary>
+            <p>把日期改变、权限缺口、演示承诺和测试数据逐项对照，只保留能被记录的事实。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">先记录发生了什么，再判断哪一种机制在拉扯；不同意见不是人格证据。</p>
         </div>
       </article>
-      <article class="scene" id="scene-2" data-component="scene">
+
+      <article class="scene" id="scene-02-context" data-component="scene">
         <div class="scene-number">02</div>
         <div class="scene-body">
-          <h3>同一句“先别上线”，背景不同，行动就不同</h3>
-          <p>如果这句话发生在探索期，周牧可能是在提醒接口假设还没验证；如果发生在上线前一天，可能是权限、测试数据或交付风险没有闭合。林岚先补齐时点、交付压力、角色权力和既往承诺，再决定要问什么。她不先找责任人，因为背景缺口会改变解决顺序。</p>
-          <div class="decision-path" data-component="decision-path" aria-label="冲突背景判断路径">
-            <div class="decision-node">事实相同，时点或约束不同</div>
-            <div class="decision-arrow" aria-hidden="true">→</div>
-            <div class="decision-node decision-node--answer">先补背景，再选择沟通和行动</div>
-          </div>
+          <h3>把同一信号放回现场</h3>
+          <p>同一句“先别上线”在探索期和上线前一天不能按同一含义处理。项目经理补问时点、交付压力、角色权力、既往承诺和测试条件：探索期可能是风险尚未验证，上线前一天可能是权限或回归结果未闭合。先把约束放回现场，再给出正式术语：冲突背景分析（analyze the context for the conflict）是用时点、关系和约束解释信号如何影响行动。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li><strong>背景分析：</strong>先补齐会改变顺序的约束，再决定澄清、调整承诺或修复资源。</li>
+            <li><strong>马上找责任人：</strong>跳过背景差异，容易把资源或权限问题误判成态度问题。</li>
+            <li><strong>边界：</strong>背景分析先理解约束；马上找责任人会跳过能改变行动顺序的信息。</li>
+          </ul>
           <details class="quick-check" data-component="quick-check">
-            <summary>想一想：还缺哪一项信息，可能改变下一步？</summary>
-            <p>先问接口测试权限是否已批准，以及本周演示承诺是否可调整；这两项分别揭示资源约束和交付压力。</p>
+            <summary>即时复核：哪一项背景缺口会改变下一步？</summary>
+            <p>把时点、交付压力、角色权力、既往承诺和测试条件列成核验顺序，再选择先澄清还是先修复约束。</p>
           </details>
-          <p class="takeaway" data-component="takeaway">记忆钩子：背景不是补充说明，而是决定你先澄清、先调整承诺，还是先修复资源的依据。</p>
+          <p class="takeaway" data-component="takeaway">背景不是附注；它决定你先澄清、调整承诺，还是修复资源。</p>
         </div>
       </article>
-      <article class="scene" id="scene-3" data-component="scene">
+
+      <article class="scene" id="scene-03-principles-rules" data-component="scene">
         <div class="scene-number">03</div>
         <div class="scene-body">
-          <h3>把共同原则讲成下一步动作</h3>
-          <p>林岚没有宣布“经理的结论”，而是对技术、客服和云桥说：“我们先把事实和约束说完整；讨论接口问题，不评价谁；每个角色都说明自己能承诺什么。”她请每个人复述自己听到的原则，再问哪一条会让下一次接口评审更安全。</p>
-          <div class="worked-example" data-component="worked-example">
-            <div class="worked-step"><div class="worked-num">1</div><div class="worked-step-body"><p>先复述共同事实：日期、权限、测试数据和演示承诺。</p></div></div>
-            <div class="worked-step"><div class="worked-num">2</div><div class="worked-step-body"><p>再说明共同原则：尊重角色、围绕问题、让顾虑可以被说出来。</p></div></div>
-            <div class="worked-step"><div class="worked-num">3</div><div class="worked-step-body"><p>最后让参与者把原则翻成下一次评审的可观察行为。</p></div></div>
-          </div>
-          <p class="takeaway" data-component="takeaway">记忆钩子：冲突管理原则不是口号；说完以后，参与者应知道下一次对话怎样更可工作。</p>
+          <h3>先说明原则，再共同定出可复核规则</h3>
+          <p>来源和背景对齐后，项目经理向各职责说明：先说事实和约束，围绕接口问题而非评价个人，给每个职责机会说明可承诺的范围，并让顾虑能被安全提出。说明尊重角色、对事不对人、透明表达约束和共同找方案，并让参与者复述适用时点。先让共同工作方式可理解，再贴正式术语：沟通冲突管理原则（communicate conflict management principles）不是宣布经理结论，而是把尊重、透明、对事不对人翻成可执行动作。四方随后共同确认评审规则：发言带证据；异议记录影响和回应时点；日期调整同步新承诺。由参与者共同确认发言证据、异议回应、日期变更和记录位置，并约定回看。这样建立的是促进遵守共同基本规则的环境（an environment that fosters adherence to common ground rules），不是单方面命令。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li><strong>共同基本规则：</strong>参与者共同确认、能观察、能复核，支持持续协作。</li>
+            <li><strong>单方面命令或处罚表：</strong>只规定服从，不提供事实澄清、共同承诺和修复路径。</li>
+            <li><strong>边界：</strong>沟通原则是共同工作方式，不是要求所有人接受项目经理的单方面结论。</li>
+            <li><strong>规则边界：</strong>共同基本规则服务于协作并可复核；单方面命令或处罚表不能代替共识和修复。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>即时复核：规则怎样才算可复核？</summary>
+            <p>检查每条规则是否有共同确认、可观察行为、记录位置和回看时点；缺一项就回到共同讨论。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">原则要落到行为，规则要能被共同确认和复核；规则不是惩罚清单。</p>
         </div>
       </article>
-      <article class="scene" id="scene-4" data-component="scene">
+
+      <article class="scene" id="scene-04-transfer" data-component="scene">
         <div class="scene-number">04</div>
         <div class="scene-body">
-          <h3>共同基本规则：让协作可以被看见</h3>
-          <p>四方共同写下接口评审规则：发言前带证据；提出异议后在一个工作日内回应；不同意时记录分歧和影响；需要调整日期时同时写明新承诺。规则由参与者共同确认，林岚只负责把它们放到下一次评审的议程和记录里。</p>
-          <dl class="boundary-list" data-component="boundary-list">
-            <div class="boundary-row"><dt>共同基本规则</dt><dd>参与者共同同意、能观察、能复核，帮助团队持续协作。</dd></div>
-            <div class="boundary-row"><dt>单方面命令或处罚表</dt><dd>只规定谁要服从，不能替代事实澄清、对话和共同承诺。</dd></div>
-          </dl>
-          <details class="production-task" data-component="quick-check" data-item-id="LESSON-0008a-conflict-sources-and-ground-rules-TASK-01">
-            <summary>主动产出：为下一次接口评审写三条规则</summary>
-            <div class="production-task-body">
-              <p class="production-prompt">请写三条能观察、能复核的规则，并为每条规则写一个“违反时留下什么事实”的记录点。</p>
-              <textarea aria-label="接口评审基本规则"></textarea>
-            </div>
+          <h3>换到培训项目，仍按同一顺序判断</h3>
+          <p>迁移到客户服务培训项目：业务负责人要求明天开课，客服代表发现材料缺一版，技术负责人说练习账号还未获批，供应商代表则认为文件已经交付。项目经理先查目标、资源、角色、信息和开课时点，区分交付事实与误解；再说明围绕培训风险、尊重职责、透明补齐证据的原则；最后由参与者共同确认材料版本、账号验证、异议回应和日期变更记录。四方在下一次评审按规则回看，不把分歧变成人身判断。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li><strong>换情境：</strong>项目领域改变，但来源、背景、原则、规则的判断顺序不变。</li>
+            <li><strong>套用标签：</strong>只把新冲突归类为态度问题，不会产生可验证的处理动作。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>迁移复核：换场景后还按哪三步走？</summary>
+            <p>按来源与背景、原则、共同规则的三步顺序检查培训场景，并保留事实与回看位置。</p>
           </details>
-          <p class="takeaway" data-component="takeaway">记忆钩子：共同规则服务于共同工作；它不是把冲突变成惩罚清单。</p>
+          <p class="takeaway" data-component="takeaway">换场景不换顺序：先找来源与背景，再说明原则，最后共同建立能复核的规则。</p>
         </div>
       </article>
     </section>
+
     <section class="audit-section" data-stage="case" data-component="audit-section" aria-labelledby="audit-title">
-      <p class="eyebrow">范围与来源</p>
-      <h2 id="audit-title">本课覆盖与可追溯依据</h2>
-      <div class="audit-grid">
-        <details class="audit-card"><summary>逐 Enabler 覆盖</summary><div class="audit-content">
+      <p class="eyebrow">Audit · 覆盖与来源</p>
+      <h2 id="audit-title">0008A Enabler 覆盖</h2>
+      <p class="section-intro">本包严格承载 PPL-T02-E01–E04：每个 Enabler 都有场景、边界和独立锚点；Audit 只定位映射和正式来源，不替代教学。</p>
+      <details class="audit-card">
+        <summary>逐 Enabler 覆盖与正式来源</summary>
+        <div class="audit-content">
           <table class="coverage-table" data-component="coverage-table">
-            <thead><tr><th>Enabler</th><th>场景与学习者产出</th><th>来源定位</th></tr></thead>
+            <thead><tr><th>Enabler</th><th>场景与独立锚点</th><th>来源定位</th></tr></thead>
             <tbody>
-              <tr><td>PPL-T02-E01</td><td>场景 1：从接口争执拆出目标、资源、角色或信息来源；学习者指出来源及证据。</td><td>ECO July 2026 · People · Task 2 “Identify conflict sources”</td></tr>
-              <tr><td>PPL-T02-E02</td><td>场景 2：把时点、权力、交付压力和既往承诺放入背景；学习者选择缺失背景并说明影响。</td><td>ECO July 2026 · People · Task 2 “Analyze the context for the conflict”</td></tr>
-              <tr><td>PPL-T02-E03</td><td>场景 3：向团队和外部相关方说明共同原则；学习者解释一条原则及适用时点。</td><td>ECO July 2026 · People · Task 2 “Communicate conflict management principles”</td></tr>
-              <tr><td>PPL-T02-E04</td><td>场景 4：四方共同写出可观察规则；学习者产出三条规则和记录点。</td><td>ECO July 2026 · People · Task 2 “Establish an environment that fosters adherence to common ground rules”</td></tr>
+              <tr><td>PPL-T02-E01</td><td>场景 01、04：从可观察信号拆出目标、资源、角色和信息机制；指出来源及其现场证据。</td><td>sources/official/eco-exam-outline-2026.md:230；sources/official/pmbok7.md:3947-3950</td></tr>
+              <tr><td>PPL-T02-E02</td><td>场景 02、04：把时点、权力、交付压力、既往承诺和测试条件放回背景；指出背景缺口及其对下一步的影响。</td><td>sources/official/eco-exam-outline-2026.md:234；sources/official/pmbok7.md:3953-3961</td></tr>
+              <tr><td>PPL-T02-E03</td><td>场景 03、04：说明尊重、透明、对事不对人和共同找方案的工作方式；复述原则并指出适用时点。</td><td>sources/official/eco-exam-outline-2026.md:236；sources/official/pmbok7.md:3953-3958、3708-3729</td></tr>
+              <tr><td>PPL-T02-E04</td><td>场景 03、04：由参与者共同确认能观察、能复核的发言、异议、日期变更和记录规则；指出观察证据与回看位置。</td><td>sources/official/eco-exam-outline-2026.md:240；sources/official/pmbok7.md:1644-1652、1669-1674</td></tr>
             </tbody>
           </table>
-        </div></details>
-        <details class="audit-card"><summary>本地正式来源</summary><div class="audit-content">
-          <ul>
-            <li><code>sources/official/eco-exam-outline-2026.md</code>：People / Task 2 的四项冲突与共同规则条目。</li>
-            <li><code>sources/official/pmbok7.md</code>：3.2“营造协作的项目团队环境”（团队共识、协作和冲突管理）及 3.3 的双向沟通解释。</li>
-          </ul>
-          <p>PMBOK 7 只作解释；本课的首次覆盖边界以 PMP ECO July 2026 为准。</p>
-        </div></details>
-      </div>
+        </div>
+      </details>
+      <p class="section-intro">正式依据只采用 PMP ECO July 2026 People Task 2 与 PMBOK 7 团队协作、团队共识和冲突管理段落；Scrum Guide 仅作职责边界解释。本包不承担 PPL-T02-E05/E06、PPL-T03、BEN-T01，不写机构题正文，不改变 Produced、Studied、Demonstrated 或 Stable。</p>
+      <p class="section-intro">定位补充：<code>sources/official/eco-exam-outline-2026.md:230-242</code>；<code>sources/official/pmbok7.md:1644-1674、3700-3737、3947-3961</code>；<code>sources/official/scrum-guide.md:179-190</code> 仅作职责边界解释。结构只参考 <code>outputs/lessons/0011b-governance-structure-metrics-thresholds.html</code>（SHA-256 <code>0c90dbf573490aa407fd66abfbf02e23ba2b647bd3c31feb75cf82363caa9632</code>）。</p>
     </section>
+
     <section class="quiz-section" id="practice" data-stage="practice" aria-labelledby="practice-title" data-question-label="练习题">
-      <p class="eyebrow">练一练</p>
-      <h2 id="practice-title">先判断机制，再选择最优行动</h2>
-      <p class="section-intro">四道公开安全自编题，检查来源、背景、原则和共同规则。每道解析说明考点与最佳行动。</p>
+      <p class="eyebrow">Practice · 课后练习</p>
+      <h2 id="practice-title">用四个判断检查同一条循环</h2>
+      <p class="section-intro">先找来源与背景，再说明共同工作原则，最后由参与者确认可观察、可复核的规则。</p>
       <div class="quiz-toolbar"><span id="scoreText">已答 0 / 4 · 正确 0</span><button class="reset-button" id="resetQuiz" type="button">重做</button></div>
       <div id="quiz"></div>
     </section>
-    <footer class="lesson-footer"><p>下一步：进入 0008B《修复违规，再把约定的策略跑起来》——把共同规则变成可恢复、可执行的工作方式。</p><nav class="course-pagination" aria-label="课程前后导航"><a href="0007e-resource-needs-and-availability.html">← 上一节</a><a href="0008b-ground-rule-repair-and-resolution.html">继续下一节 →</a></nav></footer>
   </main>
-  <nav class="course-return-dock" data-component="course-return-dock" aria-label="全局学习导航">
-    <a class="course-home" href="../index.html" aria-label="返回学习门户" title="学习门户"><span aria-hidden="true">⌂</span><span class="course-home-label">学习门户</span></a>
-    <a class="course-back" href="index.html" aria-label="返回课程路线" title="课程路线"><span aria-hidden="true">←</span><span class="course-back-label">课程路线</span></a>
+
+  <nav class="course-return-dock" data-component="course-return-dock" aria-label="Global learning navigation">
+    <a class="course-back" href="index.html" aria-label="返回课程路线" title="课程路线">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+      <span class="sr-only course-back-label">课程路线</span>
+    </a>
+    <a class="course-home" href="../index.html" aria-label="返回学习门户" title="学习门户">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 21v-8a2 2 0 0 0-1-1h-4a2 2 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0L21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+      <span class="sr-only course-home-label">学习门户</span>
+    </a>
   </nav>
+
   <script id="lesson-questions" type="application/json">
 [
   {
     "id": "LESSON-0008a-conflict-sources-and-ground-rules-Q001",
     "type": "single_choice",
-    "stem": "周牧把接口日期推迟三天，林岚认为他“不配合”。下一步最符合冲突处理原则的做法是什么？",
+    "stem": "两个职能代表都说自己被排除在关键决定之外。协调人首先应做什么？",
     "options": [
-      "先记录可观察事实，再核对目标、资源、角色和信息来源。",
-      "请项目经理立即判断周牧是否适合继续负责。",
-      "把延期写入团队处罚清单，要求周牧公开说明。",
-      "先说服客服接受新日期，再回头询问技术原因。"
+      "先请发起人划定责任边界，再决定是否升级。",
+      "核对记录、权限和信息流，归类冲突来源。",
+      "先开结构化会议，让双方陈述立场和依据。",
+      "按资历和职位判断哪方更接近决策依据。"
     ],
-    "answer": 0,
-    "rationale": "考点是 PPL-T02-E01 的冲突来源识别。最佳行动是先用事实区分目标、资源、角色或信息机制，再决定行动；人格标签、处罚或绕过技术都跳过了诊断，无法定位来源。依据：PMP ECO July 2026 People / Task 2。"
+    "answer": 1,
+    "rationale": "A：未分类先交由发起人裁决；B：记录、权限和信息流支持来源分类；C：先开会可能遗漏时点证据；D：资历不能替代可核验材料。"
   },
   {
     "id": "LESSON-0008a-conflict-sources-and-ground-rules-Q002",
     "type": "single_choice",
-    "stem": "同一句“先别上线”在探索期和上线前一天可能代表不同问题。林岚首先应该做什么？",
+    "stem": "团队已同意每周一在共享日志记录依赖变化；周四有人口头提出风险却未更新。项目负责人此时如何介入？",
     "options": [
-      "直接要求说这句话的人给出责任人。",
-      "补齐时点、交付压力、角色权力和既往承诺，再判断缺口。",
-      "规定以后所有异议都必须在群里公开。",
-      "把两种情境都当成态度问题，统一按违规处理。"
+      "先与记录人核对遗漏背景，再决定是否调整登记安排。",
+      "先保留现行安排，待迭代复盘后再决定是否修订。",
+      "先请部门经理确认责任边界，再调整登记安排。",
+      "将遗漏归入信息机制缺口，并补定风险触发即登记的可观察规则。"
     ],
-    "answer": 1,
-    "rationale": "考点是 PPL-T02-E02 的冲突背景分析。最佳行动是先补背景，因为时点和约束会改变下一步是澄清风险、调整承诺还是修复资源；直接找责任人会把背景差异抹平。依据：PMP ECO July 2026 People / Task 2。"
+    "answer": 3,
+    "rationale": "A：只问背景仍未完成来源分类；B：延后修订错过当前缺口；C：越过现有分工；D：把遗漏归入信息机制缺口并建立可观察规则。"
   },
   {
     "id": "LESSON-0008a-conflict-sources-and-ground-rules-Q003",
     "type": "single_choice",
-    "stem": "林岚要向技术、客服和云桥说明冲突管理原则。哪种表达最能让共同原则进入下一次对话？",
+    "stem": "两个交付小组都说延期由对方造成。哪组材料最能区分资源冲突与信息缺口？",
     "options": [
-      "“以后都按我的结论做，效率最高。”",
-      "“谁不同意就先暂停参与评审。”",
-      "“我们先说事实和约束，讨论问题而不是评价人，并说明各自能承诺什么。”",
-      "“只要最后按时上线，过程中的顾虑可以不记录。”"
+      "对比版本计划、资源分配、变更确认和通知时间。",
+      "只看最近会议的发言顺序，判断谁先提出问题。",
+      "先让双方承诺加强沟通，再决定责任归属。",
+      "按主持人的判断直接指定主要受影响的一方。"
     ],
-    "answer": 2,
-    "rationale": "考点是 PPL-T02-E03 的原则沟通。最佳表达把事实、角色、问题焦点和承诺方式说成可执行的共同工作方式，而不是压服或掩盖顾虑。依据：PMP ECO July 2026 People / Task 2，以及 PMBOK 7 的协作和双向沟通解释。"
+    "answer": 0,
+    "rationale": "A：四类材料可交叉判断资源与信息机制；B：发言顺序不能证明因果；C：泛泛承诺不提供证据；D：主持人判断不能替代记录。"
   },
   {
     "id": "LESSON-0008a-conflict-sources-and-ground-rules-Q004",
     "type": "single_choice",
-    "stem": "四方要让接口评审更可复核，哪一组做法最符合共同基本规则？",
+    "stem": "一次冲突暴露出成员对“紧急”理解不一。哪项最小规则可直接执行？",
     "options": [
-      "经理单方面发布处罚表，并要求所有人签字。",
-      "只规定必须同意日期，不记录异议。",
-      "发言前带证据、异议在一个工作日内回应、记录分歧影响并同步新承诺。",
-      "把所有讨论移到私聊，避免团队看到分歧。"
+      "以后所有事项都由项目经理判定紧急程度。",
+      "要求成员提高敏感度，必要时自行处理。",
+      "写明触发条件、通知渠道、响应时限和责任人。",
+      "等下次类似事件发生，再决定是否制定规则。"
     ],
     "answer": 2,
-    "rationale": "考点是 PPL-T02-E04 的共同基本规则。最佳选项由参与者共同确认且可观察、可复核，能支持协作和后续修复；单方面处罚、压掉异议或隐藏讨论都不能建立共同工作环境。依据：PMP ECO July 2026 People / Task 2，以及 PMBOK 7 第 3.2 节。"
+    "rationale": "A：把规则变成单一权力裁量；B：期待更敏感不可观察；C：触发、渠道、时限和责任可执行；D：延后制定使冲突继续。"
+  },
+  {
+    "id": "LESSON-0008a-conflict-sources-and-ground-rules-Q005",
+    "type": "single_choice",
+    "stem": "资深专家与新成员争执资源分配；新成员担心公开反驳影响评价。协调人应先做什么？",
+    "options": [
+      "让资深专家先决定，以保持分配效率。",
+      "分别核实记录、权限、评价关系及时点约束。",
+      "先在全员会上收集双方立场，再核实评价关系与时点约束。",
+      "直接把争议升级到更高层，避开权力差。"
+    ],
+    "answer": 1,
+    "rationale": "A：让权力差直接决定结果；B：先核实事实与权力、评价、时点背景；C：先公开后核实可能固化立场并放大权力风险；D：未理解背景就升级。"
+  },
+  {
+    "id": "LESSON-0008a-conflict-sources-and-ground-rules-Q006",
+    "type": "single_choice",
+    "stem": "项目连续返工：业务说需求被误解，工程说验收口径反复，关键决定常在非正式聊天作出。首轮方案应是什么？",
+    "options": [
+      "核对需求、验收和聊天记录，分类来源并定下留痕规则。",
+      "要求所有争议先报发起人，待其答复后再继续。",
+      "先固定一份验收模板，要求后续决定都按模板留痕。",
+      "让资深代表单独裁定验收口径，由团队统一照办。"
+    ],
+    "answer": 0,
+    "rationale": "A：同时核对证据、来源和背景并形成可观察规则；B：先升级会暂停工作；C：只固定模板可能绕过来源和背景判断；D：单一资历裁定掩盖信息与角色问题。"
   }
 ]
   </script>

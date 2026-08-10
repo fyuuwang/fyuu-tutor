@@ -5,7 +5,7 @@
   --neutral-white: #ffffff;
   --neutral-ink: #202634;
   --neutral-ink-soft: #5f6673;
-  --neutral-ink-faint: #7d8490;
+  --neutral-ink-faint: #5f6673;
   --neutral-page: #eff1f3;
   --neutral-line: #d9dce2;
   --neutral-line-strong: #bdc2cb;
@@ -445,8 +445,12 @@ h3 {
   font-weight: 750;
 }
 
-.scene-body > p:first-of-type {
+.scene-body > p,
+.scene-body > .boundary-list {
   max-width: 760px;
+}
+
+.scene-body > p:first-of-type {
   color: var(--ink-soft);
   font-size: 17px;
 }
@@ -727,12 +731,26 @@ code {
   border-bottom: 1px solid var(--line-strong);
 }
 
+.lesson-header > .quiz-toolbar {
+  border-top: 0;
+  border-bottom: 0;
+  margin-top: 0;
+}
+
+.lesson-header + .quiz-section[data-practice-sections="true"] {
+  border-top: 0;
+}
+
 #scoreText {
   font-variant-numeric: tabular-nums;
   font-weight: 700;
 }
 
 .reset-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   min-height: 44px;
   padding: 9px 16px;
   border: 1px solid var(--line-strong);
@@ -742,6 +760,17 @@ code {
   cursor: pointer;
   font: inherit;
   font-weight: 700;
+}
+
+.reset-button svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .reset-button:hover {
@@ -1551,6 +1580,35 @@ code {
     align-items: flex-start;
   }
 
+  .lesson-header > .quiz-toolbar {
+    align-items: center;
+  }
+
+  .lesson-header > .quiz-toolbar #scoreText {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .lesson-header > .quiz-toolbar .reset-button {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: var(--radius);
+  }
+
+  .lesson-header > .quiz-toolbar .reset-button-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   .question {
     padding: 20px 16px;
   }
@@ -1761,10 +1819,10 @@ code {
   bottom: max(16px, env(safe-area-inset-bottom));
   z-index: 15;
   display: inline-grid;
-  grid-auto-flow: column;
+  grid-auto-flow: row;
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.96);
   box-shadow: var(--shadow);
 }
@@ -1786,7 +1844,15 @@ code {
 }
 
 .course-return-dock .course-back {
-  border-left: 1px solid var(--line);
+  border: 0;
+}
+
+.course-return-dock .course-home {
+  border-top: 1px solid var(--line);
+}
+
+.course-return-dock .course-home:only-child {
+  border: 0;
 }
 
 .course-return-dock .course-home:hover,
@@ -1802,7 +1868,8 @@ code {
 }
 
 .course-return-dock .course-home-label,
-.course-return-dock .course-back-label {
+.course-return-dock .course-back-label,
+.sr-only {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -1812,6 +1879,16 @@ code {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.course-return-dock svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Old UI v2 pages briefly contain these top returns until lesson.js moves
@@ -1852,6 +1929,29 @@ code {
   .course-return-dock {
     right: max(12px, env(safe-area-inset-right));
     bottom: max(12px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 680px) {
+  .course-return-dock {
+    grid-auto-flow: column;
+  }
+  .course-return-dock .course-home {
+    border-top: 0;
+    border-left: 1px solid var(--line);
+  }
+  .course-return-dock .course-home:only-child {
+    border: 0;
+  }
+}
+
+@media print {
+  .course-nav,
+  .lesson-steps,
+  .reading-progress,
+  .reset-button,
+  .course-return-dock {
+    display: none !important;
   }
 }
 

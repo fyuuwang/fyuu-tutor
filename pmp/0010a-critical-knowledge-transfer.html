@@ -1,196 +1,234 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PMP26 第 0010A 课：找出客户服务平台的关键知识，收集显性与隐性经验，并让它在团队中持续流动。">
-  <title>第 10A 课 · 找到关键知识并让它流动起来</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="平台接口故障的判断依据散在日志、客服例外和现场经验里。课程先找出离开关键职责就会阻塞决定的知识，再向拥有者和现场收集，最后用共同实践让知识可被传递。">
+  <title>0010A · 找到关键知识并让它流动起来</title>
   <link rel="stylesheet" href="assets/lesson.css">
 </head>
 <body data-portal-home="../index.html" data-course-route="index.html" data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="people">
-  <a class="skip-link" href="#lesson-content">跳到正文</a>
   <div class="reading-progress" aria-hidden="true"><span></span></div>
   <main class="lesson-shell" id="lesson-content">
     <nav class="course-nav" aria-label="课程导航">
       <nav class="lesson-steps" aria-label="课程阶段">
         <a href="#map" aria-current="step"><span class="step-number">01</span><span>先看地图</span></a>
-        <a href="#case"><span class="step-number">02</span><span>沿案例判断</span></a>
+        <a href="#case"><span class="step-number">02</span><span>沿判断讲解</span></a>
         <a href="#practice"><span class="step-number">03</span><span>练一练</span></a>
       </nav>
     </nav>
     <header class="lesson-header">
-      <p class="eyebrow">PMP26 · 第 10A 课 · 课程包 0010</p>
+      <p class="eyebrow">PMP 2026 · People · 0010A</p>
       <h1>找到关键知识并让它流动起来</h1>
-      <p class="lesson-deck">周牧即将休假，而接口失败的判断依据只在他的记忆里。林岚先找出离开就会阻塞项目的知识，再向拥有者和现场收集，最后用共同实践和回看让知识可以被传递。本课先讲普通语言，再给出考试内容大纲（ECO）和项目管理知识体系指南（PMBOK）的术语。</p>
-      <dl class="lesson-meta">
-        <div><dt>预计时间</dt><dd>最小 10 分钟 / 完整 20 分钟</dd></div>
-        <div><dt>位置</dt><dd>PMP26 · 0010A · U02 人与团队</dd></div>
-        <div><dt>完成后能做什么</dt><dd>识别会阻塞决定的关键知识，收集它并建立持续传递的环境</dd></div>
-      </dl>
+      <p class="lesson-deck">平台接口故障的判断依据散在日志、客服例外和现场经验里。课程先找出离开关键职责就会阻塞决定的知识，再向拥有者和现场收集，最后用共同实践让知识可被传递。</p>
     </header>
+
     <section class="map-section" id="map" data-stage="map" aria-labelledby="map-title">
-      <p class="eyebrow">先看地图</p>
-      <h2 id="map-title">先问“缺什么知识”，再问“怎样让它留下来”</h2>
-      <p class="section-intro">知识传递不是把所有文件搬进仓库，而是一条可回看的判断循环：找关键断点，向拥有者和现场收集，再把共同实践变成团队环境。</p>
-      <div class="learning-map" data-component="learning-map" aria-label="从关键知识识别到持续传递的判断地图">
-        <div class="map-hub"><strong>知识要能改变行动</strong><span>筛选、收集、共同传递</span></div>
-        <a class="map-node map-node--why" href="#scene-1"><strong>找关键知识</strong><span>离开谁会阻塞哪个决定？</span></a>
-        <a class="map-node map-node--govern" href="#scene-2"><strong>向现场收集</strong><span>显性和隐性经验怎样被验证？</span></a>
-        <a class="map-node map-node--build" href="#scene-3"><strong>营造传递环境</strong><span>怎样让知识持续可复用？</span></a>
+      <p class="eyebrow">Map · 全貌</p>
+      <h2 id="map-title">本课围绕「知识传递」展开</h2>
+      <div class="learning-map" data-component="learning-map" aria-label="知识传递">
+        <div class="map-hub"><strong>知识传递</strong><span>把关键知识、知识收集和传递环境放在同一知识图中，解释知识如何从个人经验变成可复用能力。</span></div>
+        <a class="map-node map-node--why" href="#scene-01-critical-knowledge"><strong>关键知识</strong><span>先找出某项职责离开就会阻塞的决定、交付或风险，再识别关键知识。</span></a>
+        <a class="map-node map-node--govern" href="#scene-02-gather-knowledge"><strong>知识收集</strong><span>用记录、访谈、演示和复现把显性与隐性经验收进可验证的知识收集。</span></a>
+        <a class="map-node map-node--environment" href="#scene-03-transfer-environment"><strong>传递环境</strong><span>用共同实践、提问、复盘和回看让知识持续流动，形成传递环境。</span></a>
       </div>
     </section>
+
     <section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
-      <p class="eyebrow">沿案例判断</p>
-      <h2 id="case-title">周牧休假前：别让关键判断跟人一起离开</h2>
-      <p class="section-intro">云桥客户服务平台准备接入工单接口。客服陈悦知道几类客户例外，技术周牧掌握失败信号，供应商云桥有一次迁移复盘。林岚要在周牧休假前建立一条可传递的知识路径。</p>
-      <article class="scene" id="scene-1" data-component="scene">
+      <p class="eyebrow">Explanation · 判断循环</p>
+      <h2 id="case-title">先找出离开就会阻塞项目的知识，再向拥有者和现场收集，最后通过共同实践让它可传递</h2>
+      <p class="section-intro">跨部门客户服务平台改造进入接口联调，关键判据仍只掌握在少数职责的现场经验中。</p>
+      <article class="scene" id="scene-01-critical-knowledge" data-component="scene">
         <div class="scene-number">01</div>
         <div class="scene-body">
-          <h3>从资料堆里挑出会改变决定的知识</h3>
-          <p>林岚先不要求大家把几十份录音、日志和截图全部搬走。她问：“如果周牧明天不在，哪一个未知会让我们无法判断是否暂停接口、如何处理客服例外，或是否接受迁移风险？”于是清单先收录接口失败判据、客服例外条件和迁移风险证据。关键知识和所有资料不是一回事：前者连接到决定、交付或风险，后者可能只是还没被筛选的材料。</p>
-          <dl class="boundary-list" data-component="boundary-list">
-            <div class="boundary-row"><dt>关键知识</dt><dd>能改变交付判断、风险响应或客户处理的事实、经验、判据和上下文。</dd></div>
-            <div class="boundary-row"><dt>资料堆积</dt><dd>把所有文件放在一起，看似完整，却没有说明谁会用、影响什么决定、怎样验证。</dd></div>
-          </dl>
+          <h3>先找出离开就会卡住决定的知识</h3>
+          <p>接口联调准备切换时，技术负责人掌握接口失败判据，客服代表掌握一线例外，外部接口代表掌握迁移限制；这些内容分别散在日志、工作记录和现场经验里。项目经理先问：如果某项职责暂时离开，哪个决定、交付步骤或风险处理会立即卡住？团队因此标出失败判据、例外触发条件和迁移回退条件，而不是先收集会议记录。</p>
+          <p>先用大白话把判断说清，再贴正式术语：这叫识别项目关键知识（identify knowledge critical to the project）。可见动作是给每项知识写出受影响的决定、阻塞后果、拥有者和验证信号；关键知识清单服务下一步行动，不是资料总目录。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>关键知识：能改变决定、交付或风险处理的知识，有明确后果和验证信号。</li>
+            <li>资料堆积：把所有日志、录音和附件放在一起，却没有说明哪一项会改变下一步判断。</li>
+            </ul>
           <details class="quick-check" data-component="quick-check">
-            <summary>想一想：一份“最新进度截图”为什么不一定是关键知识？</summary>
-            <p>它可能显示结果，却不说明接口失败的判据、客服例外的处理条件或迁移风险；先问它会改变哪个决定，再决定是否进入关键清单。</p>
+            <summary>即时复核</summary>
+            <p>即时复核：检查一项候选知识是否同时指向受影响的决定、离开后的阻塞后果和可核对信号。</p>
           </details>
-          <p class="takeaway" data-component="takeaway">记忆钩子：关键知识不是“最多的资料”，而是“会改变下一步判断的知识”。</p>
+          <p class="takeaway" data-component="takeaway">先找会改变行动的知识，再决定收集什么；关键不由资料数量决定。</p>
         </div>
-      </article>
-      <article class="scene" id="scene-2" data-component="scene">
+      </article><article class="scene" id="scene-02-gather-knowledge" data-component="scene">
         <div class="scene-number">02</div>
         <div class="scene-body">
-          <h3>把隐性经验从动作里带出来</h3>
-          <p>周牧说：“我看到这个信号就知道要先查缓存，但很难写成一句话。”林岚让周牧带陈悦做一次真实故障回放：周牧边操作边解释，陈悦追问“看到什么才会换下一步”，云桥补充迁移时的例外。团队把步骤、判据、例外和证据写进可检索记录，再用另一条日志验证。文字和数字容易记录的是显性知识；判断习惯、经验和洞察属于隐性知识，需要连接拥有者与使用者。</p>
-          <div class="worked-example" data-component="worked-example">
-            <div class="worked-step"><div class="worked-num">1</div><div class="worked-step-body"><p>回放：让拥有者在真实或仿真情境中展示判断。</p></div></div>
-            <div class="worked-step"><div class="worked-num">2</div><div class="worked-step-body"><p>追问：记录“看见什么、为何转向、哪个例外会改变动作”。</p></div></div>
-            <div class="worked-step"><div class="worked-num">3</div><div class="worked-step-body"><p>验证：让另一位成员用新记录判断一条不同日志，再回写缺口。</p></div></div>
-          </div>
-          <details class="boundary-list" data-component="boundary-list">
-            <summary>边界对照：收集 vs 复制</summary>
-            <div class="boundary-row"><dt>收集知识</dt><dd>把经验、上下文、判据和验证动作连起来，让别人能够使用。</dd></div>
-            <div class="boundary-row"><dt>复制文件</dt><dd>只增加文件数量，不保证使用者理解隐含判断，也没有反馈验证。</dd></div>
-          </details>
+          <h3>向拥有者和现场收集显性与隐性知识</h3>
+          <p>清单确认后，团队发现接口步骤可以从记录中读取，但客服例外的判断顺序只在客服代表的现场经验里。项目经理没有要求拥有者独自补一篇长文，而是安排技术负责人和客服代表结对回放一次真实处理，外部接口代表说明迁移限制；随后由另一项职责按记录复现，并把触发条件、例外分支和验证结果补回知识卡。</p>
+          <p>这里先把日常动作翻成术语：收集知识（gather knowledge）同时处理显性知识（explicit knowledge）和隐性知识（tacit knowledge）。显性知识可以用步骤、图片或数字记录；隐性知识要通过访谈、工作跟随、演示、追问和复现连接拥有者与需要者。收集不是复制，验证才说明知识真的可用。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>收集知识：根据知识类型选择访谈、工作跟随、结对操作和复现，并留下上下文与验证信号。</li>
+            <li>复制文档：把现有内容原样转存，可能丢掉例外条件、判断顺序和现场约束。</li>
+            </ul>
           <details class="quick-check" data-component="quick-check">
-            <summary>想一想：为什么先结对回放，再整理手册？</summary>
-            <p>回放能捕捉动作中的隐性判断；手册随后把它变成可检索的显性记录，最后还要用另一条案例验证是否真的可用。</p>
+            <summary>即时复核</summary>
+            <p>即时复核：对一项依赖经验的判断，检查是否既有拥有者演示，也有需要者复现和结果核对。</p>
           </details>
-          <p class="takeaway" data-component="takeaway">记忆钩子：隐性知识要“让它做出来、问出来、再验证”，不是让专家独自写完。</p>
+          <p class="takeaway" data-component="takeaway">知识要被做出来、问出来、再验证；复制内容不等于收集到可用判断。</p>
         </div>
-      </article>
-      <article class="scene" id="scene-3" data-component="scene">
+      </article><article class="scene" id="scene-03-transfer-environment" data-component="scene">
         <div class="scene-number">03</div>
         <div class="scene-body">
-          <h3>让传递成为工作方式，而不是一次培训</h3>
-          <p>关键判据已经写入记录，但林岚没有把任务标成“知识已完成”。她在每周复盘留出安全提问时间，让客服、技术和云桥共同演示一次处理，更新记录并约定下一次回看。新成员可以结对操作，旧成员可以指出例外，团队再用实际结果确认记录是否仍然有效。一次培训是事件；可持续的知识环境则提供共同实践、反馈、复盘和再次使用的节奏。</p>
-          <dl class="boundary-list" data-component="boundary-list">
-            <div class="boundary-row"><dt>传递环境</dt><dd>有持续的共同实践、提问、复盘、更新和回看，让知识在工作中被复用。</dd></div>
-            <div class="boundary-row"><dt>一次培训</dt><dd>讲完、发出录屏就结束，缺少使用信号与反馈，无法发现判断已经变化。</dd></div>
-          </dl>
-          <details class="production-task" data-component="quick-check" data-item-id="LESSON-0010a-critical-knowledge-transfer-TASK-01">
-            <summary>主动产出：设计一个知识传递机制</summary>
-            <div class="production-task-body">
-              <p class="production-prompt">请为“接口失败判据”写一个可持续机制：谁和谁共同实践、留下什么记录、何时回看，以及怎样知道它仍然可用。</p>
-              <textarea aria-label="知识传递机制产出"></textarea>
-            </div>
+          <h3>让传递成为共同工作，而不是一次培训</h3>
+          <p>关键判据已经写入记录，但项目经理没有把任务标成“知识已完成”。团队在接口复盘中留出安全提问时间，让技术负责人、客服代表和外部接口代表共同演示一次处理；复盘后更新知识卡，安排新成员结对操作，并在下一次真实使用后回看错误记录和例外反馈。记录会随使用结果修订，而不是只在首次发布时定稿。</p>
+          <p>这才是促进知识传递环境（foster an environment for knowledge transfer）：共同实践、提问、复盘、更新和回看构成持续节奏。一次培训可以提供起点，却不能替代持续使用和反馈；环境要让知识在不同职责之间流动，并在判断变化时及时修订。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>传递环境：有共同实践、提问、复盘、更新和回看，知识在工作中被再次使用。</li>
+            <li>一次培训：讲完、发出录屏就结束，没有使用信号、反馈入口或修订节奏。</li>
+            </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>即时复核</summary>
+            <p>即时复核：检查安排是否同时包含共同实践、可安全提问的反馈、可检索记录和下一次回看。</p>
           </details>
-          <p class="takeaway" data-component="takeaway">记忆钩子：知识真正留下来，是因为团队持续使用、提问、修订和回看。</p>
+          <p class="takeaway" data-component="takeaway">知识真正留下来，是因为团队持续使用、提问、修订和回看。</p>
+        </div>
+      </article><article class="scene" id="scene-04-transfer" data-component="scene">
+        <div class="scene-number">04</div>
+        <div class="scene-body">
+          <h3>换到新流程交接，循环仍然不变</h3>
+          <p>把同一判断迁移到客服新流程交接：业务负责人需要确认发布决定，客服代表发现高峰期例外处理仍依赖现场经验，技术负责人发现迁移回退条件没有被新成员掌握，外部接口代表可以说明限制但无法替内部职责安排时间。项目经理先找出离开会阻塞发布和回退判断的知识，再安排拥有者演示、需要者复现和记录核对。</p>
+          <p>团队随后把一次交接安排成持续机制：共同演练例外处理，在复盘中允许追问，更新可检索知识卡，约定下一次真实使用后的回看。换了场景，顺序没有变：找出关键知识，向拥有者和现场收集，通过共同实践让它可传递；不把完整资料搬运或一次培训误当成循环完成。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>交接中的关键判据、拥有者演示、复现结果和回看时间属于同一条知识传递判断。</li>
+            <li>发布全部附件或安排一次讲解，却不验证现场能否复现，仍然留下知识断点。</li>
+            </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>即时复核</summary>
+            <p>迁移复核：依次找出会阻塞决定的知识、合适的收集动作、共同实践和回看信号。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">换场景不换循环；知识从关键性开始，经由现场验证，靠共同实践持续流动。</p>
         </div>
       </article>
     </section>
+
     <section class="audit-section" data-stage="case" data-component="audit-section" aria-labelledby="audit-title">
-      <p class="eyebrow">范围与来源</p>
-      <h2 id="audit-title">本课覆盖与可追溯依据</h2>
-      <div class="audit-grid">
-        <details class="audit-card"><summary>逐 Enabler 覆盖</summary><div class="audit-content">
+      <p class="eyebrow">Audit · 覆盖与来源</p>
+      <h2 id="audit-title">0010A Enabler 覆盖</h2>
+      <p class="section-intro">本包严格承载 PPL-T07-E01–E03：场景一把关键性连到决定、交付和风险后果；场景二区分显性与隐性知识，并用拥有者演示、需要者复现和结果核对完成收集；场景三把共同实践、提问、复盘、更新和回看连成知识传递环境；场景四换到流程交接，完整重走三步循环。每个 Enabler 都有对应场景、边界、即时复核和独立锚点，Audit 只做覆盖与来源定位，供后续装配验收。ECO July 2026 是首次承载的唯一考试范围依据；PMBOK 7 解释知识管理、显性/隐性知识、知识转移和协作环境；Scrum Guide 仅作检视与适应的边界对照。所有情境均为公开安全自编内容，不扩展 Enabler，不把学习者产出写入学习记录，也不改变课程或学习状态。</p>
+      <details class="audit-card">
+        <summary>逐 Enabler 覆盖与正式来源</summary>
+        <div class="audit-content">
           <table class="coverage-table" data-component="coverage-table">
-            <thead><tr><th>Enabler</th><th>场景与学习者产出</th><th>来源定位</th></tr></thead>
-            <tbody>
-              <tr><td>PPL-T07-E01</td><td>场景 1：从资料堆中筛出会影响接口决定、客服例外和迁移风险的关键知识；学习者列出一项及其影响的决定。</td><td>ECO July 2026 · People · Task 7；PMBOK 7 §2.2.1.3、§2.5.8.2</td></tr>
-              <tr><td>PPL-T07-E02</td><td>场景 2：用回放、追问、结对和验证收集显性与隐性知识；学习者选择收集方式并说明验证信号。</td><td>ECO July 2026 · People · Task 7；PMBOK 7 §2.5.8.2</td></tr>
-              <tr><td>PPL-T07-E03</td><td>场景 3：用共同实践、提问、复盘、更新和回看营造传递环境；学习者产出一个可复用机制。</td><td>ECO July 2026 · People · Task 7；PMBOK 7 §2.2.3、§2.5.8.2；Scrum Guide 透明/检视仅作对照</td></tr>
-            </tbody>
+            <thead><tr><th>Enabler</th><th>场景覆盖</th><th>来源定位</th></tr></thead>
+            <tbody><tr><td>PPL-T07-E01</td><td>从决定、交付和风险后果出发筛出离开就会阻塞项目的知识，并记录拥有者与验证信号，区分关键知识和全部资料。</td><td>sources/official/eco-exam-outline-2026.md:296–307；sources/official/pmbok7.md:5141–5149、5159–5163</td></tr>
+              <tr><td>PPL-T07-E02</td><td>按显性或隐性知识选择访谈、工作跟随、演示、结对和复现，保留上下文并用结果核对，区分收集和复制文档。</td><td>sources/official/eco-exam-outline-2026.md:300–307；sources/official/pmbok7.md:5150–5163</td></tr>
+              <tr><td>PPL-T07-E03</td><td>用共同实践、可安全提问的复盘、可检索记录、更新和回看营造持续传递环境，区分环境和一次培训。</td><td>sources/official/eco-exam-outline-2026.md:300–307；sources/official/pmbok7.md:1644–1674、1695–1700、3746–3768、5141–5163；sources/official/scrum-guide.md:145–155</td></tr>
+              </tbody>
           </table>
-        </div></details>
-        <details class="audit-card"><summary>本地正式来源</summary><div class="audit-content">
-          <ul>
-            <li><code>sources/official/eco-exam-outline-2026.md</code>：People / Task 7 的关键知识、收集知识和促进知识传递环境条目。</li>
-            <li><code>sources/official/pmbok7.md</code>：第 2.2.1.3、2.2.3、2.5.8.2 节，解释团队角色知识、开诚布公沟通、显性与隐性知识及知识转移。</li>
-            <li><code>sources/official/scrum-guide.md</code>：仅以透明、检视和自管理作协作边界对照，不改变 ECO 范围。</li>
-          </ul>
-          <p>首次覆盖以 PMP ECO July 2026 为准；PMBOK 7 和 Scrum Guide 只解释判断，不替代考纲。</p>
-        </div></details>
-      </div>
+        </div>
+      </details>
+      <details class="audit-card">
+        <summary>本地正式来源</summary>
+        <div class="audit-content">
+          <ul><li><code>sources/official/eco-exam-outline-2026.md</code>：People / Task 7, lines 296–307；2026 PMP ECO 当前考试范围。 支持 PPL-T07-E01、PPL-T07-E02、PPL-T07-E03。</li><li><code>sources/official/pmbok7.md</code>：§2.5.8–§2.5.8.2, lines 5141–5163；持续学习、知识管理、显性与隐性知识及知识转移解释。 支持 PPL-T07-E01、PPL-T07-E02、PPL-T07-E03。</li><li><code>sources/official/pmbok7.md</code>：§3.2, lines 1644–1674、1690–1700；§2.2.3, lines 3746–3768；协作环境、信息与个人知识交流、开诚布公沟通和赋能解释。 支持 PPL-T07-E03。</li><li><code>sources/official/scrum-guide.md</code>：检视与适应, lines 145–155；仅作共同回看和适应的边界对照，不替代 ECO。 支持 PPL-T07-E03。</li></ul>
+          <p>不把模型常识、机构题或其他 Enabler 补成 PPL-T07 考点；不创建题目，不写 Produced、Studied、Demonstrated 或 Stable 证据，不改变 mapping、records、STATUS 或发布状态。</p>
+        </div>
+      </details>
     </section>
+
     <section class="quiz-section" id="practice" data-stage="practice" aria-labelledby="practice-title" data-question-label="练习题">
-      <p class="eyebrow">练一练</p>
-      <h2 id="practice-title">先筛选关键性，再让知识流动</h2>
-      <p class="section-intro">四道公开安全自编单选题，检查关键知识、收集方式、传递环境和完整判断循环。解析逐项说明最佳行动与诱惑项。</p>
+      <p class="eyebrow">Practice · 课后练习</p>
+      <h2 id="practice-title">先找出离开就会阻塞项目的知识，再向拥有者和现场收集，最后通过共同实践让它可传递</h2>
+      <p class="section-intro">公开安全自编单选题，逐项检查本课的判断循环。</p>
       <div class="quiz-toolbar"><span id="scoreText">已答 0 / 4 · 正确 0</span><button class="reset-button" id="resetQuiz" type="button">重做</button></div>
       <div id="quiz"></div>
     </section>
-    <footer class="lesson-footer"><p>下一步提示：进入 0010B《设计沟通策略并促进透明协作》，把知识送到正确的受众和决策点。</p><nav class="course-pagination" aria-label="课程前后导航"><a href="0009b-team-voice-leadership-diversity.html">← 上一节</a><a href="0010b-communication-strategy-transparency.html">继续下一节 →</a></nav></footer>
   </main>
-  <nav class="course-return-dock" data-component="course-return-dock" aria-label="全局学习导航">
-    <a class="course-home" href="../index.html" aria-label="返回学习门户" title="学习门户"><span aria-hidden="true">⌂</span><span class="course-home-label">学习门户</span></a>
-    <a class="course-back" href="index.html" aria-label="返回课程路线" title="课程路线"><span aria-hidden="true">←</span><span class="course-back-label">课程路线</span></a>
+
+  <nav class="course-return-dock" data-component="course-return-dock" aria-label="Global learning navigation">
+    <a class="course-back" href="index.html" aria-label="返回课程路线" title="课程路线">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+      <span class="sr-only course-back-label">课程路线</span>
+    </a>
+    <a class="course-home" href="../index.html" aria-label="返回学习门户" title="学习门户">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 21v-8a1 1 0 0 1-1-1h-4a1 1 0 0 1-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a1.9 1.9 0 0 1 2.582 0L21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+      <span class="sr-only course-home-label">学习门户</span>
+    </a>
   </nav>
+
   <script id="lesson-questions" type="application/json">
 [
   {
     "id": "LESSON-0010a-critical-knowledge-transfer-Q001",
     "type": "single_choice",
-    "stem": "周牧下周休假，项目资料有几十份。哪一项最应先进入关键知识清单？",
+    "stem": "一名负责故障复盘的资深测试工程师即将离岗，项目经理要先界定关键知识。以下哪项最符合该边界？",
     "options": [
-      "所有会议录音的完整转录，不区分用途。",
-      "接口失败的判据、客服例外的处理条件和迁移风险会影响的决定。",
-      "把每个人的工作日志全部复制到一个新文件夹。",
-      "只保留最新的进度截图，其他资料等项目结束再整理。"
+      "团队常用且已有统一记录、交接不受影响的测试工具偏好。",
+      "工程师个人偏爱的测试技巧，即使已有成熟替代方案。",
+      "一旦缺失就会阻塞决定、交付或风险处置的职责知识。",
+      "团队讨论中常被提到、但已有替代方案的测试话题。"
     ],
-    "answer": 1,
-    "rationale": "考点是 PPL-T07-E01：识别对项目至关重要的知识。最佳行动把会影响交付决定、风险判断或客户例外的知识先标出；完整转录看似全面却没有优先级；复制全部日志看似安全却把资料堆积当成关键性；只保留进度截图看似最新却丢掉失败判据和隐性风险。依据：PMP ECO July 2026 People / Task 7；PMBOK 7 第 2.2.1.3、2.5.8.2 节。"
+    "answer": 2,
+    "rationale": "A：工具偏好已经有统一记录且不影响交接，不属于优先界定的阻塞性职责知识。；B：个人偏好即使有经验价值，已有成熟替代方案就不满足关键知识的阻塞边界。；C：关键知识以缺失后是否阻塞决定、交付或风险处置为界，符合题干。；D：讨论频率反映关注度，不证明缺失会阻塞职责，也不能替代影响判断。"
   },
   {
     "id": "LESSON-0010a-critical-knowledge-transfer-Q002",
     "type": "single_choice",
-    "stem": "周牧知道某类接口失败通常先出现一个不易察觉的信号，但这个经验没有写在手册里。怎样收集最可靠？",
+    "stem": "架构师将在两周后离岗，交付团队要收集其处理兼容性例外的隐性经验。哪项安排最恰当？",
     "options": [
-      "要求周牧立刻写一份长文，完成后不再复核。",
-      "让周牧带着陈悦做一次真实故障回放，边操作边提问，再把判据和例外记录下来并验证。",
-      "把周牧的旧聊天记录全部转发给所有人，让大家自己猜规律。",
-      "等周牧休假后由林岚根据结果推测他的判断方式。"
+      "等最终交接日再汇总聊天记录，并向全员开放查阅。",
+      "先让继任者独自阅读代码，离岗后再补充访谈。",
+      "把排障过程原样发到公共频道，再请团队筛选。",
+      "在离岗前按需授权访谈并演练，由继任者复核记录。"
     ],
-    "answer": 1,
-    "rationale": "考点是 PPL-T07-E02：收集知识，尤其是难以直接表达的隐性知识。最佳行动用结对操作、提问、回放和记录把经验显性化，再验证判据；要求长文看似正式却可能漏掉动作中的判断；群发旧聊天看似透明却缺少上下文和验证；等事后推测看似省时却会让关键经验随人离开。依据：PMP ECO July 2026 People / Task 7；PMBOK 7 第 2.5.8.2 节。"
+    "answer": 3,
+    "rationale": "A：延后到最后一天会失去提问和演练窗口，向全员开放也超出必要权限。；B：代码阅读偏向显性资料，离岗后再访谈无法稳定取得隐性排障经验。；C：原样公开缺少按需授权和验证，且不能说明继任者已能运用知识。；D：离岗前按需授权获取经验，配合演练和继任者复核，兼顾时机、权限和可用性。"
   },
   {
     "id": "LESSON-0010a-critical-knowledge-transfer-Q003",
     "type": "single_choice",
-    "stem": "关键判据已经写入记录。哪种安排最能营造知识持续传递的环境？",
+    "stem": "项目已收集故障手册和一次演示。为了证明关键知识既可见又可用，下一步应怎样留证？",
     "options": [
-      "办一次培训，发出录屏后把知识工作标记完成。",
-      "在每周复盘中让客服、技术和云桥共同演示、提问、更新记录并约定下一次回看。",
-      "把所有问题集中交给周牧回答，其他人不要打断专家。",
-      "只开放一个只读文件库，不安排共同实践或提问时间。"
+      "将源材料与演练回放配对，记录假设疑点并由继任者确认。",
+      "只统计文档页数，并以作者签字作为完整性证明。",
+      "继续安排更多旁听，不必保留演练中的决策依据。",
+      "请相关团队投票评价资料有用度，以评分替代决策依据。"
     ],
-    "answer": 1,
-    "rationale": "考点是 PPL-T07-E03：营造促进知识传递的环境。最佳行动把共同实践、提问、复盘、更新和回看变成持续节奏；一次培训看似高效却把传递误作一次性事件；只找专家看似集中却形成单点依赖；只读文件库看似整齐却没有使用、反馈和隐性知识交流。依据：PMP ECO July 2026 People / Task 7；PMBOK 7 第 2.2.3、2.5.8.2 节。"
+    "answer": 0,
+    "rationale": "A：材料覆盖显性记录，演练回放检验隐性判断；疑点和继任者确认形成可追溯证据。；B：页数和作者签字只能证明产出，不足以证明关键决策经验可被运用。；C：旁听增加接触面却不留下决策依据，无法复核经验是否被正确传递。；D：有用度评分不能替代证据，删除或弱化争议还会破坏后续验证和修订。"
   },
   {
     "id": "LESSON-0010a-critical-knowledge-transfer-Q004",
     "type": "single_choice",
-    "stem": "周牧明天离开项目，客服又报告一次接口异常。林岚要完成本课判断循环，先后顺序应是什么？",
+    "stem": "一个值班主管掌握夜间升级路径，缺席就会延误处置。最小而有效的行动是什么？",
     "options": [
-      "先把全部资料搬入知识库，再决定哪些内容值得使用。",
-      "先找出会阻塞决定的关键知识，再向拥有者和现场收集，最后用共同实践和回看让它可传递。",
-      "先要求周牧写完所有文档，再等项目收尾时统一培训。",
-      "先发布一条全员消息，要求大家自行搜索答案。"
+      "要求主管持续在线，直到团队自然学会这套路径。",
+      "绘出关键决策与依赖，指定替补并让其在真实演练中练习。",
+      "把完整值班历史发给所有部门，再由各自解读。",
+      "先制作覆盖所有流程的百科手册，再考虑替补安排。"
     ],
     "answer": 1,
-    "rationale": "这是 PPL-T07 的综合迁移，最佳顺序是关键性筛选、面向拥有者和现场的收集、持续的共同实践与回看。先搬资料看似有序却没有价值筛选；等所有文档完成看似完整却错过周牧离开前的隐性知识；全员群发看似快速却没有受众、上下文和验证。依据：PMP ECO July 2026 People / Task 7；PMBOK 7 第 2.2.3、2.5.8.2 节。"
+    "rationale": "A：持续在线只是延长单点依赖，没有把经验转成团队可复用能力。；B：先识别关键决策依赖，再让替补练习，能降低单点并验证知识已可用。；C：无差别发历史资料会增加噪声和权限风险，不能保证关键路径被掌握。；D：百科式扩张不是必要前置，若不先安排替补，阻塞风险仍然存在。"
+  },
+  {
+    "id": "LESSON-0010a-critical-knowledge-transfer-Q005",
+    "type": "single_choice",
+    "stem": "项目经理发布了一份经过整理的故障FAQ。下列哪项准确说明知识传递与透明协作的边界？",
+    "options": [
+      "FAQ已发布，所以隐性经验和后续反馈都已完成传递。",
+      "透明协作应优先扩大原始访谈和日志的可见范围，尽量减少权限分层。",
+      "FAQ传递了显性知识；透明还要呈现影响、证据、待决项及反馈闭环。",
+      "只要继任者读懂FAQ，就无需说明谁能查看相关风险证据。"
+    ],
+    "answer": 2,
+    "rationale": "A：FAQ主要呈现显性内容，不能自动转化隐性经验，也不能证明反馈已经闭环。；B：扩大原始资料可见范围不等于透明，必要权限、影响和待决项仍需分层呈现。；C：知识传递关注可复用内容和实践，透明协作还要求授权受众看见事实、影响、证据与未决事项并可追问。；D：读懂显性问答不代表掌握隐性判断；透明还要说明授权范围和风险证据入口。"
+  },
+  {
+    "id": "LESSON-0010a-critical-knowledge-transfer-Q006",
+    "type": "single_choice",
+    "stem": "某服务即将切换，可靠性分析师离岗，安全证据分级且两套指标冲突。负责人应如何组合行动？",
+    "options": [
+      "先按决策和权限分层，访谈并演练隐性经验，记录证据疑点，复盘后更新。",
+      "让全员先查看完整访谈和安全证据，再决定哪些内容需要分层。",
+      "只归档最终仪表盘，待新负责人自行发现指标差异。",
+      "让分析师口头培训一名同事，其余内容在切换后再补。"
+    ],
+    "answer": 0,
+    "rationale": "A：按决策和权限分层能控制暴露范围，访谈与演练传递经验，疑点和复盘记录支撑透明及持续修订。；B：逐字稿和安全证据无差别开放会越权，且未安排演练、疑点记录和反馈更新。；C：只存最终仪表盘会丢失隐性判断和指标冲突，无法支持交接或修订。；D：单人口头培训既难验证也难覆盖风险，切换后补救会错过授权和练习窗口。"
   }
 ]
   </script>

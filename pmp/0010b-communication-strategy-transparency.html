@@ -1,208 +1,232 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PMP26 第 0010B 课：按受众、目的和时点设计沟通，让云桥客户服务平台的关键事实可见、可追问并支持协作。">
-  <title>第 10B 课 · 设计沟通策略并促进透明协作</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="发起人、客服、技术和外部接口职责面对同一变更，却需要不同决定、时点和信息粒度。课程先问谁需要什么决定，再定目的、时点、渠道，最后让事实可见、可追问而不越过权限。">
+  <title>0010B · 设计沟通策略并促进透明协作</title>
   <link rel="stylesheet" href="assets/lesson.css">
 </head>
 <body data-portal-home="../index.html" data-course-route="index.html" data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="people">
-  <a class="skip-link" href="#lesson-content">跳到正文</a>
   <div class="reading-progress" aria-hidden="true"><span></span></div>
   <main class="lesson-shell" id="lesson-content">
     <nav class="course-nav" aria-label="课程导航">
       <nav class="lesson-steps" aria-label="课程阶段">
         <a href="#map" aria-current="step"><span class="step-number">01</span><span>先看地图</span></a>
-        <a href="#case"><span class="step-number">02</span><span>沿案例判断</span></a>
+        <a href="#case"><span class="step-number">02</span><span>沿判断讲解</span></a>
         <a href="#practice"><span class="step-number">03</span><span>练一练</span></a>
       </nav>
     </nav>
     <header class="lesson-header">
-      <p class="eyebrow">PMP26 · 第 10B 课 · 课程包 0010</p>
+      <p class="eyebrow">PMP 2026 · People · 0010B</p>
       <h1>设计沟通策略并促进透明协作</h1>
-      <p class="lesson-deck">发起人要一页决策信息，客服要当天可行动的变更，技术需要异步细节。林岚先问谁需要什么决定，再定目的、时点、渠道和反馈，最后让关键事实可见、可追问，同时守住必要的权限边界。</p>
-      <dl class="lesson-meta">
-        <div><dt>预计时间</dt><dd>最小 10 分钟 / 完整 20 分钟</dd></div>
-        <div><dt>位置</dt><dd>PMP26 · 0010B · U02 人与团队</dd></div>
-        <div><dt>完成后能做什么</dt><dd>为不同受众设计沟通策略，让共享事实支持透明协作</dd></div>
-      </dl>
+      <p class="lesson-deck">发起人、客服、技术和外部接口职责面对同一变更，却需要不同决定、时点和信息粒度。课程先问谁需要什么决定，再定目的、时点、渠道，最后让事实可见、可追问而不越过权限。</p>
     </header>
+
     <section class="map-section" id="map" data-stage="map" aria-labelledby="map-title">
-      <p class="eyebrow">先看地图</p>
-      <h2 id="map-title">同一事实，不同受众需要不同的行动入口</h2>
-      <p class="section-intro">沟通策略不是“发更多消息”，透明也不是“把所有原文公开”。先看受众需要什么决定，再让事实、限制和待决事项能被看见和追问。</p>
-      <div class="learning-map" data-component="learning-map" aria-label="从受众需求到透明协作的判断地图">
-        <div class="map-hub"><strong>让信息推动协作</strong><span>目的、受众、时点、事实</span></div>
-        <a class="map-node map-node--why" href="#scene-1"><strong>设计沟通策略</strong><span>谁需要什么决定或行动？</span></a>
-        <a class="map-node map-node--govern" href="#scene-2"><strong>促进透明协作</strong><span>什么应可见、可追问、可回看？</span></a>
-        <a class="map-node map-node--build" href="#scene-3"><strong>建立反馈回路</strong><span>信息怎样变成下一步行动？</span></a>
+      <p class="eyebrow">Map · 全貌</p>
+      <h2 id="map-title">本课围绕「沟通与透明协作」展开</h2>
+      <div class="learning-map" data-component="learning-map" aria-label="沟通与透明协作">
+        <div class="map-hub"><strong>沟通与透明协作</strong><span>把沟通策略和透明协作放在同一知识图中，连接受众需要、可见事实和共同行动。</span></div>
+        <a class="map-node map-node--why" href="#scene-01-communication-strategy"><strong>沟通策略</strong><span>先问受众要做什么决定，再定目的、时点、粒度和渠道，形成沟通策略。</span></a>
+        <a class="map-node map-node--govern" href="#scene-02-transparency"><strong>透明协作</strong><span>让事实、影响、证据和待决事项在必要权限内可见可追问，透明协作才有抓手。</span></a>
       </div>
     </section>
+
     <section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
-      <p class="eyebrow">沿案例判断</p>
-      <h2 id="case-title">云桥变更：让同一事实抵达正确的行动点</h2>
-      <p class="section-intro">周牧和云桥发现一个接口变更可能影响客服回访。林岚面对三种需要：发起人要判断是否批准，客服要知道今天如何处理例外，技术要保留异步细节和证据。她要让信息既有目的，又能支撑跨角色协作。</p>
-      <article class="scene" id="scene-1" data-component="scene">
+      <p class="eyebrow">Explanation · 判断循环</p>
+      <h2 id="case-title">先问谁需要什么决定，再定目的、时点和渠道，最后让事实可见、可追问并支持协作</h2>
+      <p class="section-intro">跨部门客户服务平台改造出现接口变更，多个职责都需要信息，却不能用同一条群发消息代替沟通设计。</p>
+      <article class="scene" id="scene-01-communication-strategy" data-component="scene">
         <div class="scene-number">01</div>
         <div class="scene-body">
-          <h3>先问受众需要什么决定</h3>
-          <p>林岚先把受众和行动写在一张表上：发起人需要“批准、延期还是先试验”的决定；客服需要“今天遇到例外怎样处理”的行动；技术需要“哪些字段、证据和假设仍待验证”的异步记录；云桥需要“何时反馈、谁确认接口”的协作入口。她随后才选择信息粒度、时点、渠道和反馈方式。同一份完整日志发给所有人，看似公平，却把筛选成本推给不需要它的人。</p>
-          <div class="worked-example" data-component="worked-example">
-            <div class="worked-step"><div class="worked-num">1</div><div class="worked-step-body"><p>受众：谁要在什么时间点做什么决定或行动？</p></div></div>
-            <div class="worked-step"><div class="worked-num">2</div><div class="worked-step-body"><p>目的：把事实翻成能支持该行动的最小充分信息。</p></div></div>
-            <div class="worked-step"><div class="worked-num">3</div><div class="worked-step-body"><p>渠道与反馈：让对方能追问、回应，并在约定时点回看。</p></div></div>
-          </div>
-          <dl class="boundary-list" data-component="boundary-list">
-            <div class="boundary-row"><dt>沟通策略</dt><dd>从受众、目的、时点、渠道和反馈设计信息路径，让信息支持决定或行动。</dd></div>
-            <div class="boundary-row"><dt>全员群发</dt><dd>把同一消息丢给所有人，表面没有遗漏，实际可能造成噪声、误读和行动延迟。</dd></div>
-          </dl>
+          <h3>先问每个职责需要什么决定</h3>
+          <p>接口变更可能影响客服回访。发起人需要判断批准、延期还是先做小范围验证；客服代表需要知道当天遇到例外时如何行动；技术负责人需要异步查看字段、证据和待验证假设；外部接口代表需要明确反馈时点和确认入口。项目经理先把受众、行动和时点列清，再决定每类信息的粒度、渠道和反馈方式。</p>
+          <p>先用大白话说明，再贴正式术语：这叫定义沟通策略（define a communication strategy）。可见动作是让每个受众都有目的、信息边界、发送时点、合适渠道和回应入口；同一份完整日志群发给所有职责，看似没有遗漏，实际把筛选成本和误读风险转给不需要全部细节的人。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>沟通策略：从受众的决定或行动出发，安排目的、粒度、时点、渠道和反馈。</li>
+            <li>全员群发：把同一消息丢给所有人，表面一致，实际可能造成噪声、误读和行动延迟。</li>
+            </ul>
           <details class="quick-check" data-component="quick-check">
-            <summary>想一想：客服和技术为什么不该收到完全相同的消息？</summary>
-            <p>他们的决定和时间尺度不同。客服需要当天可执行的例外处理，技术需要可追问的详细证据；两者仍应指向同一个共享状态事实。</p>
+            <summary>即时复核</summary>
+            <p>即时复核：检查一条沟通安排是否说清受众要做的决定、信息目的、发送时点、渠道和反馈入口。</p>
           </details>
-          <p class="takeaway" data-component="takeaway">记忆钩子：先定“谁要做什么决定”，再定“把什么信息送到哪里”。</p>
+          <p class="takeaway" data-component="takeaway">先定谁要做什么决定，再定把什么信息送到哪里；沟通工具不能替代目的。</p>
         </div>
-      </article>
-      <article class="scene" id="scene-2" data-component="scene">
+      </article><article class="scene" id="scene-02-transparency" data-component="scene">
         <div class="scene-number">02</div>
         <div class="scene-body">
-          <h3>透明是可见、可追问，不是把噪声和越权数据都摊开</h3>
-          <p>林岚在共享状态页写明变更事实、影响范围、证据链接、已知限制和待决问题；客服能看到今天的行动卡，技术能追到原始日志，发起人能看到需要的决定。个人敏感信息和未授权数据仍按权限保留。透明让团队能够检视和协作，信息倾倒却让真正的事实消失在噪声里。</p>
-          <div class="decision-path" data-component="decision-path" aria-label="透明协作判断路径">
-            <div class="decision-node">事实、影响、证据、待决问题</div>
-            <div class="decision-arrow" aria-hidden="true">→</div>
-            <div class="decision-node decision-node--answer">可见、可追问、守住权限并回看</div>
-          </div>
-          <dl class="boundary-list" data-component="boundary-list">
-            <div class="boundary-row"><dt>透明协作</dt><dd>让关键事实、限制和待决事项在适当范围内可见、可追问、可回看，支持共同决定。</dd></div>
-            <div class="boundary-row"><dt>信息噪声或越权公开</dt><dd>倾倒原始资料或披露无授权的个人数据，没有帮助行动，反而增加误读和风险。</dd></div>
-          </dl>
+          <h3>透明是可见、可追问，不是噪声和越权公开</h3>
+          <p>项目经理在共享状态中写明变更事实、影响范围、证据链接、已知限制和待决问题；客服代表能看到当天行动入口，技术负责人能追到原始证据，发起人能看到需要作出的决定，外部接口代表能找到回应位置。个人敏感信息和未授权资料仍按权限保留，不能因为追求“全部公开”而扩大风险。</p>
+          <p>再把动作命名为正式术语：促进透明和协作（promote transparency and collaboration）要求事实在适当范围内可见、可追问、可回看，并能进入共同决定。透明不等于把原文倾倒到共享区；只有事实、影响、证据和待决事项带着上下文，协作才有抓手。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>透明协作：关键事实、限制、证据和待决事项在适当范围内可见、可追问、可回看。</li>
+            <li>信息噪声或越权公开：倾倒原始资料，或披露无授权的敏感信息，没有帮助行动反而增加误读和风险。</li>
+            </ul>
           <details class="quick-check" data-component="quick-check">
-            <summary>想一想：状态页只显示“红色”够透明吗？</summary>
-            <p>不够。还要让人知道事实、影响、证据和待决问题，并能追问或反馈；颜色没有上下文，不能支持检视和协作。</p>
+            <summary>即时复核</summary>
+            <p>即时复核：检查共享状态是否同时给出事实、影响、证据、待决问题、回应入口和必要权限边界。</p>
           </details>
-          <details class="production-task" data-component="quick-check" data-item-id="LESSON-0010b-communication-strategy-transparency-TASK-01">
-            <summary>主动产出：写一条可追问的共享事实</summary>
-            <div class="production-task-body">
-              <p class="production-prompt">请用“事实—影响—待决问题”写一条云桥接口状态，再为客服或技术补一个行动入口和反馈时点。</p>
-              <textarea aria-label="透明协作产出"></textarea>
-            </div>
-          </details>
-          <p class="takeaway" data-component="takeaway">记忆钩子：透明不是把一切公开，而是让正确的事实进入正确的协作回路。</p>
+          <p class="takeaway" data-component="takeaway">透明不是把一切公开，而是让正确的事实进入正确的协作回路。</p>
         </div>
-      </article>
-      <article class="scene" id="scene-3" data-component="scene">
+      </article><article class="scene" id="scene-03-feedback-loop" data-component="scene">
         <div class="scene-number">03</div>
         <div class="scene-body">
           <h3>让反馈把透明事实推回行动</h3>
-          <p>状态页发布后，客服陈悦发现一个例外处理仍会误导一线，周牧补充了接口证据，云桥回应了一个待决字段。林岚没有把页面当作“发出即完成”，而是让不同受众在各自入口反馈，再把事实、影响、问题和决定更新回共享状态。沟通策略决定谁在何时回应，透明协作让这些回应留在团队可以检视的地方。</p>
-          <div class="decision-path" data-component="decision-path" aria-label="沟通反馈回路">
-            <div class="decision-node">受众行动 → 反馈事实 → 更新状态</div>
-            <div class="decision-arrow" aria-hidden="true">→</div>
-            <div class="decision-node decision-node--answer">下一轮沟通带着新证据</div>
-          </div>
-          <dl class="boundary-list" data-component="boundary-list">
-            <div class="boundary-row"><dt>反馈回路</dt><dd>受众能回应，团队能看见新事实，并在约定时点更新下一步。</dd></div>
-            <div class="boundary-row"><dt>一次性公告</dt><dd>消息发出后不收集回应，状态很快与现场脱节，透明就失去协作价值。</dd></div>
-          </dl>
+          <p>状态更新后，客服代表发现一个例外处理仍会误导一线，技术负责人补充了失败证据，外部接口代表回应一个待决字段，发起人需要重新确认是否继续验证。项目经理没有把“已发出”当作完成，而是让不同受众从各自入口反馈，再把事实、影响、问题和决定更新回共享状态。</p>
+          <p>这一步把两个术语连起来：沟通策略决定谁在何时回应，透明协作让回应留在团队可以检视的共同事实中。反馈不是让所有人都说一句，而是让新证据能改变下一条行动信息；状态页也不是公告终点，而是下一轮判断的依据。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>可追问的透明：受众能回应，团队能看见新事实，并在约定时点更新下一步。</li>
+            <li>一次性公告：消息发出后没有回应入口或回看，状态很快与现场脱节。</li>
+            </ul>
           <details class="quick-check" data-component="quick-check">
-            <summary>想一想：谁的反馈会改变下一条状态？</summary>
-            <p>陈悦的例外处理、周牧的证据和云桥的字段回应都可能改变影响或待决问题；反馈不是“大家都说一句”，而是能更新共享事实。</p>
+            <summary>即时复核</summary>
+            <p>即时复核：检查一个反馈是否能补充事实、改变影响或更新待决问题，而不是只增加消息数量。</p>
           </details>
-          <p class="takeaway" data-component="takeaway">记忆钩子：透明的终点不是“看见”，而是“看见后能回应，回应后能更新行动”。</p>
+          <p class="takeaway" data-component="takeaway">透明的终点不是“看见”，而是“看见后能回应，回应后能更新行动”。</p>
+        </div>
+      </article><article class="scene" id="scene-04-transfer" data-component="scene">
+        <div class="scene-number">04</div>
+        <div class="scene-body">
+          <h3>换到上线演练，循环仍然不变</h3>
+          <p>把同一判断迁移到新规则上线演练：业务负责人需要决定是否扩大范围，客服代表需要知道高峰期怎样处理例外，技术负责人需要看到日志和待验证字段，外部接口代表需要知道反馈时点。项目经理先问每个职责需要什么决定，再为不同受众安排目的、时点、渠道和回应入口。</p>
+          <p>演练结果写入共享状态：事实、影响、证据、已知限制和待决问题均可追问；敏感资料仍按权限处理。收到客服例外、技术证据和外部接口回应后，团队更新下一步行动。换了场景，顺序没有变：先问决定，定沟通策略，再让事实可见并可追问；群发和资料倾倒都不能替代透明协作。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>演练中的受众目的、时点、渠道、共享事实和反馈入口共同构成可执行的沟通策略。</li>
+            <li>把演练记录一次群发，或公开未经授权的原始资料，却没有回应和更新，仍然无法支持协作。</li>
+            </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>即时复核</summary>
+            <p>迁移复核：依次标出每个受众的决定、沟通目的与渠道、可见事实、回应入口和下一次更新。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">换场景不换循环；让信息推动协作，靠的是目的、受众、时点、事实和可追问的反馈。</p>
         </div>
       </article>
     </section>
+
     <section class="audit-section" data-stage="case" data-component="audit-section" aria-labelledby="audit-title">
-      <p class="eyebrow">范围与来源</p>
-      <h2 id="audit-title">本课覆盖与可追溯依据</h2>
-      <div class="audit-grid">
-        <details class="audit-card"><summary>逐 Enabler 覆盖</summary><div class="audit-content">
+      <p class="eyebrow">Audit · 覆盖与来源</p>
+      <h2 id="audit-title">0010B Enabler 覆盖</h2>
+      <p class="section-intro">本包严格承载 PPL-T08-E01–E02：场景一从发起人、客服、技术和外部接口职责的决定需要出发，定义目的、粒度、时点、渠道和反馈；场景二把事实、影响、证据、限制和待决问题放进适当权限范围；场景三让反馈更新共同状态；场景四换到上线演练，完整重走三步循环。每个 Enabler 都有对应场景、边界、即时复核和独立锚点，Audit 只做覆盖与来源定位，供后续装配验收。ECO July 2026 是首次承载的唯一考试范围依据；PMBOK 7 的沟通模型解释受众参照框架、渠道丰富性和反馈，团队文化解释透明、诚信和安全沟通；Scrum Guide 仅作检视与协作的边界对照。情境为公开安全自编内容，不提前进入报告、治理或知识 Enabler，不把学习者产出写入学习记录，也不改变课程或学习状态。</p>
+      <details class="audit-card">
+        <summary>逐 Enabler 覆盖与正式来源</summary>
+        <div class="audit-content">
           <table class="coverage-table" data-component="coverage-table">
-            <thead><tr><th>Enabler</th><th>场景与学习者产出</th><th>来源定位</th></tr></thead>
-            <tbody>
-              <tr><td>PPL-T08-E01</td><td>场景 1：为发起人、客服、技术和云桥按目的、粒度、时点、渠道和反馈设计路径；学习者为一个受众写出行动入口。</td><td>ECO July 2026 · People · Task 8；PMBOK 7 §4.2.2</td></tr>
-              <tr><td>PPL-T08-E02</td><td>场景 2：在权限边界内公开状态、限制、证据和待决问题；学习者产出可追问事实与协作动作。</td><td>ECO July 2026 · People · Task 8；PMBOK 7 §2.2.2、§4.2.2；Scrum Guide 透明/检视仅作对照</td></tr>
-            </tbody>
+            <thead><tr><th>Enabler</th><th>场景覆盖</th><th>来源定位</th></tr></thead>
+            <tbody><tr><td>PPL-T08-E01</td><td>从受众需要的决定或行动出发，确定信息目的、粒度、时点、渠道和反馈入口，区分沟通策略与全员群发。</td><td>sources/official/eco-exam-outline-2026.md:309–317；sources/official/pmbok7.md:4855–4867、7227–7258</td></tr>
+              <tr><td>PPL-T08-E02</td><td>让关键事实、影响、证据、限制和待决事项在适当范围内可见、可追问、可回看，并用反馈更新协作状态，区分透明与噪声或越权公开。</td><td>sources/official/eco-exam-outline-2026.md:309–312；sources/official/pmbok7.md:3698–3733、7227–7258；sources/official/scrum-guide.md:358–364</td></tr>
+              </tbody>
           </table>
-        </div></details>
-        <details class="audit-card"><summary>本地正式来源</summary><div class="audit-content">
-          <ul>
-            <li><code>sources/official/eco-exam-outline-2026.md</code>：People / Task 8 的沟通策略、透明与协作条目。</li>
-            <li><code>sources/official/pmbok7.md</code>：第 2.2.2 节关于透明、诚信与开诚布公沟通的解释；第 4.2.2 节沟通模型关于受众参照框架、渠道丰富性和反馈的解释。</li>
-            <li><code>sources/official/scrum-guide.md</code>：仅以透明、检视和适应作协作边界对照，不改变 ECO 范围。</li>
-          </ul>
-          <p>首次覆盖以 PMP ECO July 2026 为准；PMBOK 7 和 Scrum Guide 只解释判断，不替代考纲。</p>
-        </div></details>
-      </div>
+        </div>
+      </details>
+      <details class="audit-card">
+        <summary>本地正式来源</summary>
+        <div class="audit-content">
+          <ul><li><code>sources/official/eco-exam-outline-2026.md</code>：People / Task 8, lines 309–317；2026 PMP ECO 当前考试范围。 支持 PPL-T08-E01、PPL-T08-E02。</li><li><code>sources/official/pmbok7.md</code>：§4.2.2–§4.2.2.2, lines 7227–7258；参照框架、沟通媒介、渠道丰富性和快速反馈解释。 支持 PPL-T08-E01、PPL-T08-E02。</li><li><code>sources/official/pmbok7.md</code>：§2.4.4, lines 4848–4867；谁需要信息、为什么共享、最佳方式、时点和信息类别。 支持 PPL-T08-E01。</li><li><code>sources/official/pmbok7.md</code>：§2.2.2, lines 3698–3733；透明、诚信、尊重、积极讨论、支持性团队文化解释。 支持 PPL-T08-E02。</li><li><code>sources/official/scrum-guide.md</code>：Sprint Review, lines 358–364；仅作检视、反馈和协作的边界对照，不替代 ECO。 支持 PPL-T08-E02。</li></ul>
+          <p>不把模型常识、机构题或其他 Enabler 补成 PPL-T08 考点；不创建题目，不写 Produced、Studied、Demonstrated 或 Stable 证据，不改变 mapping、records、STATUS 或发布状态。</p>
+        </div>
+      </details>
     </section>
+
     <section class="quiz-section" id="practice" data-stage="practice" aria-labelledby="practice-title" data-question-label="练习题">
-      <p class="eyebrow">练一练</p>
-      <h2 id="practice-title">先定受众和目的，再让事实可见</h2>
-      <p class="section-intro">四道公开安全自编单选题，检查沟通策略、透明边界和综合迁移。解析逐项说明最佳行动与诱惑项。</p>
+      <p class="eyebrow">Practice · 课后练习</p>
+      <h2 id="practice-title">先问谁需要什么决定，再定目的、时点和渠道，最后让事实可见、可追问并支持协作</h2>
+      <p class="section-intro">公开安全自编单选题，逐项检查本课的判断循环。</p>
       <div class="quiz-toolbar"><span id="scoreText">已答 0 / 4 · 正确 0</span><button class="reset-button" id="resetQuiz" type="button">重做</button></div>
       <div id="quiz"></div>
     </section>
-    <footer class="lesson-footer"><p>下一步提示：完成本课后进入 0011A 的报告与治理输入地图。</p><nav class="course-pagination" aria-label="课程前后导航"><a href="0010a-critical-knowledge-transfer.html">← 上一节</a><a href="0011a-reporting-feedback-governance-input.html">继续下一节 →</a></nav></footer>
   </main>
-  <nav class="course-return-dock" data-component="course-return-dock" aria-label="全局学习导航">
-    <a class="course-home" href="../index.html" aria-label="返回学习门户" title="学习门户"><span aria-hidden="true">⌂</span><span class="course-home-label">学习门户</span></a>
-    <a class="course-back" href="index.html" aria-label="返回课程路线" title="课程路线"><span aria-hidden="true">←</span><span class="course-back-label">课程路线</span></a>
+
+  <nav class="course-return-dock" data-component="course-return-dock" aria-label="Global learning navigation">
+    <a class="course-back" href="index.html" aria-label="返回课程路线" title="课程路线">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+      <span class="sr-only course-back-label">课程路线</span>
+    </a>
+    <a class="course-home" href="../index.html" aria-label="返回学习门户" title="学习门户">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 21v-8a1 1 0 0 1-1-1h-4a1 1 0 0 1-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a1.9 1.9 0 0 1 2.582 0L21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+      <span class="sr-only course-home-label">学习门户</span>
+    </a>
   </nav>
+
   <script id="lesson-questions" type="application/json">
 [
   {
     "id": "LESSON-0010b-communication-strategy-transparency-Q001",
     "type": "single_choice",
-    "stem": "发起人要一页决策信息，客服要当天可行动的变更，技术需要异步细节。林岚设计沟通时首先应做什么？",
+    "stem": "业务负责人要在周五决定是否缩减范围，信息涉及技术、客户和合规团队。制定沟通策略时首先应确定什么？",
     "options": [
-      "把同一份完整记录发到所有群组，确保没有人遗漏。",
-      "先分别确认每个受众需要支持什么决定或行动，再定目的、粒度、时点、渠道和反馈方式。",
-      "只满足发起人的一页要求，其余信息等有人追问再说。",
-      "先选择项目团队最熟悉的工具，再把内容改成适合工具的格式。"
+      "先选择团队最常用的协作工具，再统一发布格式。",
+      "先明确受众要作的决定，再定目的、时点、粒度与渠道。",
+      "先收集所有细节，等完全确定后再通知相关角色。",
+      "先向每个成员发送同样长的说明，保证形式一致。"
     ],
     "answer": 1,
-    "rationale": "考点是 PPL-T08-E01：定义沟通策略。最佳行动从受众的决定和行动需要出发，再选择内容粒度、时点、渠道和反馈；全员群发看似透明却把策略退化为噪声；只服务发起人看似聚焦却让客服和技术无法行动；先选工具看似方便却让工具而非目的决定沟通。依据：PMP ECO July 2026 People / Task 8；PMBOK 7 第 4.2.2 节。"
+    "rationale": "A：工具选择不能替代对决策目的的界定，容易让形式牵着信息走。；B：沟通策略应先回答谁要作什么决定，再匹配目的、时点、粒度和渠道。；C：等待完全确定会错过决策时点；策略应区分事实、假设和待决项。；D：统一长度不等于适配受众，可能造成无关细节或缺少关键证据。"
   },
   {
     "id": "LESSON-0010b-communication-strategy-transparency-Q002",
     "type": "single_choice",
-    "stem": "接口状态页要让团队协作更快。哪种内容最符合透明协作的边界？",
+    "stem": "一次发布风险升高，产品负责人需在两小时内决定是否暂停；合规观察员只能看摘要。最佳沟通安排是什么？",
     "options": [
-      "公开所有聊天原文和个人评价，任何人都可转发。",
-      "公开当前状态、已知限制、证据链接和待决事项，同时保留个人敏感信息与未授权数据的权限边界。",
-      "只显示绿色或红色，不显示依据，以免造成讨论。",
-      "只把状态告诉林岚，等她口头转述给其他人。"
+      "向获授权决策者发送定时摘要，分层提供证据并开放反馈入口。",
+      "把原始日志同时转发给所有参与者，避免权限差异造成误解。",
+      "等周会再讨论，以便一次性给出完整且统一的结论。",
+      "只通知产品负责人，其他角色在决定公布后再自行了解。"
     ],
-    "answer": 1,
-    "rationale": "考点是 PPL-T08-E02：促进透明和协作。最佳行动让关键事实、限制、证据和待决事项可见并可追问，同时不把敏感或未授权资料变成噪声；公开聊天和个人评价看似彻底却破坏安全边界；只显示颜色看似简洁却无法检视；只让林岚转述看似集中却造成信息单点。依据：PMP ECO July 2026 People / Task 8；PMBOK 7 第 2.2.2、4.2.2 节；Scrum Guide 透明原则仅作对照。"
+    "answer": 0,
+    "rationale": "A：既匹配两小时决策时点，又按权限分层证据，并为受影响角色保留可追问的反馈入口。；B：原始日志可能含受限信息，无差别转发既越权又不能保证决策者获得重点。；C：周会时点晚于暂停决策，完整结论也不应成为及时沟通的前提。；D：只通知负责人会切断受影响角色的必要事实和反馈，难以形成透明协作。"
   },
   {
     "id": "LESSON-0010b-communication-strategy-transparency-Q003",
     "type": "single_choice",
-    "stem": "技术团队需要复杂接口细节，客服只需要今天如何处理例外。哪组沟通设计最合适？",
+    "stem": "两个指标来源对同一风险给出不同数值。为了保持透明并支持决策，沟通材料应怎样呈现？",
     "options": [
-      "给两组都发一份完整技术日志，要求自行筛选。",
-      "给技术异步的详细记录和可追问入口，给客服简明行动卡和当天反馈点，并让两者指向同一状态事实。",
-      "只开一次全员长会，让所有人同时听完所有内容。",
-      "只在出现故障后临时私聊相关人员，不维护共享状态。"
+      "选取较稳妥的一个数字，避免受众因差异而迟疑。",
+      "只附上原始数据链接，让受众自行判断哪个来源可靠。",
+      "先协调双方统一口径，暂不记录尚未解决的差异，避免材料显得不一致。",
+      "分开列出事实、来源、影响、假设和待决项，并说明反馈处理方式。"
     ],
-    "answer": 1,
-    "rationale": "考点是 PPL-T08-E01 与 E02 的组合判断。最佳行动按受众和目的调整粒度与渠道，同时把双方连到同一可见事实；完整日志看似公平却把筛选成本推给客服；一次长会看似统一却不适合不同工作节奏；临时私聊看似迅速却失去可追问的共同状态。依据：PMP ECO July 2026 People / Task 8；PMBOK 7 第 4.2.2 节。"
+    "answer": 3,
+    "rationale": "A：只选一个数字会掩盖来源差异，受众无法判断影响和后续动作。；B：仅给链接把证据解释责任转嫁给受众，没有呈现影响、假设和待决项。；C：先统一口径并隐藏差异会抹去证据约束，透明要求保留未决项。；D：把事实、来源、影响、假设和待决项分开，并说明反馈如何处理，才能让受众追问和修订。"
   },
   {
     "id": "LESSON-0010b-communication-strategy-transparency-Q004",
     "type": "single_choice",
-    "stem": "云桥提交了一个可能影响客服回访的接口变更。林岚要促进透明协作，哪种下一步最完整？",
+    "stem": "跨时区团队遇到需当日拍板的质量例外。哪项做法最能避免沟通单点失效？",
     "options": [
-      "先把变更标记为已批准，再让团队适应结果。",
-      "在共享状态页写明变更事实、影响、证据和待决问题，按受众发送行动信息，并约定反馈与回看。",
-      "只通知周牧和云桥，避免客服过早担心。",
-      "把所有原始资料公开后等待大家自行找到影响。"
+      "在多个频道同步转发全部讨论，让任何人都可临时接手。",
+      "等所有地区达成共识后，再指定一个统一的发布窗口。",
+      "明确决策人、受众、截止时间、渠道、回应格式，并记录结论依据。",
+      "由最熟悉技术的人直接决定，其余人只接收结果通知。"
+    ],
+    "answer": 2,
+    "rationale": "A：多频道转发全部讨论会制造版本分叉和权限扩散，不能形成明确责任。；B：等待所有地区共识会错过时点，且没有指定谁在何时作决定。；C：明确责任、受众、时点、渠道和回应格式，再记录依据，能让沟通可接续、可追溯。；D：技术熟悉度不能替代授权与沟通责任，单向通知也缺少反馈闭环。"
+  },
+  {
+    "id": "LESSON-0010b-communication-strategy-transparency-Q005",
+    "type": "single_choice",
+    "stem": "复盘主持人发布了决策纪要。下列哪项最准确界定透明协作与知识传递？",
+    "options": [
+      "只要纪要写得清楚，隐性经验就会自然转化为团队可执行能力。",
+      "透明让授权受众看到事实、影响、证据和待决项并能追问闭环，不等于完成练习。",
+      "透明的首要标准是材料尽量齐全，权限可以先扩大再事后处理。",
+      "知识传递还要让接收者练习并修订，不只是通知最终决定。"
     ],
     "answer": 1,
-    "rationale": "这是 PPL-T08 的综合迁移，最佳行动让事实和影响可见、让不同受众收到可行动的信息，并建立反馈回看；先标记批准看似推进却越过决策与透明；排除客服看似减少担忧却隐藏受影响角色；倾倒原始资料看似开放却没有目的、筛选或协作入口。依据：PMP ECO July 2026 People / Task 8；PMBOK 7 第 2.2.2、4.2.2 节。"
+    "rationale": "A：纪要能传递显性结论，不能自动让接收者练习、修订隐性经验。；B：透明关注授权受众能看见并追问事实、影响、证据和待决项；知识传递还需实践验证。；C：材料数量和事后权限都不是透明标准，授权边界应在呈现时明确。；D：只通知最终决定缺少事实、证据和修订轨迹，既不透明也难以传递。"
+  },
+  {
+    "id": "LESSON-0010b-communication-strategy-transparency-Q006",
+    "type": "single_choice",
+    "stem": "一次跨团队上线评审同时存在未决风险、分层权限和不一致指标。负责人如何做综合沟通？",
+    "options": [
+      "向所有人先发同一份原始材料，待讨论后再决定哪些内容重要。",
+      "把风险延后到数据完全一致，再以单一结论统一通知各方。",
+      "只向核心团队说明指标差异，其他受众等上线后查看结果。",
+      "按决策、时点和权限分层简报与证据，明确反馈入口并回写处理结果。"
+    ],
+    "answer": 3,
+    "rationale": "A：先无差别发原始材料会越过权限，也把受众筛选负担置于沟通策略之前。；B：等待完全一致会错过处理未决风险的时点，透明沟通应标出差异。；C：只给核心团队会遗漏受影响受众的必要事实和反馈入口。；D：按决策、时点和权限组织信息，呈现证据与未决项，并闭合反馈，才能支持跨团队行动。"
   }
 ]
   </script>

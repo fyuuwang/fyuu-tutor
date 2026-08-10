@@ -6,106 +6,248 @@
   <title>0012A · 规划采购、看供应商并分配合同风险</title>
   <link rel="stylesheet" href="assets/lesson.css">
 </head>
-<body data-portal-home="../index.html" data-course-route="index.html" data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="process">
+<body data-portal-home="../index.html" data-course-route="index.html" data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="people">
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
   <main class="lesson-shell" id="lesson-content">
+    <nav class="course-nav" aria-label="课程导航">
+      <nav class="lesson-steps" aria-label="课程阶段">
+        <a href="#map" aria-current="step"><span class="step-number">01</span><span>先看地图</span></a>
+        <a href="#case"><span class="step-number">02</span><span>沿判断讲解</span></a>
+        <a href="#practice"><span class="step-number">03</span><span>练一练</span></a>
+      </nav>
+    </nav>
     <header class="lesson-header">
       <p class="eyebrow">PMP 2026 · Process · 0012A</p>
       <h1>规划采购、看供应商并分配合同风险</h1>
-      <p class="lesson-deck">先把需求、能力与风险写成采购边界，再用协议目标相关的证据评价供应商，最后用合同类型安排不确定性。</p>
-      <nav class="course-nav" aria-label="课程导航">
-        <nav class="lesson-steps" aria-label="课程阶段">
-          <a href="#map" data-stage="map">01 先看地图</a>
-          <a href="#case" data-stage="case">02 沿案例判断</a>
-          <a href="#practice" data-stage="practice">03 练一练</a>
-        </nav>
-      </nav>
+      <p class="lesson-deck">明确需求/风险和自制边界 → 设定供应商绩效证据 → 选择与风险分配匹配的合同类型</p>
     </header>
 
     <section class="map-section" id="map" data-stage="map" aria-labelledby="map-title">
       <p class="eyebrow">Map · 全貌</p>
-      <h2 id="map-title">需求与风险 → 自制/外包边界 → 供应商绩效证据 → 合同风险分配 → 履约基线</h2>
-      <div class="learning-map" data-component="learning-map" aria-label="采购计划到合同风险分配的判断地图">
-        <a class="map-node map-node--why" href="#procurement-plan"><strong>根据能力、知识、时间、成本和风险划出采购边界</strong></a>
-        <a class="map-node map-node--govern" href="#vendor-performance"><strong>把供应商绩效写成与协议目标相关的可复核证据</strong></a>
-        <a class="map-node map-node--build" href="#contract-risk"><strong>依据范围、成本不确定性和变更频率选择合同类型</strong></a>
-        <a class="map-node map-node--owner" href="#integrated-decision"><strong>把边界、证据和风险分配记录成履约基线</strong></a>
+      <h2 id="map-title">本课围绕「采购规划与风险分配」展开</h2>
+      <div class="learning-map" data-component="learning-map" aria-label="采购规划与风险分配">
+        <div class="map-hub"><strong>采购规划与风险分配</strong><span>把规划采购、供应商绩效和合同类型连接起来，让需求与风险决定采购判断。</span></div>
+        <a class="map-node map-node--why" href="#scene-01-plan"><strong>规划采购</strong><span>先比较内部能力、需求、时间和风险，再决定是否外部采购，完成规划采购。</span></a>
+        <a class="map-node map-node--govern" href="#scene-02-vendor-performance"><strong>供应商绩效</strong><span>用响应、缺陷、服务和结果证据复核履约，而不是把一次交付当作供应商绩效。</span></a>
+        <a class="map-node map-node--environment" href="#scene-03-contract-type"><strong>合同类型</strong><span>把范围稳定性和不确定性放进风险分配，再选择合适的合同类型。</span></a>
       </div>
-      <p class="section-intro">云桥能较快交付外部客服系统，周牧掌握核心接口和内部知识，财务关心成本确定性，陈悦关心高峰支持；林岚要把这些约束连成一条采购决策链。</p>
     </section>
 
     <section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
-      <p class="eyebrow">Case · 云桥外部客服系统</p>
-      <h2 id="case-title">沿着采购边界—绩效证据—合同风险闭环判断</h2>
+      <p class="eyebrow">Explanation · 判断循环</p>
+      <h2 id="case-title">明确需求/风险和自制边界 → 设定供应商绩效证据 → 选择与风险分配匹配的合同类型</h2>
 
-      <article class="scene" id="procurement-plan" data-component="scene">
-        <h3>先写采购边界，再比较供应商</h3>
-        <p>林岚先把模块拆成决策对象，而不是先让云桥报一个总价。核心接口、内部数据规则和关键业务知识由周牧团队保留，因为这些内容决定系统能否与现有平台安全衔接；外部客服界面、标准化部署和高峰支持可以作为外包候选。</p>
-        <p>每个候选模块都记录采购目标、交付范围、内部能力与知识要求、期望时点、预算约束、主要风险、接口依赖和可观察结果。先找供应商再补需求，会把供应商的产品边界误当成项目边界，也会让报价替代风险判断。</p>
-        <ul class="boundary-list" data-component="boundary-list"><li>采购计划先回答为什么买、买什么、由谁负责和需要什么证据。</li><li>自制或外包边界不是供应商报价的副产品。</li></ul>
-        <details class="quick-check" data-component="quick-check"><summary>快速检查：边界依据齐了吗？</summary><p>至少回看能力、知识、时间、成本、风险、接口依赖和期望结果。</p></details>
-        <p class="takeaway" data-component="takeaway">记忆钩子：先划边界，再谈供应商；先写需求，再看报价。</p>
+      <article class="scene" id="scene-01-plan" data-component="scene">
+        <div class="scene-number">01</div>
+        <div class="scene-body">
+          <h3>先决定哪些工作外部采购</h3>
+          <p>外部服务供应商能够快速交付客服系统，但内部团队掌握核心接口。项目经理不能先选一家供应商再补需求，而要先判断哪些模块必须由内部保留、哪些模块适合外部采购，同时面对数据保护、接口依赖、预算和上线时间约束。</p>
+          <p><strong>正式概念：自制或外购分析（make-or-buy analysis）</strong>；相关术语：采购管理计划（procurement management plan）。自制或外购分析整理产品需求，并比较内部制造与外部采购等方案；采购管理计划是项目管理计划的组成部分，说明项目团队如何从执行组织外部获取物品和服务。</p>
+          <p><strong>可执行动作：</strong>把模块边界、需求、内部能力、外部能力、时间、成本、关键风险、决策权限和后续采购步骤写入同一份采购决策依据，再决定是否进入外部采购。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>采购管理计划≠合同：采购管理计划说明如何获取和管理外部物品或服务，合同是对双方有约束力的协议；前者不能代替后者。</li>
+            <li>规划采购≠先找供应商：先明确需求、风险、能力和约束，再进入招标、评价、谈判或签约。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>即时复核：学习者能说明一个客服模块的自制或外购边界，并说清需求、风险、预算、时间和决策依据。</summary>
+            <p>学习者能说明一个客服模块的自制或外购边界，并说清需求、风险、预算、时间和决策依据。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">先把要交付什么、谁适合做、会承担什么风险说清，供应商选择才有依据。</p>
+        </div>
       </article>
 
-      <article class="scene" id="vendor-performance" data-component="scene">
-        <h3>用协议目标相关的证据看供应商绩效</h3>
-        <p>云桥提交了接口包，不代表供应商绩效已经得到证明。林岚为云桥建立绩效证据表：交付是否满足约定范围，接口响应是否达到服务要求，缺陷是否被及时发现和关闭，云桥是否按约定参与协作，异常发生时是否提供了可验证的服务结果。</p>
-        <div class="worked-example" data-component="worked-example"><p><strong>证据表字段：</strong>数据来源、观察周期、责任人、约定目标、复核动作，以及交付、服务、缺陷和协作事实。一次按时提交文件不能单独说明高峰可用或风险受控。</p></div>
-        <ul class="boundary-list" data-component="boundary-list"><li>供应商评价必须连接协议目标和实际结果。</li><li>文件数量或一次会议出席率不能替代整体绩效。</li></ul>
-        <details class="quick-check" data-component="quick-check"><summary>快速检查：证据能证明什么？</summary><p>把每项证据与目标、来源、观察方式和复核动作逐一对应。</p></details>
-        <p class="takeaway" data-component="takeaway">判断钩子：文件到达是事件，协议目标相关的证据才是绩效。</p>
+      <article class="scene" id="scene-02-vendor-performance" data-component="scene">
+        <div class="scene-number">02</div>
+        <div class="scene-body">
+          <h3>别用一次按时交付代替供应商绩效</h3>
+          <p>外部服务供应商按时交出接口文档，文件格式也符合要求，但高峰期响应超出约定，缺陷反复出现，服务团队没有按时回应。项目经理需要判断实际绩效，而不是因为收到一份文件就宣布合作顺利。</p>
+          <p><strong>正式概念：评估供应商绩效（evaluate vendor performance）</strong>；相关术语：绩效审查（performance review）。按照协议目标、基准和约定指标比较实际结果，分析趋势、偏差和影响，并保留可复核证据。</p>
+          <p><strong>可执行动作：</strong>为响应时间、缺陷发现与关闭、服务可用性、事件处理、协作回应和业务结果指定数据来源、检查时点、责任人和复核频率；使用服务日志、缺陷记录、评审记录和用户支持结果进行比较。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>供应商绩效≠看一次交付：一份文件按时提交只能证明一个交付事件，不能证明持续服务、缺陷处理或业务结果。</li>
+            <li>供应商绩效≠合同类型选择：供应商评价看实际履约证据，合同类型决定成本、范围和不确定性风险如何分配。</li>
+            <li>主观满意≠可核验证据：评价必须能够回到协议目标、数据来源和检查时间。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>即时复核：学习者能为一个供应商目标选出至少一项可复核证据，并说明复核频率和偏差处理依据。</summary>
+            <p>学习者能为一个供应商目标选出至少一项可复核证据，并说明复核频率和偏差处理依据。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">供应商绩效要看持续、可追溯、与协议目标相连的结果。</p>
+        </div>
       </article>
 
-      <article class="scene" id="contract-risk" data-component="scene">
-        <h3>合同类型是在分配不确定性</h3>
-        <p>若范围清晰、交付标准稳定、成本容易估算，固定总价可以把更多成本超支风险放在供应商一侧，但变更必须经过明确控制；若目标仍在探索、工作量和技术路径高度不确定，成本补偿类合同保留灵活性，却让买方承担更多成本风险，需要预算、记录和监督；若工作可按工时或材料计量、需求会逐步澄清，工料合同提供弹性，但必须设置范围、费率、上限或检查点。</p>
-        <p>合同类型不能由“云桥看起来可靠”直接决定。供应商评价回答能否履约，合同类型回答不确定性和成本风险如何分配。</p>
-        <div class="decision-path" data-component="decision-path" aria-label="合同风险分配路径"><ol><li>范围清晰且成本可估：更多成本风险转给供应商</li><li>目标探索且成本不确定：保留弹性并强化买方监督</li><li>按量计费且需求渐进：设置费率、上限和检查点</li></ol></div>
-        <ul class="boundary-list" data-component="boundary-list"><li>合同类型不是供应商好坏的标签。</li><li>风险分配方向必须同时说明代价和控制点。</li></ul>
-        <details class="quick-check" data-component="quick-check"><summary>快速检查：不确定性由谁承担？</summary><p>分别写出范围、成本、变更特征，再说明买方和供应商承担的风险。</p></details>
-        <p class="takeaway" data-component="takeaway">记忆钩子：供应商评价看能力，合同类型分配风险。</p>
+      <article class="scene" id="scene-03-contract-type" data-component="scene">
+        <div class="scene-number">03</div>
+        <div class="scene-body">
+          <h3>按不确定性和风险承受力选合同类型</h3>
+          <p>财务负责人希望成本更确定，技术负责人指出接口方案可能变化，项目经理必须把范围稳定性、成本可预测性、不确定性和风险承受力放在一起判断，不能只套一个表面口诀。</p>
+          <p><strong>正式概念：选择首选合同类型（select preferred contract types）</strong></p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>总价合同（fixed-price）：为定义明确的产品、服务或结果设定总价，较多成本风险由供应商承担。</li>
+            <li>成本补偿合同（cost-reimbursable）：支付实际合法成本并加费用，范围不明确或经常变化时，买方承担较多成本风险。</li>
+            <li>工料合同（time-and-materials）：费率固定但工作说明书不够准确，适合扩充人员、取得专业支持或处理尚未完全明确的外部工作。</li>
+          </ul>
+          <p><strong>可执行动作：</strong>记录范围稳定性、成本确定性、不确定性来源、风险承受力、激励或上限、变更机制和风险责任人，再选择合同类型并说明买方与供应商各自承担的代价。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>合同类型选择≠供应商评价：合同类型回答风险怎样分配，不回答供应商过去做得好不好。</li>
+            <li>总价不自动等于最好或最便宜；成本补偿也不自动等于失控，关键是工作范围和不确定性是否匹配。</li>
+            <li>选择合同类型不能只看一个关键词，必须同时解释成本、范围、不确定性、风险分配和变更路径。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>即时复核：学习者能在范围稳定和范围不确定的两个情境中选择不同合同风险分配方向，并说明成本与控制代价。</summary>
+            <p>学习者能在范围稳定和范围不确定的两个情境中选择不同合同风险分配方向，并说明成本与控制代价。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">合同类型是风险分配决定，不是供应商排名，也不是价格口诀。</p>
+        </div>
       </article>
 
-      <article class="scene" id="integrated-decision" data-component="scene">
-        <h3>把采购决定写成可供后续履约使用的记录</h3>
-        <p>林岚形成一张采购决策卡：第一部分写明哪些模块自制、哪些模块外包以及能力、知识、时间和风险依据；第二部分写明云桥绩效将用哪些交付、服务、缺陷和协作证据观察；第三部分写明范围和成本不确定性、适用合同类型、双方承担的主要风险以及控制点。</p>
-        <p>采购决策卡不替代合同，也不提前完成质量验收，但它为下一步采购管理计划提供基线：后续评审检查什么，偏差如何记录，哪些变化走正式路径，协议目标用什么证据验证。</p>
-        <details class="quick-check" data-component="quick-check"><summary>独立产出前检查四块字段</summary><p>边界、采购目标与风险、绩效证据和合同风险解释必须互相可追溯。</p></details>
-<details class="production-task" data-component="quick-check" data-item-id="PROD-0012A-PROCUREMENT-VENDOR-CONTRACT">
-          <summary>独立产出：采购决策卡</summary>
-          <div class="production-task-body">
-            <p class="production-prompt">基于云桥外部客服系统场景，制作一张采购决策卡。先划分一个模块的自制与外包边界，再写出采购目标、关键风险和供应商绩效证据，最后根据范围清晰度、成本不确定性和变更频率说明合同风险分配方向。</p>
-            <textarea aria-label="采购决策卡"></textarea>
-            <ul><li>明确一个模块的自制或外包边界，并写出能力、知识、时间、成本或风险依据。</li><li>至少列出三类与协议目标相关的供应商绩效证据，并注明来源、观察方式或复核动作。</li><li>根据范围清晰度、成本不确定性和变更频率说明合同类型的风险分配方向及其代价。</li><li>清楚区分采购计划、供应商绩效和合同类型，不能用供应商评价代替合同风险判断。</li><li>产出只覆盖 PRC-T05-E01 至 E03，不提前承担采购履约、协议目标验证或完整质量验收。</li></ul>
-          </div>
-        </details>
-        <p class="takeaway" data-component="takeaway">带走：先明确买什么和为什么，再规定如何证明供应商做得好，最后用合同安排不确定性和风险。</p>
+      <article class="scene" id="scene-04-transfer" data-component="scene">
+        <div class="scene-number">04</div>
+        <div class="scene-body">
+          <h3>换成数据迁移外包，完整重走采购判断</h3>
+          <p>客户服务平台要接入身份验证服务。内部团队掌握敏感接口，外部测试供应商能够补足负载测试，但旧系统适配范围仍不完全清晰。项目经理需要完成采购决策、绩效证据和合同风险分配。</p>
+          <p><strong>正式概念：自制或外购分析（make-or-buy analysis）→ 评估供应商绩效（evaluate vendor performance）→ 选择首选合同类型（select preferred contract types）</strong>。三个术语分别回答做什么、怎样判断履约、怎样分配合同风险，不能相互替代。</p>
+          <p><strong>判断链：</strong></p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>需求、风险和自制边界：内部保留敏感接口和最终架构，外部采购负载测试与非核心适配；记录数据保护、响应目标、依赖、时间和预算风险。</li>
+            <li>供应商绩效证据：约定测试覆盖、缺陷关闭时限、峰值响应、服务中断处理和复核频率；用日志、缺陷记录、测试报告与运营反馈比较，不看一份交付文件。</li>
+            <li>合同风险分配：旧系统适配范围不完全清晰时，可采用固定费率、设置费用上限并分段复核的工料安排；范围稳定的测试包可采用总价安排。记录买方承担的范围不确定性成本风险、供应商承担的约定费率和履约责任，以及后续变更路径。</li>
+          </ul>
+          <p><strong>可执行动作：</strong>把三步判断写入采购决策依据和合同准备材料，确保每个选择都能回到需求、风险、证据和责任分配。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>采购计划仍不是合同；合同类型仍不是供应商绩效结论。</li>
+            <li>一次测试报告通过不等于供应商持续绩效达标；费用较低也不等于风险分配合适。</li>
+            <li>换了采购对象，判断顺序不变：先明确边界，再设定证据，最后选择风险匹配的合同。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>即时复核：学习者能把同一判断循环迁移到另一项外部服务，并同时说明采购边界、绩效证据和合同风险责任。</summary>
+            <p>学习者能把同一判断循环迁移到另一项外部服务，并同时说明采购边界、绩效证据和合同风险责任。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">换场景不换循环：需求与风险决定采购边界，证据决定绩效判断，不确定性决定合同风险分配。</p>
+        </div>
       </article>
+    </section>
 
-      <div class="audit-section" data-stage="case" data-component="audit-section" aria-labelledby="audit-title">
-        <p class="eyebrow">Audit · 覆盖与来源</p>
-        <h2 id="audit-title">0012A Enabler 覆盖</h2>
-        <details class="audit-card"><summary>逐 Enabler 覆盖与正式来源</summary><div class="audit-content"><table class="coverage-table" data-component="coverage-table"><thead><tr><th>Enabler</th><th>场景与产出</th><th>来源定位</th></tr></thead><tbody>
-          <tr><td>PRC-T05-E01</td><td>依据能力、知识、时间、成本和风险划分自制/外包边界；采购决策卡。</td><td>ECO-2026-JULY-PROCESS-T05 · sources/official/eco-exam-outline-2026.md · DOMAIN II Process / Task 5，lines 388-401</td></tr>
-          <tr><td>PRC-T05-E02</td><td>用交付、服务、缺陷和协作等协议目标相关证据评价云桥绩效。</td><td>ECO-2026-JULY-PROCESS-T05 · sources/official/eco-exam-outline-2026.md · DOMAIN II Process / Task 5，lines 388-401；PMBOK7 项目工作绩效域与交付绩效域</td></tr>
-          <tr><td>PRC-T05-E03</td><td>按范围、成本不确定性和变更频率选择合同风险分配方向。</td><td>ECO-2026-JULY-PROCESS-T05 · sources/official/eco-exam-outline-2026.md · DOMAIN II Process / Task 5，lines 388-401；PMBOK7 项目工作绩效域与交付绩效域</td></tr>
-        </tbody></table></div></details>
-      </div>
+    <section class="audit-section" data-stage="case" data-component="audit-section" aria-labelledby="audit-title">
+      <p class="eyebrow">Audit · 覆盖与来源</p>
+      <h2 id="audit-title">0012A Enabler 覆盖</h2>
+      <p class="section-intro">本页围绕 PRC-T05-E01、PRC-T05-E02、PRC-T05-E03 展开；每条 Enabler 的场景覆盖、边界和来源均来自冻结 content packet。</p>
+      <details class="audit-card">
+        <summary>逐 Enabler 覆盖与正式来源</summary>
+        <div class="audit-content">
+          <table class="coverage-table" data-component="coverage-table">
+            <thead><tr><th>Enabler</th><th>场景覆盖与独立锚点</th><th>边界与来源定位</th></tr></thead>
+            <tbody>
+              <tr><td>PRC-T05-E01</td><td>scene-01-plan、scene-04-transfer：根据能力、知识、时间、成本、风险和交付需求决定自制与外部采购边界，并将需求和风险纳入采购计划。<br>独立锚点：解释一项模块的自制或外购选择及其决策依据。</td><td>采购管理计划与合同的边界；规划采购与先找供应商的边界<br>curriculum/lesson-briefs/0012a-procurement-plan-vendor-contract.md:23；sources/official/eco-exam-outline-2026.md:380-398；sources/official/pmbok7.md:4882-4887；sources/official/pmbok7.md:7862-7863；sources/official/pmbok7.md:8282-8283</td></tr>
+              <tr><td>PRC-T05-E02</td><td>scene-02-vendor-performance、scene-04-transfer：使用响应、缺陷、服务、协作和业务结果等可复核证据评估供应商绩效。<br>独立锚点：选择供应商绩效证据并说明数据来源、检查时点和复核方式。</td><td>持续绩效与一次性交付的边界；供应商绩效与合同类型选择的边界<br>curriculum/lesson-briefs/0012a-procurement-plan-vendor-contract.md:24；sources/official/eco-exam-outline-2026.md:380-398；sources/official/pmbok7.md:5123-5125；sources/official/pmbok7.md:5186-5187</td></tr>
+              <tr><td>PRC-T05-E03</td><td>scene-03-contract-type、scene-04-transfer：依据成本、范围稳定性、不确定性和风险承受力选择合同类型，并解释风险与代价的分配。<br>独立锚点：在不同范围稳定性情境下选择合同风险分配方向并解释理由。</td><td>合同类型与供应商评价的边界；表面口诀与完整风险分析的边界<br>curriculum/lesson-briefs/0012a-procurement-plan-vendor-contract.md:25；sources/official/eco-exam-outline-2026.md:380-398；sources/official/pmbok7.md:5115-5124；sources/official/pmbok7.md:8440-8468</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+      <p class="section-intro">只保留本页 packet 的 Enabler、场景和来源映射；不改变 Produced、学习证据或其他课程状态。</p>
     </section>
 
     <section class="quiz-section" id="practice" data-stage="practice" aria-labelledby="practice-title" data-question-label="练习题">
       <p class="eyebrow">Practice · 课后练习</p>
-      <h2 id="practice-title">用四个判断检查采购边界、绩效与合同风险</h2>
+      <h2 id="practice-title">用四个判断检查：明确需求/风险和自制边界 → 设定供应商绩效证据 → 选择与风险分配匹配的合同类型</h2>
+      <p class="section-intro">明确需求/风险和自制边界 → 设定供应商绩效证据 → 选择与风险分配匹配的合同类型</p>
       <div class="quiz-toolbar"><span id="scoreText">已答 0 / 4 · 正确 0</span><button class="reset-button" id="resetQuiz" type="button">重做</button></div>
       <div id="quiz"></div>
     </section>
   </main>
-  <nav class="course-return-dock" data-component="course-return-dock" aria-label="全局学习导航"><a class="course-home" data-component="course-home" href="../index.html">⌂ 学习门户</a><a class="course-back" data-component="course-back" href="index.html">← 课程路线</a></nav>
+
+  <nav class="course-return-dock" data-component="course-return-dock" aria-label="Global learning navigation">
+    <a class="course-back" href="index.html" aria-label="返回课程路线" title="课程路线">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+      <span class="sr-only course-back-label">课程路线</span>
+    </a>
+    <a class="course-home" href="../index.html" aria-label="返回学习门户" title="学习门户">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 21v-8a2 2 0 0 0-1-1h-4a2 2 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0L21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+      <span class="sr-only course-home-label">学习门户</span>
+    </a>
+  </nav>
+
   <script id="lesson-questions" type="application/json">
 [
-  {"id":"LESSON-0012a-procurement-plan-vendor-contract-Q001","type":"single_choice","stem":"云桥项目准备建设跨区域客服数据接口。编制采购方案时，第一步最合适的做法是什么？","options":["先要求三家供应商报价，再决定哪些工作外包","先把需求、现有能力、时间、成本和风险分开，比较自制与外包","先选报价最低者，再补写采购管理计划","先套用上个项目合同，再讨论云桥的范围"],"answer":1,"rationale":"正确答案：采购计划应先把需求、能力、时间、成本和风险纳入自制与外包判断，再进入供应商和合同选择。选项一：先找供应商报价会跳过内部能力和风险划分，采购计划不应从供应商搜索开始。选项三：最低报价不能替代对能力、时间、成本和风险的完整判断，事后补计划也会削弱决策依据。选项四：沿用旧合同可能与云桥的范围、风险和变更频率不匹配。"},
-  {"id":"LESSON-0012a-procurement-plan-vendor-contract-Q002","type":"single_choice","stem":"云桥评估两家供应商：甲方提交文件很完整，但未证明满足响应时间目标；乙方文件较简略，却提供了事故恢复、服务水平和业务影响证据。应如何评价？","options":["以供应商提交文件是否齐全作为主要结论","只比较报价，不把协议目标拆成证据","用交付、服务、风险和业务结果等与协议目标相关的证据评价","优先选最熟悉云桥团队的供应商，其他证据可后补"],"answer":2,"rationale":"正确答案：供应商评价应围绕协议目标寻找相关证据，不能把文件完整度或熟悉程度当成目标达成的替代品。选项一：文件齐全只能说明交付了文件，不能证明响应时间、恢复能力或业务结果达标。选项二：报价是成本信息，不足以单独解释协议目标、服务风险和业务价值。选项四：熟悉程度不是协议目标证据，相关证据不能在选择后再补。"},
-  {"id":"LESSON-0012a-procurement-plan-vendor-contract-Q003","type":"single_choice","stem":"云桥的接口范围边界较清楚，但云资源用量成本不确定，且业务方预计会频繁提出变更。选择合同类型时，最应依据什么？","options":["依据范围清晰度、成本不确定性和变更频率，选择风险分配合适的合同类型","无论范围和成本如何，都使用上个项目的固定价格类型","只按供应商好坏选择合同类型，合同本身不需要考虑风险","先选报价最低的合同类型，变更和风险在执行中再处理"],"answer":0,"rationale":"正确答案：合同类型应把范围清晰度、成本不确定性和变更频率纳入风险分配，不能由供应商印象或最低价格单独决定。选项二：旧项目的合同类型未必适合当前的成本不确定性和变更频率。选项三：合同类型解决风险分配和变更机制，不是供应商好坏的标签。选项四：把风险留到执行中再处理会使采购决策缺少事前边界和控制。"},
-  {"id":"LESSON-0012a-procurement-plan-vendor-contract-Q004","type":"single_choice","stem":"云桥已经完成自制或外包判断、供应商评价和合同类型选择。哪项最适合作为采购决策基线？","options":["只保存签约后的最终合同，不记录为何做出选择","把供应商名单和报价表当成采购决策基线","等执行出现问题后，再补记自制或外包和风险分配理由","记录自制或外包判断、供应商证据、合同风险分配、假设和变更依据，形成可复查基线"],"answer":3,"rationale":"正确答案：采购决策基线应保留决策理由、相关证据、风险分配、假设和后续变更依据，支持执行和复查。选项一：只有最终合同无法解释为何选择该方案，也无法支持后续变更和责任复查。选项二：名单和报价是输入资料，不等于完整的自制或外包、证据和风险分配决策。选项三：事后补记会丢失当时的判断依据，不能作为可靠的决策基线。"}
+  {
+    "id": "LESSON-0012a-procurement-plan-vendor-contract-Q001",
+    "type": "single_choice",
+    "stem": "项目团队准备把一项交付物交给外部市场，已识别复杂度和供应能力差异。采购规划阶段的关键产出应是什么？",
+    "options": [
+      "先按最低报价锁定供应商，再补写合同风险条款",
+      "先邀请候选供应商报价，再由其决定采购边界",
+      "明确自制或外购边界，并按风险选择合同策略",
+      "等供应商选定并报价后再补做需求和风险登记"
+    ],
+    "answer": 2,
+    "rationale": "A：先锁定最低报价会让价格先于范围和风险分析；B：报价邀请属于后续采购活动，不能替代规划决策；C：先明确自制或外购边界，再按风险选择合同策略；D：需求和风险登记应在供应商选定前形成，事后补做会削弱约束。"
+  },
+  {
+    "id": "LESSON-0012a-procurement-plan-vendor-contract-Q002",
+    "type": "single_choice",
+    "stem": "采购计划评审中，关键接口责任尚未界定，供应商尚未签约。哪项审批安排正确？",
+    "options": [
+      "由供应商在谈判结束后单方面确认风险分配与合同类型",
+      "由具备相应授权的治理负责人在签约前批准调整",
+      "由项目团队在签约后发现偏差时补签调整文件",
+      "由财务人员在首次付款时替代项目审批并确认条款"
+    ],
+    "answer": 1,
+    "rationale": "A：供应商不能单方面批准买方的风险分配；B：有授权的治理负责人应在签约前批准调整；C：签约后补签会错过约束合同的时点；D：财务付款职责不替代项目治理和合同审批。"
+  },
+  {
+    "id": "LESSON-0012a-procurement-plan-vendor-contract-Q003",
+    "type": "single_choice",
+    "stem": "评估固定总价与工料合同时，团队需要哪些证据来约束风险分配判断？",
+    "options": [
+      "结合范围成熟度、成本不确定性、市场能力与风险登记",
+      "仅依据内部经验估算，省略成本与范围的关键假设",
+      "只比较合同总价与付款节奏，不核对范围稳定性",
+      "优先采用供应商宣传的最高绩效，再用报价覆盖其余风险"
+    ],
+    "answer": 0,
+    "rationale": "A：四类证据共同支撑与风险相称的合同决策。；B：未记录的内部假设无法支撑可审计的合同选择；C：总价和付款节奏不能替代范围稳定性分析；D：宣传的最高绩效不能充分证明本项目风险已覆盖"
+  },
+  {
+    "id": "LESSON-0012a-procurement-plan-vendor-contract-Q004",
+    "type": "single_choice",
+    "stem": "规格频繁变化，市场上有多家替代供应商。哪项合同规划最能控制买方风险？",
+    "options": [
+      "按供应商数量决定合同类型，并减少变更评审频率",
+      "立即签固定总价长期合同，锁定全部数量与交付责任",
+      "沿用现有模板，把规格变更责任全部写给供应商",
+      "先澄清范围，按阶段采购并保留价格调整机制"
+    ],
+    "answer": 3,
+    "rationale": "A：供应商数量不能独立决定合同类型或评审频率。；B：固定总价锁定未知数量会放大买方变更风险；C：责任不能脱离可执行性和变更机制单方面转移；D：范围未稳时分阶段采购并保留价格调整，能限制暴露"
+  },
+  {
+    "id": "LESSON-0012a-procurement-plan-vendor-contract-Q005",
+    "type": "single_choice",
+    "stem": "供应商连续三期按时交付，但返工率上升。采购规划边界内应先做什么？",
+    "options": [
+      "立即更换供应商并重新招标，避免后续绩效继续恶化",
+      "只奖励准时交付，不修改验收或质量指标",
+      "核对合同目标与绩效数据，登记趋势并评估纠偏责任",
+      "把返工全部视为内部问题，暂不通知采购角色"
+    ],
+    "answer": 2,
+    "rationale": "A：直接更换供应商跳过了趋势确认和责任分析；B：准时交付不能抵消质量指标恶化；C：先核对目标和证据，再登记趋势并评估纠偏责任；D：返工来源未证实，不能先把问题归给内部。"
+  },
+  {
+    "id": "LESSON-0012a-procurement-plan-vendor-contract-Q006",
+    "type": "single_choice",
+    "stem": "项目需采购高不确定性设备，交付窗口固定、验收指标可量化且供应商能力分化明显。哪套做法最完整？",
+    "options": [
+      "拆分范围与风险，设阶段里程碑、激励约束和可验证验收",
+      "用单一最低价标准选一家供应商，再协商剩余风险与激励",
+      "采用固定总价覆盖未知工作，同时减少绩效记录和评审",
+      "把技术与进度风险全部转给供应商，只检查最终价格与交付"
+    ],
+    "answer": 0,
+    "rationale": "A：拆分范围、风险、里程碑、激励约束和验收证据能同时控制暴露与验证；B：最低价不能代表能力匹配，且事后协商风险太晚；C：固定总价覆盖未知工作会制造争议，减少记录也削弱绩效控制；D：把全部风险转给供应商并只看价格，无法验证实际履约。"
+  }
 ]
   </script>
   <script src="assets/lesson.js"></script>

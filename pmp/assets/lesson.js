@@ -22,11 +22,15 @@
   var progress = document.querySelector(".reading-progress span");
   var stageLinks = Array.from(document.querySelectorAll(".lesson-steps a, .section-index-link"));
   var quizSection = document.querySelector(".quiz-section");
+  var explicitPractice = quizSection && quizSection.getAttribute("data-practice-sections") === "true";
+  var practiceStages = explicitPractice ? Array.from(quizSection.querySelectorAll("section[data-stage][data-question-start]")) : [];
+  var practiceTargets = practiceStages.map(function (stage) { return stage.querySelector("[data-quiz-target]"); });
+  var currentQuiz = quiz;
   var lang = document.documentElement.getAttribute("lang") || "en";
  var i18n = {
-  "zh-CN": { correct: "答对了。", wrong: "再看一眼。", answered: "已答", of: "/", correctLabel: "正确", questionLabel: "题目", flip: "点击翻转", resetLabel: "重新作答", listen: "播放", trueLabel: "对", falseLabel: "错", matchCompletedWithErrors: "已完成（本题曾配错，计 0 分）。" },
-  "zh-HK": { correct: "答啱咗。", wrong: "再睇一次。", answered: "已答", of: "/", correctLabel: "啱", questionLabel: "題目", flip: "撳一下翻轉", resetLabel: "重做", listen: "播放", trueLabel: "啱", falseLabel: "錯", matchCompletedWithErrors: "已完成（本題曾配錯，計 0 分）。" },
-  en: { correct: "Correct.", wrong: "Take another look.", answered: "Answered", of: "/", correctLabel: "correct", questionLabel: "Question", flip: "Click to flip", resetLabel: "Reset", listen: "Listen", trueLabel: "True", falseLabel: "False", matchCompletedWithErrors: "Completed with errors (scored 0)." },
+  "zh-CN": { correct: "答对了。", wrong: "再看一眼。", answered: "已答", of: "/", correctLabel: "正确", questionLabel: "题目", flip: "点击翻转", resetLabel: "重新作答", listen: "播放", trueLabel: "对", falseLabel: "错", matchCompletedWithErrors: "已完成（本题曾配错，计 0 分）。", dockNav: "全局学习导航", back: "返回课程路线", home: "返回学习门户", lessonNav: "课程导航" },
+  "zh-HK": { correct: "答啱咗。", wrong: "再睇一次。", answered: "已答", of: "/", correctLabel: "啱", questionLabel: "題目", flip: "撳一下翻轉", resetLabel: "重做", listen: "播放", trueLabel: "啱", falseLabel: "錯", matchCompletedWithErrors: "已完成（本題曾配錯，計 0 分）。", dockNav: "全局學習導航", back: "返回課程路線", home: "返回學習門戶", lessonNav: "課程導航" },
+  en: { correct: "Correct.", wrong: "Take another look.", answered: "Answered", of: "/", correctLabel: "correct", questionLabel: "Question", flip: "Click to flip", resetLabel: "Reset", listen: "Listen", trueLabel: "True", falseLabel: "False", matchCompletedWithErrors: "Completed with errors (scored 0).", dockNav: "Global learning navigation", back: "Back to course", home: "Back to learning portal", lessonNav: "Lesson navigation" },
 };
  var a11y = (lang === "zh-HK") ? { selected: "已選中", wrong: "配錯咗，請重選", locked: "配對正確，已鎖定" } : (lang === "zh-CN") ? { selected: "已选中", wrong: "配错了，请重选", locked: "配对正确，已锁定" } : { selected: "Selected", wrong: "Incorrect match, try again", locked: "Matched correctly, locked" };
   var t = i18n[lang] || i18n.en;
@@ -46,10 +50,15 @@
       var q = questions[index];
       if (!q) return;
       if (q.type === "matching") { if (choice === true) correct += 1; }
-      else if (choice === q.answer) correct += 1;
+    else if (choice === q.answer) correct += 1;
     });
+    if (explicitPractice) {
+      score.textContent = "已答 " + answered.size + "/" + questions.length + " · 与机构答案一致 " + correct;
+      return;
+    }
     score.textContent = t.answered + " " + answered.size + " " + t.of + " " + questions.length + " · " + t.correctLabel + " " + correct;
   }
+
 
   function selectAnswer(event) {
     var button = event.currentTarget;
@@ -112,7 +121,7 @@
     inner.appendChild(front);
     inner.appendChild(back);
     card.appendChild(inner);
-    quiz.appendChild(card);
+    currentQuiz.appendChild(card);
   }
 
   function appendQuestionAudio(stemElement, audioText) {
@@ -165,7 +174,7 @@
     fb.setAttribute("role", "status");
     fb.setAttribute("aria-live", "polite");
     article.appendChild(fb);
-    quiz.appendChild(article);
+    currentQuiz.appendChild(article);
   }
 
   function selectTrueFalse(button, question, questionIndex) {
@@ -351,14 +360,50 @@
     fb.setAttribute("role", "status");
     fb.setAttribute("aria-live", "polite");
     article.appendChild(fb);
-    quiz.appendChild(article);
+    currentQuiz.appendChild(article);
+  }
+
+  function placeExplicitPracticeToolbar() {
+    if (!explicitPractice) return;
+    var toolbar = document.querySelector(".quiz-toolbar");
+    var header = document.querySelector(".lesson-header");
+    if (!toolbar || !header) return;
+    var courseNav = header.querySelector(".course-nav");
+    if (courseNav) header.insertBefore(toolbar, courseNav);
+    else header.appendChild(toolbar);
+    var resetButton = toolbar.querySelector("#resetQuiz");
+    if (resetButton) {
+      resetButton.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 11a8 8 0 1 0 2 5"></path><path d="M20 5v6h-6"></path></svg><span class="reset-button-label">重置整卷</span>';
+      resetButton.setAttribute("aria-label", "重置整卷");
+      resetButton.setAttribute("title", "重置整卷");
+    }
   }
 
   function renderQuiz() {
+    placeExplicitPracticeToolbar();
     if (!quiz) return;
-    quiz.innerHTML = "";
+    if (explicitPractice) {
+      practiceTargets.forEach(function (target) { if (target) target.innerHTML = ""; });
+    } else {
+      quiz.innerHTML = "";
+    }
 
     questions.forEach(function (question, questionIndex) {
+      currentQuiz = quiz;
+      if (explicitPractice) {
+        var target = null;
+        practiceStages.some(function (stage, stageIndex) {
+          var start = Number(stage.getAttribute("data-question-start"));
+          var count = Number(stage.getAttribute("data-question-count"));
+          if (questionIndex >= start && questionIndex < start + count) {
+            target = practiceTargets[stageIndex];
+            return true;
+          }
+          return false;
+        });
+        if (!target) return;
+        currentQuiz = target;
+      }
       if (question.type === "flashcard") { renderFlashcard(question, questionIndex); return; }
       if (question.type === "true_false") { renderTrueFalse(question, questionIndex); return; }
       if (question.type === "matching") { renderMatching(question, questionIndex); return; }
@@ -404,7 +449,7 @@
       fb.setAttribute("role", "status");
       fb.setAttribute("aria-live", "polite");
       article.appendChild(fb);
-      quiz.appendChild(article);
+      currentQuiz.appendChild(article);
     });
 
     quiz.querySelectorAll(".question-option").forEach(function (button) {
@@ -416,10 +461,15 @@
         if (e.key === "Enter" || e.key === " ") { e.preventDefault(); card.classList.toggle("is-flipped"); }
       });
     });
+    currentQuiz = quiz;
     updateScore();
   }
 
-  function resetQuiz() { answered.clear(); renderQuiz(); }
+  function resetQuiz() {
+    if (explicitPractice && answered.size && !window.confirm("确定要重置整卷？")) return;
+    answered.clear();
+    renderQuiz();
+  }
 
   // Page-local navigation must never be hidden by the 01/02/03 stage switch.
   // Global returns live outside lesson-shell in course-return-dock.
@@ -441,28 +491,55 @@
     return groups;
   }
 
-  function showStage(index) {
-    var groups = stageGroups();
-    if (index < 0 || index >= groups.length) return;
-    groups.forEach(function (group, i) {
-      var hidden = i !== index;
-      group.forEach(function (el) { if (hidden) el.setAttribute("hidden", ""); else el.removeAttribute("hidden"); });
-    });
+  function showStage(index, skipTopScroll) {
+    if (explicitPractice) {
+      if (index < 0 || index >= practiceStages.length) return;
+      practiceStages.forEach(function (stage, i) {
+        if (i === index) stage.removeAttribute("hidden");
+        else stage.setAttribute("hidden", "");
+      });
+    } else {
+      var groups = stageGroups();
+      if (index < 0 || index >= groups.length) return;
+      groups.forEach(function (group, i) {
+        var hidden = i !== index;
+        group.forEach(function (el) { if (hidden) el.setAttribute("hidden", ""); else el.removeAttribute("hidden"); });
+      });
+    }
     stageLinks.forEach(function (link, i) {
       if (i === index) link.setAttribute("aria-current", "step");
       else link.removeAttribute("aria-current");
     });
-    var stageKey = "fyuu-stage-" + location.pathname;
-    try { sessionStorage.setItem(stageKey, String(index)); } catch (e) {}
-    window.scrollTo(0, 0);
+    if (!explicitPractice) {
+      var stageKey = "fyuu-stage-" + location.pathname;
+      try { sessionStorage.setItem(stageKey, String(index)); } catch (e) {}
+    }
+    if (!skipTopScroll) window.scrollTo(0, 0);
   }
 
   function initStages() {
     if (stageLinks.length === 0) return;
+    var targets = stageLinks.map(function (l) { return (l.getAttribute("href") || "").replace(/^#/, ""); });
+    var mapLinks = Array.from(document.querySelectorAll('.map-node[href^="#"]'));
+    function stageIndexFor(target) {
+      var stage = target && target.closest("[data-stage]");
+      return stage ? targets.indexOf(stage.getAttribute("data-stage")) : -1;
+    }
+    function scrollToTarget(hash) {
+      if (!hash) return;
+      function scroll() {
+        window.requestAnimationFrame(function () {
+          var target = document.getElementById(hash);
+          if (target) target.scrollIntoView();
+        });
+      }
+      if (document.readyState === "complete") scroll();
+      else window.addEventListener("load", scroll, { once: true });
+    }
     stageLinks.forEach(function (link, index) {
       function activate(event) {
         event.preventDefault();
-        showStage(index);
+        showStage(index, true);
         var hash = (link.getAttribute("href") || "").replace("#", "");
         if (hash && history.replaceState) history.replaceState(null, "", "#" + hash);
       }
@@ -471,19 +548,33 @@
         if (event.key === "Enter" || event.key === " ") activate(event);
       });
     });
+    mapLinks.forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        var hash = (link.getAttribute("href") || "").replace(/^#/, "");
+        var index = stageIndexFor(document.getElementById(hash));
+        if (!hash || index === -1) return;
+        event.preventDefault();
+        showStage(index);
+        if (history.replaceState) history.replaceState(null, "", "#" + hash);
+        scrollToTarget(hash);
+      });
+    });
     var start = 0;
     var hash = (location.hash || "").replace("#", "");
-    var targets = stageLinks.map(function (l) { return (l.getAttribute("href") || "").replace("#", ""); });
     var hashIdx = targets.indexOf(hash);
+    var hashTarget = hash ? document.getElementById(hash) : null;
+    if (hashIdx === -1) hashIdx = stageIndexFor(hashTarget);
     if (hashIdx !== -1) start = hashIdx;
-    else {
+    else if (!explicitPractice) {
       try {
         var stageKey = "fyuu-stage-" + location.pathname;
         var saved = sessionStorage.getItem(stageKey);
         if (saved !== null) start = Math.min(stageLinks.length - 1, Math.max(0, Number(saved) || 0));
       } catch (e) {}
     }
-    showStage(start);
+    if (hashTarget) showStage(start, true);
+    else showStage(start);
+    if (hashTarget) scrollToTarget(hash);
   }
 
 
@@ -572,58 +663,77 @@ function initAudio() {
   initStages();
   initAudio();
   updateProgress();
-})();
-
 // --- Global learning navigation compatibility. New templates ship a floating
 //     dock; old UI v2 pages are normalized at load time without content edits. ---
 function ensureCourseNav() {
   var shell = document.querySelector(".lesson-shell");
   if (!shell) return;
+  var lang = document.documentElement.getAttribute("lang") || "en";
+  var messages = i18n[lang] || i18n.en;
   var fmt = (document.body.getAttribute("data-format") || "").toLowerCase();
   var backHref = document.body.getAttribute("data-course-route") || "../index.html";
   var homeHref = document.body.getAttribute("data-portal-home") || "../../../../index.html";
+
+  function makeIcon(type) {
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    var paths = type === "home"
+      ? ["M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8", "M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0L21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"]
+      : ["m12 19-7-7 7-7", "M19 12H5"];
+    paths.forEach(function (d) {
+      var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", d);
+      svg.appendChild(path);
+    });
+    return svg;
+  }
+
+  function normalizeLink(link, type, fallbackHref, labelText) {
+    var explicitHref = type === "home"
+      ? document.body.getAttribute("data-portal-home")
+      : document.body.getAttribute("data-course-route");
+    var href = explicitHref || link.getAttribute("href") || fallbackHref;
+    var aria = labelText;
+    var title = labelText;
+    link.innerHTML = "";
+    link.appendChild(makeIcon(type));
+    var label = document.createElement("span");
+    label.className = "sr-only " + (type === "home" ? "course-home-label" : "course-back-label");
+    label.textContent = labelText;
+    link.appendChild(label);
+    link.setAttribute("href", href === "#" ? fallbackHref : href);
+    link.setAttribute("aria-label", aria);
+    link.setAttribute("title", title);
+    return link;
+  }
 
   function makeHome() {
     var a = document.createElement("a");
     a.className = "course-home";
     a.setAttribute("href", homeHref);
-    a.setAttribute("aria-label", "返回学习门户");
-    a.setAttribute("title", "学习门户");
-    var icon = document.createElement("span");
-    icon.setAttribute("aria-hidden", "true");
-    icon.textContent = "⌂";
-    var label = document.createElement("span");
-    label.className = "course-home-label";
-    label.textContent = "学习门户";
-    a.appendChild(icon);
-    a.appendChild(label);
-    return a;
+    a.setAttribute("aria-label", messages.home);
+    a.setAttribute("title", messages.home);
+    return normalizeLink(a, "home", homeHref, messages.home);
   }
 
   function makeBack() {
     var a = document.createElement("a");
     a.className = "course-back";
     a.setAttribute("href", backHref);
-    a.setAttribute("aria-label", "返回课程路线");
-    a.setAttribute("title", "课程路线");
-    var arrow = document.createElement("span");
-    arrow.setAttribute("aria-hidden", "true");
-    arrow.textContent = "←";
-    var label = document.createElement("span");
-    label.className = "course-back-label";
-    label.textContent = "课程路线";
-    a.appendChild(arrow);
-    a.appendChild(label);
-    return a;
+    a.setAttribute("aria-label", messages.back);
+    a.setAttribute("title", messages.back);
+    return normalizeLink(a, "back", backHref, messages.back);
   }
 
   var dock = document.querySelector(".course-return-dock");
   if (!dock) {
     dock = document.createElement("nav");
     dock.className = "course-return-dock";
-    dock.setAttribute("aria-label", "全局学习导航");
     shell.insertAdjacentElement("afterend", dock);
   }
+  dock.setAttribute("aria-label", messages.dockNav);
 
   var homes = Array.prototype.slice.call(document.querySelectorAll(".course-home"));
   var backs = Array.prototype.slice.call(document.querySelectorAll(".course-back"));
@@ -631,16 +741,10 @@ function ensureCourseNav() {
   var back = backs.shift() || makeBack();
   homes.forEach(function (link) { link.remove(); });
   backs.forEach(function (link) { link.remove(); });
-  home.setAttribute("href", homeHref);
-  home.setAttribute("aria-label", "返回学习门户");
-  home.setAttribute("title", "学习门户");
-  back.setAttribute("href", backHref);
-  back.setAttribute("aria-label", "返回课程路线");
-  back.setAttribute("title", "课程路线");
-  var backLabel = back.querySelector(".course-back-label");
-  if (backLabel) backLabel.textContent = "课程路线";
-  dock.appendChild(home);
+  home = normalizeLink(home, "home", homeHref, messages.home);
+  back = normalizeLink(back, "back", backHref, messages.back);
   dock.appendChild(back);
+  dock.appendChild(home);
 
   document.querySelectorAll(".course-nav--simple").forEach(function (nav) {
     if (!nav.children.length) nav.remove();
@@ -653,9 +757,10 @@ function ensureCourseNav() {
     if (!nav) {
       nav = document.createElement("nav");
       nav.className = "course-nav";
-      nav.setAttribute("aria-label", "Lesson navigation");
       shell.insertBefore(nav, steps);
       nav.appendChild(steps);
     }
+    nav.setAttribute("aria-label", messages.lessonNav);
   }
 }
+})();
