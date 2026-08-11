@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>0017B · EVM 进展与指标更新</title><link rel="stylesheet" href="assets/lesson.css"></head>
+<body data-portal-home="../index.html" data-course-route="index.html" data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="process"><div class="reading-progress" aria-hidden="true"><span></span></div><main class="lesson-shell" id="lesson-content"><nav class="course-nav" aria-label="课程导航"><nav class="lesson-steps" aria-label="课程阶段"><a href="#map" aria-current="step"><span class="step-number">01</span><span>先看地图</span></a><a href="#case"><span class="step-number">02</span><span>沿判断讲解</span></a><a href="#practice"><span class="step-number">03</span><span>练一练</span></a></nav></nav><header class="lesson-header"><p class="eyebrow">PMP 2026 · Process · 0017B</p><h1>EVM 进展与指标更新</h1><p class="lesson-deck">先用交付证据判断进展，再让指标保持可追溯。</p></header>
+<section class="map-section" id="map" data-stage="map" aria-labelledby="map-title"><p class="eyebrow">Map · 全貌</p><h2 id="map-title">当前进展 → EVM 度量 → 分析 → 指标更新</h2><div class="learning-map" data-component="learning-map" aria-label="当前进展与指标更新"><div class="map-hub"><strong>让交付证据、公式和治理动作使用同一口径</strong><span>先对齐计划与验收，再计算指标，最后记录假设与版本。</span></div><a class="map-node map-node--why" href="#current-progress"><strong>当前进展</strong><span>用交付证据和计划对比判断进展。</span></a><a class="map-node map-node--govern" href="#metric-update"><strong>指标更新</strong><span>保持定义、来源和变更记录可追溯。</span></a></div></section>
+<section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
+      <p class="eyebrow">Explanation · 判断循环</p>
+      <h2 id="case-title">先对齐验收与计划 → 计算指标判断方向 → 核对根因并版本化更新</h2>
+      <article class="scene" id="scene-0017b-hook" data-component="scene">
+        <div class="scene-number">01</div>
+        <div class="scene-body">
+          <h3>“完成 60%”不能自动变成挣值</h3>
+          <p>交付负责人说平台底座已完成 60%，财务负责人却找不到对应的验收记录；计划价值（PV）为 40 万，实际成本（AC）为 50 万。触发点是主观完成率和可验收交付证据没有对上。</p>
+          <p><strong>白话：</strong>先确认计划要完成什么、按规则确认完成了什么、实际花了多少。<br><strong>考试语言：</strong>当前进展要依据计划范围和既定绩效测量规则评估，不能用主观百分比直接替代挣值。</p>
+          <p>先锁定截止日期、计划范围、测量规则和剩余工作。正式验收只有在约定的 0/100 规则下，才作为该规则的证据；它不是 EV 的定义。验收标准或范围发生变化时，停下计算并重新确认输入，不把旧的 60% 当成新事实。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>开发完成、付款或单次验收都不能单独定义 EV；按既定绩效测量规则确认完成。</li>
+            <li>PV、EV、AC 必须在同一截止日、范围和单位下比较。</li>
+            <li>证据不足时应标注未知，而不是猜一个 EV。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>团队报出完成 60%，但没有验收记录，能否按 60% 计算 EV？</summary>
+            <p>不能。先核对计划范围和既定绩效测量规则；正式验收只有在约定的 0/100 规则下才是测量依据之一。证据不足的部分不确认成 EV，核验后 EV 可能上调或下调。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">先对齐验收与计划，再判断当前进展。</p>
+        </div>
+      </article>
+      <article class="scene" id="current-progress" data-component="scene">
+        <div class="scene-number">02</div>
+        <div class="scene-body">
+          <h3>把当前进展放回计划和验收证据</h3>
+          <p>交付负责人拿出已验收的底座功能清单，财务负责人把计划范围和实际成本放在同一截止日。触发点是现在终于有了可比较的事实，而不是“大家感觉差不多完成”。</p>
+          <p><strong>白话：</strong>PV 是计划应完成工作的预算价值，EV 是按既定绩效测量规则确认已完成工作的预算价值，AC 是实际发生的成本。<br><strong>考试语言：</strong>评估当前进展（Assess current progress）要求用交付证据与计划比较，避免主观完成率替代 EV。</p>
+          <p>先确认三项输入同口径，再按既定绩效测量规则确认已完成工作的 EV。正式验收只有在约定的 0/100 规则下才是测量依据之一，不是 EV 的定义。交付证据或计划范围变动时，保留未确认部分并重新核对；核验可能让 EV 上调或下调，不能用付款或开发量补齐。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>EV 是按既定绩效测量规则确认已完成工作的预算价值，不代表投入金额。</li>
+            <li>计划范围改变时，原来的比较基础也要被标记。</li>
+            <li>交付证据要能回到具体验收条件和截止日。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>已支付供应商款项但交付尚未验收，这笔钱能否直接计入 EV？</summary>
+            <p>不能。支付属于 AC 的记录，EV 要按既定绩效测量规则确认已完成工作的预算价值。正式验收只有在约定的 0/100 规则下才是依据之一，核验可能使 EV 上调或下调。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">先确认应完成与已验收，再让 PV、EV、AC 讲同一组事实。</p>
+        </div>
+      </article>
+      <article class="scene" id="metric-update" data-component="scene">
+        <div class="scene-number">03</div>
+        <div class="scene-body">
+          <h3>公式先告诉方向，根因还要另查</h3>
+          <p>同一截止日记录为 PV=40、EV=30、AC=50（万元）。先计算 CV = EV − AC = −20、SV = EV − PV = −10、CPI = EV ÷ AC = 0.6、SPI = EV ÷ PV = 0.75；信号显示成本和进度都不利。</p>
+          <p><strong>白话：</strong>公式告诉你偏向哪里，不会自动告诉你为什么。<br><strong>考试语言：</strong>测量、分析并更新项目指标（Measure, analyze, and update project metrics）要求输入、方向、根因、假设和记录能互相核对。</p>
+          <p>先算出方向，再查是范围、估算、供应商、返工还是记录时点造成；如果成本效率持续的假设改变，就按新假设重算预测并保留版本，不用改输入让结果好看。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>指标是信号，不自动批准纠偏或储备动作。</li>
+            <li>CV 比较 EV 与 AC，SV 比较 EV 与 PV；CPI 与 SPI 的分母不同。</li>
+            <li>计算正确不等于根因正确，根因需要独立证据。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>CPI 小于 1 是否直接说明供应商造成超支？</summary>
+            <p>不能。CPI 只说明成本效率方向，仍要核对范围、估算、返工、供应商和记录证据。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">先算方向，再查根因和假设；计算是判断的起点。</p>
+        </div>
+      </article>
+      <article class="scene" id="scene-0017b-update-record" data-component="scene">
+        <div class="scene-number">04</div>
+        <div class="scene-body">
+          <h3>更新指标时保留版本，不改历史基准</h3>
+          <p>本月把报告截止日从月末改为周末，财务负责人还发现一项数据使用了不同货币单位。触发点是输入口径发生变化，若直接覆盖旧值，趋势会变得不可复核。</p>
+          <p><strong>白话：</strong>现在的数据可以更新，过去的定义、数值和批准关系要留着。<br><strong>考试语言：</strong>指标更新要求保留版本、变更原因、生效时间和来源关系，并让后续比较知道何处不可比。</p>
+          <p>先建立新版本，标明截止日、范围、单位、假设和影响；如果冲突仍无法解释，保留差异并提交治理判断，不删除不利月份或把实际值写回计划价值。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>更新当前指标不等于重写历史基准。</li>
+            <li>不同截止日、范围或货币单位不能直接串成同一趋势。</li>
+            <li>版本记录要说明原因和生效时间，不能只改标题。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>为了让曲线连续，是否把旧月份按新口径覆盖？</summary>
+            <p>不应直接覆盖。保留旧记录，追加新版本并说明断点、原因和生效关系。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">更新现在的证据和假设，保留过去的口径、版本和批准关系。</p>
+        </div>
+      </article>
+    
+<p class="takeaway" data-component="takeaway" id="offline-production-assignment-0017b"><strong>线下产出任务</strong> · <strong>deliverable：</strong>一页“EVM 进展核对卡”。<strong>prompt：</strong>使用一组内部一致的项目数字完成一次 EVM 更新；先列验收证据，再计算指标，最后说明一个不改变历史口径的更新动作。<strong>acceptance criteria：</strong>PV/EV/AC 同期同单位；EV 对应明确交付证据；偏差和指数计算正确并解释方向；至少一个根因或假设可验证；更新动作含版本、原因和生效时间。页面不收集任务结果，完成证据留在线下。</p>
+<p class="takeaway" data-component="takeaway">连续性：回到 0017A 的报告与治理链，后续 0019 将把同一证据翻译成状态表达。</p>
+    </section>
+<section class="audit-section" data-stage="case" data-component="audit-section" aria-labelledby="audit-title"><p class="eyebrow">Audit · 覆盖与来源</p><h2 id="audit-title">0017B Enabler 覆盖</h2><details class="audit-card"><summary>逐 Enabler 覆盖与正式来源</summary><div class="audit-content"><table class="coverage-table" data-component="coverage-table"><thead><tr><th>Enabler</th><th>场景覆盖</th><th>来源定位</th></tr></thead><tbody><tr><td>PRC-T09-E05</td><td>current-progress：以验收证据和计划范围判断当前进展，避免主观完成率代替 EV。</td><td>PMI ECO July 2026 Task 9 bullet 5；PMBOK 7 Measurement Performance Domain</td></tr><tr><td>PRC-T09-E06</td><td>metric-update：计算并解释 EVM 指标，核查输入、假设、版本和指标更新。</td><td>PMI ECO July 2026 Task 9 bullet 6；PMBOK 7 Measurement Performance Domain；HeatoN pp. 41–42 仅作公式练习</td></tr></tbody></table></div></details></section>
+<section class="quiz-section" id="practice" data-stage="practice" aria-labelledby="practice-title" data-question-label="练习题"><p class="eyebrow">Practice · 课后练习</p><h2 id="practice-title">用六个判断检查：进展证据与指标更新</h2><p class="section-intro">先答，再看解析；公式、方向和输入口径都要可追溯。</p><div class="quiz-toolbar"><span id="scoreText">已答 0 / 6 · 正确 0</span><button class="reset-button" id="resetQuiz" type="button">重做</button></div><div id="quiz"></div></section></main><nav class="course-return-dock" data-component="course-return-dock" aria-label="Global learning navigation"><a class="course-back" href="index.html" aria-label="返回课程路线" title="课程路线"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg><span class="sr-only course-back-label">课程路线</span></a><a class="course-home" href="../index.html" aria-label="返回学习门户" title="学习门户"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 21v-8a2 2 0 0 0-1-1h-4a2 2 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0L21 10v9a2 2 0 0 1-2-2z"></path></svg><span class="sr-only course-home-label">学习门户</span></a></nav>
+<script id="lesson-questions" type="application/json">
+[
+  {
+    "id": "PMP-0017B-Q001",
+    "type": "single_choice",
+    "stem": "同一截止日记录为 PV=60、EV=45、AC=50（万元）。哪项判断正确？",
+    "options": [
+      "CV=5，表示成本有利；SPI=0.90，进度接近计划",
+      "CV=-15，表示进度落后；CPI=0.75，成本效率较低",
+      "CV=-5、SV=-15，成本和进度方向均不利",
+      "CV=15、SV=5，说明实际成本低于挣值且进度领先"
+    ],
+    "answer": 2,
+    "rationale": "C 最佳：CV=EV−AC=45−50=-5，SV=EV−PV=45−60=-15，两个方向都不利。A 把符号和指标混淆；B 把偏差数值错配且漏掉进度偏差；D 把公式方向反转，无法解释实际成本高于挣值。"
+  },
+  {
+    "id": "PMP-0017B-Q002",
+    "type": "single_choice",
+    "stem": "更新指标前发现验收范围变动，且一条记录使用了不同货币单位。哪项前置检查最重要？",
+    "options": [
+      "先冻结截止日、范围和单位，核对输入后保留版本再算",
+      "沿旧口径先算一版，治理会后再补录变动",
+      "删除不一致记录，用最近数据维持趋势",
+      "调整基线配平单位，会议纪要说明变更原因"
+    ],
+    "answer": 0,
+    "rationale": "A 最佳：先冻结截止日、范围和单位，核对输入关系并保留版本，再计算。B 先算旧口径会把错误带入报告；C 删除不一致记录会丢失差异；D 直接调基线并口头说明，破坏历史可比性。"
+  },
+  {
+    "id": "PMP-0017B-Q003",
+    "type": "single_choice",
+    "stem": "团队说一个工作包完成百分之七十，但按既定完成测量规则和可核实交付记录只能支持计划预算价值的百分之四十；正式客户验收将在下个里程碑。EV 应如何处理？",
+    "options": [
+      "用百分之七十乘计划预算确定 EV，把团队完成率当作交付证据",
+      "用付款比例计算 EV，验收记录在下个里程碑补入",
+      "取百分之七十与百分之四十的平均值，作为当前折中",
+      "按既定完成规则确认百分之四十的计划预算价值，未有依据部分暂不计入"
+    ],
+    "answer": 3,
+    "rationale": "D 最佳：EV 是按既定完成测量规则，对已完成且有可核实证据的计划预算价值进行确认；正式客户验收不是唯一前提。本题只能支持百分之四十，未证实部分暂不计入。A 把团队百分比当证据；B 把付款当 EV；C 凭折中创造无依据数字。"
+  },
+  {
+    "id": "PMP-0017B-Q004",
+    "type": "single_choice",
+    "stem": "大学实验室迁移的同一截止日数据为 PV=30、EV=24、AC=32（万元）。哪项判断正确？",
+    "options": [
+      "CV=8、SV=6，说明成本和进度均有利",
+      "CV=-8、SV=-6，说明成本超支且进度落后",
+      "CPI=1.33、SPI=1.25，说明效率均高于计划",
+      "EV=32，因为实际成本可代表已完成的预算价值"
+    ],
+    "answer": 1,
+    "rationale": "B 最佳：CV=24−32=-8，SV=24−30=-6，成本与进度方向都不利。A 看似只改了符号，却因此得出相反结论；C 看似使用效率指标，却把分子分母倒置；D 看似使用现成金额，却混淆AC与EV。"
+  },
+  {
+    "id": "PMP-0017B-Q005",
+    "type": "single_choice",
+    "stem": "水务管网项目改变了报告截止日和货币单位。怎样更新指标而不改写历史基准？",
+    "options": [
+      "按新口径重算旧月并覆盖历史记录，保持曲线连续可读",
+      "只更新图表标题，把历史数值直接串起来比较",
+      "把无法换算的记录移到附录，保留断点并在治理会解释",
+      "保留旧版，追加口径、原因、生效日及不可比处"
+    ],
+    "answer": 3,
+    "rationale": "D 最佳：保留旧版，追加新口径并标明原因、生效日和不可比处，才能让断点可解释。A 覆盖历史；B 用标题掩盖单位与截止日变化；C 把难以换算的记录移出主链，丢失治理线索。"
+  },
+  {
+    "id": "PMP-0017B-Q006",
+    "type": "single_choice",
+    "stem": "沙漠通信塔项目已定义的完成测量规则只支持部分工作包，CPI 低于 1；正式验收尚未到期。怎样形成下一步的完整判断？",
+    "options": [
+      "按主观完成率补齐 EV，再以 CPI 直接归因供应商",
+      "覆盖旧月份后再看范围，避免报告持续不利",
+      "核对范围和完成证据；只确认有依据的 EV，查根因并留版本",
+      "把所有付款计入 EV，先申请储备缓和指标"
+    ],
+    "answer": 2,
+    "rationale": "C 最佳：先核对范围和完成证据，只确认有依据的 EV，再解释 CPI 方向、查根因并留版本；正式验收尚未到期不妨碍按既定完成规则记录已完成价值。A 用主观完成率和单一指标归责；B 覆盖历史以改善趋势；D 把付款当 EV 并用储备绕过原因核对。"
+  }
+]
+  </script><script src="assets/lesson.js"></script></body></html>

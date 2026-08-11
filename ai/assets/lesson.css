@@ -335,11 +335,7 @@ h3 {
 }
 .learning-map {
   display: grid;
-  grid-template-columns: 1fr 180px 1fr;
-  grid-template-areas:
-    "why hub govern"
-    "owner hub build"
-    ". environment .";
+  grid-template-columns: minmax(0, 1fr) minmax(280px, .9fr) minmax(0, 1fr);
   gap: 18px 24px;
   align-items: stretch;
 }
@@ -352,7 +348,8 @@ h3 {
 }
 
 .map-hub {
-  grid-area: hub;
+  grid-column: 2;
+  grid-row: 1;
   display: grid;
   place-content: center;
   padding: 24px;
@@ -382,6 +379,14 @@ h3 {
   transition: border-color 160ms ease, transform 160ms ease;
 }
 
+.map-node--why,
+.map-node--govern,
+.map-node--build,
+.map-node--owner,
+.map-node--environment {
+  grid-area: auto;
+}
+
 .map-node:hover {
   border-color: var(--option-hover-border);
   transform: translateY(-2px);
@@ -398,24 +403,35 @@ h3 {
   font-size: 14px;
 }
 
-.map-node--why {
-  grid-area: why;
-}
+@media (min-width: 681px) {
+  .learning-map > .map-node:nth-child(2) {
+    grid-column: 1;
+    grid-row: 1;
+  }
 
-.map-node--govern {
-  grid-area: govern;
-}
+  .learning-map > .map-node:nth-child(3) {
+    grid-column: 3;
+    grid-row: 1;
+  }
 
-.map-node--build {
-  grid-area: build;
-}
+  .learning-map > .map-node:nth-child(4) {
+    grid-column: 1;
+    grid-row: 2;
+  }
 
-.map-node--owner {
-  grid-area: owner;
-}
+  .learning-map > .map-node:nth-child(5) {
+    grid-column: 3;
+    grid-row: 2;
+  }
 
-.map-node--environment {
-  grid-area: environment;
+  .learning-map > .map-node:nth-child(6) {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .learning-map:has(> .map-node:nth-child(4)) > .map-hub {
+    grid-row: 1 / span 2;
+  }
 }
 
 .case-section {
@@ -1434,11 +1450,6 @@ code {
 }
 
 @media (max-width: 820px) {
-  .learning-map {
-    grid-template-columns: 1fr 148px 1fr;
-    gap: 12px;
-  }
-
   .value-chain {
     grid-template-columns: 1fr;
   }
@@ -1462,6 +1473,20 @@ code {
 
   .audit-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .learning-map {
+    grid-template-columns: 1fr;
+    grid-template-areas: none;
+  }
+
+  .learning-map > .map-hub,
+  .learning-map > .map-node {
+    grid-area: auto;
+    grid-column: auto;
+    grid-row: auto;
   }
 }
 
@@ -1517,17 +1542,6 @@ code {
 
   .map-section {
     padding-bottom: 52px;
-  }
-
-  .learning-map {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "hub"
-      "why"
-      "govern"
-      "build"
-      "owner"
-      "environment";
   }
 
   .map-hub,

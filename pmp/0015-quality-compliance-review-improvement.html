@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>0015 · 合规、质量成本、评审与改进</title>
+  <link rel="stylesheet" href="assets/lesson.css">
+</head>
+<body data-portal-home="../index.html" data-course-route="index.html" data-ui-version="2" data-pipeline="certification" data-format="lesson" data-theme="process">
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
+  <main class="lesson-shell" id="lesson-content">
+    <nav class="course-nav" aria-label="课程导航"><nav class="lesson-steps" aria-label="课程阶段">
+      <a href="#map" aria-current="step"><span class="step-number">01</span><span>先看地图</span></a>
+      <a href="#case"><span class="step-number">02</span><span>沿判断讲解</span></a>
+      <a href="#practice"><span class="step-number">03</span><span>练一练</span></a>
+    </nav></nav>
+    <header class="lesson-header">
+      <p class="eyebrow">PMP 2026 · Process · 0015</p>
+      <h1>合规、质量成本、评审与改进</h1>
+      <p class="lesson-deck">一次验收只能说明一个时点；持续质量要把约束、代价、趋势和行动连起来。</p>
+    </header>
+
+    <section class="map-section" id="map" data-stage="map" aria-labelledby="map-title">
+      <p class="eyebrow">Map · 全貌</p>
+      <h2 id="map-title">本课围绕「合规约束 → 质量成本/可持续性 → 持续评审 → 改进行动」展开</h2>
+      <div class="learning-map" data-component="learning-map" aria-label="法规合规、质量成本与可持续性、持续质量评审、持续改进">
+        <div class="map-hub"><strong>让质量控制从“验收通过”变成受约束、看趋势、能改进的闭环</strong><span>先找不能谈判的约束，再比较代价与影响，按节奏评审，最后把趋势变成改进行动。</span></div>
+        <a class="map-node map-node--why" href="#scene-0015-compliance"><strong>法规合规</strong><span>识别适用规则、责任和证据，不把业务同意当成外部合规。</span></a>
+        <a class="map-node map-node--govern" href="#scene-0015-cost-sustainability"><strong>质量成本与可持续性</strong><span>比较预防、评估、失败成本及长期影响，用指标支持取舍。</span></a>
+        <a class="map-node map-node--environment" href="#scene-0015-ongoing-review"><strong>持续质量评审</strong><span>按风险与变化频率看基线、阈值、趋势和证据充分性。</span></a>
+        <a class="map-node map-node--environment" href="#scene-0015-improvement"><strong>持续改进</strong><span>从趋势和根因改变过程、工具或资产，并验证下一周期。</span></a>
+      </div>
+    </section>
+
+    <section class="case-section" id="case" data-stage="case" aria-labelledby="case-title">
+      <p class="eyebrow">Explanation · 判断循环</p>
+      <h2 id="case-title">先确认合规约束 → 比较质量代价与长期影响 → 持续评审 → 根因改进</h2>
+      <article class="scene" id="scene-0015-compliance" data-component="scene">
+        <div class="scene-number">01</div>
+        <div class="scene-body" id="scene-0015-hook">
+          <h3>通过产品验收，不代表可以忽略合规</h3>
+          <p>上线前，质量负责人发现数据保留方式可能不符合适用监管要求；合规负责人手里只有一条旧的口头说明。触发点是验收结果与适用规则之间出现缺口，关键区别是合规约束不是团队偏好。</p>
+          <p><strong>白话：</strong>先问哪条要求适用、拿什么证明、谁负责确认。<br><strong>考试语言：</strong>这对应确保法规合规（Help ensure regulatory compliance）：确认要求、保留证据、记录不符合项并处理整改。</p>
+          <p>先锁定适用条款、责任、证据和评审时间，暂停受影响的数据路径。规则解释发生变化或需要例外时，把影响和待批准事项交合规负责人确认。不用“产品已经验收”替代合规判断。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>合规不是可选质量偏好，法规、许可、标准和政策都可能形成约束。</li>
+            <li>一次验收通过不等于持续合规，过程和记录也要能回看。</li>
+            <li>没有适用要求和证据的口头结论不能支撑继续上线。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>产品功能已经验收，合规条款尚未核实，能否先上线再补记录？</summary>
+            <p>不能。先确认适用要求和证据，处理不符合项或取得明确批准，再决定受影响路径。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">先确认适用规则和证据，再决定是否能继续交付。</p>
+        </div>
+      </article>
+      <article class="scene" id="scene-0015-cost-sustainability" data-component="scene">
+        <div class="scene-number">02</div>
+        <div class="scene-body">
+          <h3>质量投入要和失败代价、长期影响一起算</h3>
+          <p>团队比较两种上线方案：一种减少预防检查但可能增加返工，另一种增加前置验证并减少后期失效；同时，资源使用和废弃处理也会影响长期目标。触发点是眼前成本与生命周期影响不一致。</p>
+          <p><strong>白话：</strong>不要只看今天花多少钱，要看预防、评估、失败损失以及经济、社会和环境影响。<br><strong>考试语言：</strong>这对应管理质量成本（Cost of Quality，CoQ）和可持续性（Manage cost of quality and sustainability）。</p>
+          <p>先比较预防与评估投入、返工和失效损失，再把资源使用、长期维护和可持续性目标放进同一决策。影响阈值或组织目标改变时，重做比较并取得授权。不把最低即时费用当成唯一答案。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>预防投入不是自动浪费，可能减少更大的失败成本。</li>
+            <li>质量成本不只等于测试费用，还包含预防、评估和失败代价。</li>
+            <li>满足最低合规线不等于已经完成可持续性判断。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>为了本期费用更低而取消前置验证，是否一定更经济？</summary>
+            <p>不一定。要比较全生命周期的预防、评估、返工、失效和可持续性影响，再做有依据的选择。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">把质量成本和长期影响放在同一张决策表里，而不是只追眼前低价。</p>
+        </div>
+      </article>
+      <article class="scene" id="scene-0015-ongoing-review" data-component="scene">
+        <div class="scene-number">03</div>
+        <div class="scene-body">
+          <h3>条件在变，评审也要跟着变</h3>
+          <p>质量负责人按阶段检查过程和交付物，发现缺陷趋势上升；合规负责人又提示外部规则正在更新。触发点不是一次失败，而是原来的评审节奏和标准可能已不再覆盖现实。</p>
+          <p><strong>白话：</strong>评审不是收尾仪式，而是随着工作和约束变化反复看过程、结果和趋势。<br><strong>考试语言：</strong>这对应持续进行质量评审（Conduct ongoing quality reviews），用周期性证据发现偏差并更新判断。</p>
+          <p>先按约定节奏复核过程与交付物、趋势、缺陷和合规状态。新规则、风险或趋势让原标准失效时，更新标准、节奏和责任，并记录何时生效。不继续用旧尺子比较。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>持续评审不等于只在阶段末查一次。</li>
+            <li>评审既看交付物，也看产生它的过程和控制。</li>
+            <li>变化触发标准更新，但不能抹掉旧评审记录。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>阶段验收已经通过，之后出现新的法规提示，是否无需再评审？</summary>
+            <p>仍需评审。新约束可能改变适用标准和风险，应确认影响并更新后续评审安排。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">用持续证据观察过程与结果；条件变了，就更新评审标准和节奏。</p>
+        </div>
+      </article>
+      <article class="scene" id="scene-0015-improvement" data-component="scene">
+        <div class="scene-number">04</div>
+        <div class="scene-body">
+          <h3>把重复缺陷追到根因，才会改变下一轮工作</h3>
+          <p>同类接口缺陷在两次评审中重复出现，团队每次都临时返工。触发点是补丁没有改变产生缺陷的条件，关键区别是临时纠偏与持续改进。</p>
+          <p><strong>白话：</strong>先问缺陷为什么反复出现，再改变过程、标准或学习方式，并验证是否有效。<br><strong>考试语言：</strong>这对应实施持续改进（Implement continuous improvement）：利用评审结果和经验教训更新过程资产与下一轮工作。</p>
+          <p>先分析缺陷模式和根因，选择有责任人、时点和验证办法的改进。改进影响基准、合规或跨团队过程时，交合规负责人确认并持续跟踪结果。不把一次记录当成改进已经成功。</p>
+          <ul class="boundary-list" data-component="boundary-list">
+            <li>临时返工可以恢复交付，但不等于根因已被处理。</li>
+            <li>记录经验教训不等于过程已经改变，必须有实施和验证证据。</li>
+            <li>改进效果不明时，保留不确定性并安排下一次复查。</li>
+          </ul>
+          <details class="quick-check" data-component="quick-check">
+            <summary>缺陷被修好一次，是否可以直接宣布持续改进完成？</summary>
+            <p>不可以。还要确认根因、实施改变并用后续证据验证效果；若影响权限或约束，按路径升级。</p>
+          </details>
+          <p class="takeaway" data-component="takeaway">评审提供证据，根因决定改什么，复查证明改进是否生效。</p>
+        </div>
+      </article>
+    
+<p class="takeaway" data-component="takeaway" id="offline-production-assignment-0015"><strong>线下产出任务</strong> · <strong>deliverable：</strong>一张“约束—指标—评审—改进”闭环卡。<strong>prompt：</strong>为一个数字化交付物列出适用约束及证据责任；把一个质量成本或可持续性影响转成指标；规定评审时间和阈值触发条件；写出一个有验证指标的过程、工具或资产改动。<strong>acceptance criteria：</strong>约束有来源；指标有定义、基线/阈值、责任和时间窗口；评审能在末期验收前发现变化；改进行动有后续验证；不含私有内容或机构题。页面不收集任务结果，完成证据留在线下。</p>
+<p class="takeaway" data-component="takeaway">连续性：本页以前一页的质量要求、过程和管理计划为输入；后续经验教训闭环会承接本页的评审结论和改进行动。</p>
+    </section>
+
+    <section class="audit-section" data-stage="case" data-component="audit-section" aria-labelledby="audit-title">
+      <p class="eyebrow">Audit · 覆盖与来源</p><h2 id="audit-title">0015 Enabler 覆盖</h2>
+      <details class="audit-card"><summary>逐 Enabler 覆盖与正式来源</summary><div class="audit-content"><table class="coverage-table" data-component="coverage-table"><thead><tr><th>Enabler</th><th>场景覆盖</th><th>来源定位</th></tr></thead><tbody>
+        <tr><td>PRC-T07-E04</td><td>scene-0015-compliance：识别法规、合同、政策与标准，明确责任、证据和审查时点。</td><td>sources/official/eco-exam-outline-2026.md#task-7（431）；sources/official/gpm-sustainability-practice-guide-v4.md#compliance（1574–1578）</td></tr>
+        <tr><td>PRC-T07-E05</td><td>scene-0015-cost-sustainability：区分 CoQ 成本类别，并把可持续性影响转成指标和阈值。</td><td>sources/official/eco-exam-outline-2026.md#task-7（432）；sources/official/pmbok7.md#quality（2169–2173）；sources/official/pmbok7.md#cost-of-quality（5385–5428）</td></tr>
+        <tr><td>PRC-T07-E06</td><td>scene-0015-ongoing-review：按节奏比较基线、阈值、趋势和外部变化，判断计划是否仍适用。</td><td>sources/official/eco-exam-outline-2026.md#task-7（433–435）；sources/official/gpm-sustainability-practice-guide-v4.md#dynamic-materiality（2335–2347）；sources/official/gpm-sustainability-practice-guide-v4.md#monitoring（3565–3594）</td></tr>
+        <tr><td>PRC-T07-E07</td><td>scene-0015-improvement：从趋势和根因更新过程、工具或资产，并用预先约定的门槛验证。</td><td>sources/official/eco-exam-outline-2026.md#task-7（436）；sources/official/gpm-sustainability-practice-guide-v4.md#continuous-improvement（1567–1577）</td></tr>
+      </tbody></table></div></details>
+    </section>
+
+    <section class="quiz-section" id="practice" data-stage="practice" aria-labelledby="practice-title" data-question-label="练习题">
+      <p class="eyebrow">Practice · 课后练习</p><h2 id="practice-title">用六个判断检查：合规约束 → 成本与影响 → 评审 → 改进</h2>
+      <p class="section-intro">先答，再看解析；解析同时说明正确原则、错误选项为何有吸引力但不够好，以及来源。</p>
+      <div class="quiz-toolbar"><span id="scoreText">已答 0 / 6 · 正确 0</span><button class="reset-button" id="resetQuiz" type="button">重做</button></div><div id="quiz"></div>
+    </section>
+  </main>
+  <nav class="course-return-dock" data-component="course-return-dock" aria-label="Global learning navigation"><a class="course-back" href="index.html" aria-label="返回课程路线" title="课程路线"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg><span class="sr-only course-back-label">课程路线</span></a><a class="course-home" href="../index.html" aria-label="返回学习门户" title="学习门户"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 21v-8a2 2 0 0 0-1-1h-4a2 2 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0L21 10v9a2 2 0 0 1-2-2z"></path></svg><span class="sr-only course-home-label">学习门户</span></a></nav>
+  <script id="lesson-questions" type="application/json">
+[
+  {
+    "id": "PMP-0015-Q001",
+    "type": "single_choice",
+    "stem": "两种上线方案分别降低前置验证、增加后期返工风险，或提高预防投入、减少失效损失。哪项判断最完整？",
+    "options": [
+      "将测试费用作为唯一比较项，说明预防投入暂不产生收益",
+      "按最低采购价筛选方案，维护资源在运营评审时再估算",
+      "先对照法规底线，验收通过后把生命周期影响列为后续议题",
+      "把预防、评估、失败损失和生命周期资源放在同一比较中"
+    ],
+    "answer": 3,
+    "rationale": "D 最佳：质量成本要同时比较预防、评估和失败损失，并把资源影响放进生命周期判断。A 把测试费当唯一尺度；B 把维护影响延后；C 只守法规底线，漏掉长期质量与可持续性。"
+  },
+  {
+    "id": "PMP-0015-Q002",
+    "type": "single_choice",
+    "stem": "服务扩展到新地区后，新增数据留存要求；此前一次功能验收已经通过。团队现在首先应做什么？",
+    "options": [
+      "沿用已通过的功能验收，登记新地区要求并在上线后补证据",
+      "确认适用要求、责任和证据，暂停受影响范围并走合规确认",
+      "让供应商核对旧许可与新地区差异，再把结论带入项目评审",
+      "把要求当作质量偏好，记录团队取舍并继续当前发布"
+    ],
+    "answer": 1,
+    "rationale": "B 最佳：新增地区要求可能是必须遵守的约束，应确认适用要求、责任和证据，暂停受影响范围并走合规确认。A 有登记但继续上线；C 有许可差异核对却未确认适用性或暂停；D 把约束降为偏好。"
+  },
+  {
+    "id": "PMP-0015-Q003",
+    "type": "single_choice",
+    "stem": "质量指标连续显示“通过”，却没有基线和时间窗口；同时适用规则已经变化。要支持持续质量评审，最关键的补足是什么？",
+    "options": [
+      "保留通过标记即可，趋势和规则变化由会议口头说明并在收尾归档",
+      "只增加一次末期验收，不更新过程证据和评审节奏",
+      "补齐基线、时间窗、过程与交付证据，并核对新规则适用性",
+      "将新规则暂缓到下一阶段，以免打断当前评审结论"
+    ],
+    "answer": 2,
+    "rationale": "C 最佳：持续评审需要可比的基线和时间窗、过程与交付证据，以及对新规则适用性的核对。A 看似保留结论，却无法复核趋势；B 看似增加检查，却仍缺过程和持续节奏；D 看似避免中断，却让评审继续使用失效约束。"
+  },
+  {
+    "id": "PMP-0015-Q004",
+    "type": "single_choice",
+    "stem": "城市污水泵连续三个周期在维护后再次故障。哪项行动最符合持续改进？",
+    "options": [
+      "按故障模式找根因，实施有责任人和复查条件的改进",
+      "按每次故障清单更换零件，复盘记录等下一周期再看",
+      "把维修记录汇总成经验项，先指定负责人再观察过程变化",
+      "提高末期抽检数量并按缺陷分布更新抽检表"
+    ],
+    "answer": 0,
+    "rationale": "A 最佳：重复故障应从故障模式和根因入手，实施有责任人与复查条件的过程改进。B 只换零件恢复运行；C 汇总经验但未改变并验证过程；D 增加末期抽检，未处理缺陷产生环节。"
+  },
+  {
+    "id": "PMP-0015-Q005",
+    "type": "single_choice",
+    "stem": "山地公园照明改造的低耗方案前期投入较高。哪项判断符合质量成本与可持续性边界？",
+    "options": [
+      "只按本季采购额选择最低价方案，长期维护另行考虑并由运营承担",
+      "满足最低安全标准就无需比较资源使用和社会影响",
+      "只计算新增检测费用，预防投入与故障损失不纳入",
+      "把前期投入、失效代价、维护资源和长期环境影响一起比较"
+    ],
+    "answer": 3,
+    "rationale": "D 最佳：将前期投入、失败代价、维护资源和长期环境影响放在同一生命周期比较中，才能作出相称选择。A 看似节约，却把长期成本隔离；B 看似满足底线，却遗漏可持续性；C 看似聚焦检测，却漏掉预防和失效损失。"
+  },
+  {
+    "id": "PMP-0015-Q006",
+    "type": "single_choice",
+    "stem": "食品冷藏包装线扩展到新地区：新增审计要求，封口缺陷连续出现，能耗也接近内部阈值。哪套组合行动最完整？",
+    "options": [
+      "把适用规则、全周期代价、持续评审和根因验证连成一条行动链",
+      "先加末端抽检并登记审计要求，能耗问题留到评审会再定",
+      "更换封口设备并核对缺陷趋势，合规和资源目标分别处理",
+      "按即时成本挑方案，把验证结果整理到收尾报告"
+    ],
+    "answer": 0,
+    "rationale": "A 最佳：把适用规则、全周期代价、持续评审和根因验证连成一条行动链，才能同时处理合规、缺陷与能耗。B 有抽检和审计登记，却延后能耗与评审；C 只改设备并拆开目标；D 只看即时成本并把验证推到收尾。"
+  }
+]
+  </script>
+  <script src="assets/lesson.js"></script>
+</body>
+</html>
